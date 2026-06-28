@@ -1,0 +1,152 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+
+import { presignPhotoApi } from "@/lib/api/client";
+import { queryKeys } from "@/lib/api/query-keys";
+import type { PhotoUpsertInput } from "@/lib/api/schemas";
+import { newId } from "@/lib/id";
+import { imageExtFromFile, publicPhotoUrl } from "@/lib/photo-url";
+import {
+  patchBatchLocal,
+  readLocalPhoto,
+  readLocalPhotosForObservation,
+  readPhotoBlob,
+  savePhotoBlobLocal,
+  savePhotoLocal,
+} from "@/offline/repository";
+
+async function imageSize(
+  blob: Blob,
+): Promise<{ width: number; height: number } | null> {
+  try {
+    if (typeof createImageBitmap === "function") {
+      const bitmap = await createImageBitmap(blob);
+      const size = { width: bitmap.width, height: bitmap.height };
+      bitmap.close?.();
+      return size;
+    }
+  } catch {
+    // Dimensions are best-effort; the column is nullable.
+  }
+  return null;
+}
+
+/** Upload the captured blob to R2 via a presigned PUT. Returns true on success. */
+async function uploadToR2(photoId: string, ext: string, blob: Blob) {
+  const { uploadUrl } = await presignPhotoApi({ photoId, ext });
+  const response = await fetch(uploadUrl, { method: "PUT", body: blob });
+  if (!response.ok) {
+    throw new Error(`R2 upload failed (${response.status})`);
+  }
+}
+
+export function useCapturePhoto(batchId: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: { file: File; observationId?: string | null }) => {
+      const photoId = newId();
+      const ext = imageExtFromFile(input.file);
+      const r2Key = `photos/${photoId}.${ext}`;
+      const now = Date.now();
+
+      // Store the blob locally first so thumbnails render instantly and the
+      // upload can be retried offline (Phase 8.3).
+      await savePhotoBlobLocal(photoId, input.file);
+      const size = await imageSize(input.file);
+
+      const photo: PhotoUpsertInput = {
+        id: photoId,
+        batchId,
+        observationId: input.observationId ?? null,
+        r2Key,
+        width: size?.width ?? null,
+        height: size?.height ?? null,
+        takenAt: now,
+        uploadStatus: "pending",
+        createdAt: now,
+      };
+      await savePhotoLocal(photo);
+
+      // Optimistically make this the batch cover.
+      try {
+        await patchBatchLocal(batchId, {
+          thumbnailPhotoId: photoId,
+          updatedAt: now,
+        });
+      } catch {
+        // Batch may not exist locally yet; cover is non-critical.
+      }
+
+      // Online happy path: upload now and mark done. On failure we leave it
+      // pending for the reconnect flush rather than blocking capture.
+      if (typeof navigator === "undefined" || navigator.onLine) {
+        try {
+          await uploadToR2(photoId, ext, input.file);
+          await savePhotoLocal({ ...photo, uploadStatus: "done" });
+        } catch {
+          // Stay pending; sync layer retries later.
+        }
+      }
+
+      return photo;
+    },
+    onSuccess: (photo) => {
+      void queryClient.invalidateQueries({ queryKey: queryKeys.photo(photo.id) });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.batch(batchId) });
+      void queryClient.invalidateQueries({ queryKey: queryKeys.batches() });
+      if (photo.observationId) {
+        void queryClient.invalidateQueries({
+          queryKey: queryKeys.observationPhotos(photo.observationId),
+        });
+      }
+    },
+  });
+}
+
+/**
+ * Resolve a displayable image src for a photo id: prefers the locally stored
+ * blob (single-device first), falling back to the R2 public URL.
+ */
+export function usePhotoSrc(photoId: string | null | undefined) {
+  const [objectUrl, setObjectUrl] = useState<string | null>(null);
+
+  const { data } = useQuery({
+    queryKey: queryKeys.photo(photoId ?? "none"),
+    enabled: Boolean(photoId),
+    queryFn: async () => {
+      const [blob, photo] = await Promise.all([
+        readPhotoBlob(photoId!),
+        readLocalPhoto(photoId!),
+      ]);
+      return { blob, r2Key: photo?.r2Key ?? null };
+    },
+  });
+
+  useEffect(() => {
+    if (data?.blob) {
+      const url = URL.createObjectURL(data.blob);
+      setObjectUrl(url);
+      return () => URL.revokeObjectURL(url);
+    }
+    setObjectUrl(null);
+  }, [data?.blob]);
+
+  if (objectUrl) {
+    return objectUrl;
+  }
+  if (data?.r2Key) {
+    return publicPhotoUrl(data.r2Key);
+  }
+  return null;
+}
+
+export function useObservationPhotos(observationId: string) {
+  return useQuery({
+    queryKey: queryKeys.observationPhotos(observationId),
+    enabled: Boolean(observationId),
+    queryFn: () => readLocalPhotosForObservation(observationId),
+  });
+}

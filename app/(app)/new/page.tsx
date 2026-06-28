@@ -1,0 +1,300 @@
+"use client";
+
+import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
+
+import { Button } from "@/components/ui/button";
+import { PhotoPlaceholder } from "@/components/batch/photo-placeholder";
+import { useBatches, useCreateBatch } from "@/hooks/use-batches";
+import { generateNextBatchCode, suggestBatchName } from "@/lib/codes";
+import { SEED_TEMPLATES } from "@/lib/seed-data";
+import type { FermentType } from "@/lib/schema";
+import { cn } from "@/lib/utils";
+
+type Category = { key: string; label: string; available: boolean };
+
+const CATEGORIES: Category[] = [
+  { key: "fertilizer", label: "Fertilizers", available: true },
+  { key: "food", label: "Food", available: false },
+  { key: "beverage", label: "Beverage", available: false },
+];
+
+const SIZE_UNITS = ["kg", "g", "L", "ml"];
+
+function ProgressBar({ step }: { step: number }) {
+  return (
+    <div className="flex gap-1.5" aria-hidden>
+      {[1, 2, 3].map((n) => (
+        <span
+          key={n}
+          className={cn(
+            "h-1.5 flex-1 rounded-full",
+            n <= step ? "bg-accent" : "bg-hairline",
+          )}
+        />
+      ))}
+    </div>
+  );
+}
+
+function OptionRow({
+  selected,
+  disabled,
+  onClick,
+  title,
+  subtitle,
+  badge,
+}: {
+  selected: boolean;
+  disabled?: boolean;
+  onClick?: () => void;
+  title: string;
+  subtitle?: string;
+  badge?: string;
+}) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onClick}
+      aria-pressed={selected}
+      className={cn(
+        "flex min-h-tap-primary w-full items-center gap-3 rounded-[var(--radius-card)] border-2 px-4 py-3 text-left transition-colors",
+        selected
+          ? "border-accent bg-subtle-fill"
+          : "border-border bg-white hover:bg-subtle-fill",
+        disabled && "cursor-not-allowed opacity-60 hover:bg-white",
+      )}
+    >
+      <span
+        aria-hidden
+        className={cn(
+          "flex size-5 shrink-0 items-center justify-center rounded-full border-2",
+          selected ? "border-accent" : "border-border",
+        )}
+      >
+        {selected ? <span className="size-2.5 rounded-full bg-accent" /> : null}
+      </span>
+      <span className="flex min-w-0 flex-1 flex-col">
+        <span className="font-semibold text-ink">{title}</span>
+        {subtitle ? (
+          <span className="truncate text-sm text-secondary">{subtitle}</span>
+        ) : null}
+      </span>
+      {badge ? (
+        <span className="shrink-0 rounded-[var(--radius-chip)] bg-subtle-fill px-2 py-0.5 text-xs font-medium text-muted">
+          {badge}
+        </span>
+      ) : null}
+    </button>
+  );
+}
+
+export default function NewBatchPage() {
+  const router = useRouter();
+  const batchesQuery = useBatches();
+  const createBatch = useCreateBatch();
+
+  const [step, setStep] = useState(1);
+  const [type, setType] = useState<FermentType | null>(null);
+  const [name, setName] = useState("");
+  const [code, setCode] = useState("");
+  const [sizeValue, setSizeValue] = useState("");
+  const [sizeUnit, setSizeUnit] = useState("kg");
+
+  const existingCodes = useMemo(
+    () =>
+      (batchesQuery.data ?? [])
+        .filter((batch) => type && batch.type === type)
+        .map((batch) => batch.code),
+    [batchesQuery.data, type],
+  );
+
+  // Auto-fill name, code, and default unit when a type is chosen.
+  useEffect(() => {
+    if (!type) return;
+    const template = SEED_TEMPLATES.find((t) => t.type === type);
+    setName(suggestBatchName(type));
+    setCode(generateNextBatchCode(type, existingCodes));
+    setSizeUnit(template?.defaultUnit ?? "kg");
+    // existingCodes intentionally omitted: only re-seed on type change.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [type]);
+
+  async function handleStart() {
+    if (!type) return;
+    const parsedSize = sizeValue.trim() ? Number(sizeValue) : null;
+    const batch = await createBatch.mutateAsync({
+      type,
+      name,
+      code,
+      sizeValue:
+        parsedSize !== null && Number.isFinite(parsedSize) ? parsedSize : null,
+      sizeUnit,
+    });
+    router.replace(`/batch/${batch.id}`);
+  }
+
+  return (
+    <main className="flex flex-1 flex-col gap-5 px-4 py-6">
+      <header className="flex flex-col gap-3">
+        <div className="flex items-center justify-between">
+          <h1 className="text-xl font-bold text-ink">New batch</h1>
+          <span className="text-sm text-muted">Step {step} of 3</span>
+        </div>
+        <ProgressBar step={step} />
+      </header>
+
+      {step === 1 ? (
+        <section className="flex flex-1 flex-col gap-3">
+          <p className="text-sm text-secondary">What are you making?</p>
+          {CATEGORIES.map((category) => (
+            <OptionRow
+              key={category.key}
+              title={category.label}
+              selected={category.available}
+              disabled={!category.available}
+              badge={category.available ? undefined : "Coming soon"}
+            />
+          ))}
+        </section>
+      ) : null}
+
+      {step === 2 ? (
+        <section className="flex flex-1 flex-col gap-3">
+          <p className="text-sm text-secondary">Pick a ferment type.</p>
+          {SEED_TEMPLATES.map((template) => (
+            <OptionRow
+              key={template.type}
+              title={template.name}
+              subtitle={
+                template.type === "custom" ? "Blank template" : undefined
+              }
+              selected={type === template.type}
+              onClick={() => setType(template.type)}
+            />
+          ))}
+        </section>
+      ) : null}
+
+      {step === 3 ? (
+        <section className="flex flex-1 flex-col gap-5">
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="batch-name" className="text-sm font-medium text-ink">
+              Name
+            </label>
+            <input
+              id="batch-name"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="batch-code" className="text-sm font-medium text-ink">
+              Short code
+            </label>
+            <input
+              id="batch-code"
+              value={code}
+              onChange={(event) => setCode(event.target.value)}
+              className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-subtle-fill px-3 py-2 font-semibold uppercase tracking-wide text-ink focus:border-accent focus:bg-white focus:outline-none"
+            />
+            <p className="text-xs text-muted">Auto-filled. Edit if you like.</p>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-ink">Batch size</span>
+            <div className="flex gap-2">
+              <input
+                inputMode="decimal"
+                placeholder="Optional"
+                value={sizeValue}
+                onChange={(event) => setSizeValue(event.target.value)}
+                aria-label="Batch size amount"
+                className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+              />
+              <div className="flex flex-1 gap-1.5">
+                {SIZE_UNITS.map((unit) => (
+                  <button
+                    key={unit}
+                    type="button"
+                    onClick={() => setSizeUnit(unit)}
+                    aria-pressed={sizeUnit === unit}
+                    className={cn(
+                      "min-h-tap-min flex-1 rounded-[var(--radius-chip)] border-2 text-sm font-semibold transition-colors",
+                      sizeUnit === unit
+                        ? "border-accent bg-subtle-fill text-ink"
+                        : "border-border bg-white text-secondary hover:bg-subtle-fill",
+                    )}
+                  >
+                    {unit}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-ink">First photo</span>
+            <div className="flex items-center gap-3">
+              <PhotoPlaceholder className="size-16 rounded-lg" />
+              <p className="text-sm text-muted">
+                Snap one now or add it later. Skippable.
+              </p>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
+      {/* Thumb-zone navigation */}
+      <div className="mt-auto flex flex-col gap-2 pt-4">
+        {createBatch.error ? (
+          <p className="text-sm text-status-needs-action-text" role="alert">
+            Could not start the batch. Try again.
+          </p>
+        ) : null}
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="lg"
+            className="flex-1"
+            onClick={() => {
+              if (step === 1) {
+                router.back();
+              } else {
+                setStep((s) => s - 1);
+              }
+            }}
+          >
+            {step === 1 ? "Cancel" : "Back"}
+          </Button>
+
+          {step < 3 ? (
+            <Button
+              type="button"
+              size="lg"
+              className="flex-1"
+              disabled={step === 2 && !type}
+              onClick={() => setStep((s) => s + 1)}
+            >
+              Next
+            </Button>
+          ) : (
+            <Button
+              type="button"
+              size="lg"
+              className="flex-1"
+              disabled={!type || createBatch.isPending}
+              onClick={handleStart}
+            >
+              {createBatch.isPending ? "Starting…" : "Start batch"}
+            </Button>
+          )}
+        </div>
+      </div>
+    </main>
+  );
+}

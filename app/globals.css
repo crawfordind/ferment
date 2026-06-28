@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+:root {
+  --ink: #2b2b2b;
+  --secondary: #7a7468;
+  --muted: #9a9486;
+  --surface: #fdfcf9;
+  --subtle-fill: #f6f3ec;
+  --hairline: #ece7dd;
+  --border: #c9c4ba;
+  --ink-border: #2b2b2b;
+  --accent: #5f7a3f;
+  --status-on-track: #5f7a3f;
+  --status-watch: #c9a93a;
+  --status-needs-action: #b8743a;
+  --status-needs-action-text: #8a5224;
+  --caution-outline: #c08a4a;
+  --caution-text: #8a5a24;
+  --caution-selected-fill: #f3ead3;
+  --caution-selected-border: #c79a4a;
+  --caution-selected-text: #7a6320;
+  --radius-chip: 15px;
+  --radius-card: 13px;
+  --radius-button: 26px;
+  --tap-min: 44px;
+  --tap-primary: 56px;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-surface: var(--surface);
+  --color-subtle-fill: var(--subtle-fill);
+  --color-hairline: var(--hairline);
+  --color-border: var(--border);
+  --color-ink-border: var(--ink-border);
+  --color-accent: var(--accent);
+  --color-status-on-track: var(--status-on-track);
+  --color-status-watch: var(--status-watch);
+  --color-status-needs-action: var(--status-needs-action);
+  --color-status-needs-action-text: var(--status-needs-action-text);
+  --color-caution-outline: var(--caution-outline);
+  --color-caution-text: var(--caution-text);
+  --color-caution-selected-fill: var(--caution-selected-fill);
+  --color-caution-selected-border: var(--caution-selected-border);
+  --color-caution-selected-text: var(--caution-selected-text);
+  --font-sans: var(--font-sans);
+  --radius-chip: var(--radius-chip);
+  --radius-card: var(--radius-card);
+  --radius-button: var(--radius-button);
+  --spacing-tap-min: var(--tap-min);
+  --spacing-tap-primary: var(--tap-primary);
+}
+
+body {
+  font-family: var(--font-sans), system-ui, sans-serif;
+}

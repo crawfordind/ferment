@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  body { margin:0; }
+  @keyframes recpulse { 0%,100%{ transform:scale(1); opacity:1 } 50%{ transform:scale(.78); opacity:.45 } }
+</style>
+</helmet>
+
+<div style="display:contents; --accent: {{ accent }}">
+
+<!-- ============================ SECTION A : HOME ============================ -->
+<div data-drags-parent="0" style="position:absolute; left:80px; top:48px; width:760px; font-family:'Plus Jakarta Sans',sans-serif">
+  <div style="font-size:23px; font-weight:800; letter-spacing:-.01em; color:#2b2b2b">1 · Home — triage</div>
+  <div style="font-size:13px; color:#7a7468; margin-top:5px; max-width:560px; line-height:1.4">What needs attention today, the moment the app opens.</div>
+</div>
+
+<!-- A1 Home empty -->
+<div style="position:absolute; left:80px; top:130px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Home · empty state</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="padding:22px 20px 0"><div style="font:700 21px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Ferment Tracker</div></div>
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:420px; padding:0 30px; text-align:center; gap:16px">
+      <div style="width:108px; height:108px; border:2.5px dashed #c2bcae; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#b1aa99; font:600 18px 'Plus Jakarta Sans',sans-serif">empty<br>shelf</div>
+      <div style="font:700 19px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">No batches yet</div>
+      <div style="font-size:14px; color:#7a7468; line-height:1.35">Start tracking your first ferment.<br>Photos, taps, and voice — no typing needed.</div>
+      <div style="margin-top:6px; background:#2b2b2b; color:#fff; font:700 16px 'Plus Jakarta Sans',sans-serif; padding:14px 26px; border-radius:30px">＋ Start your first batch</div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; height:60px; border-top:2px solid #2b2b2b; background:#fdfcf9; display:flex; align-items:center; justify-content:space-between; padding:0 30px">
+      <div style="font:700 13px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Home</div>
+      <div style="position:relative"><div style="width:50px; height:50px; border-radius:50%; background:#2b2b2b; color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; transform:translateY(-14px); box-shadow:0 3px 8px rgba(0,0,0,.2)">＋</div></div>
+      <div style="font:400 13px 'Plus Jakarta Sans',sans-serif; color:#9a9486">Settings</div>
+    </div>
+  </div>
+</div>
+
+<!-- A2 Home needs-attention -->
+<div style="position:absolute; left:470px; top:130px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Home · needs attention + active</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="padding:14px 18px 6px; display:flex; align-items:baseline; justify-content:space-between"><div style="font:700 20px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Today</div><div style="font-size:12px; color:#9a9486; white-space:nowrap">5 active</div></div>
+    <!-- reminder card -->
+    <div style="margin:0 16px 12px; border:2px solid #2b2b2b; border-radius:12px; background:#f3efe6; padding:9px 12px; display:flex; align-items:center; gap:8px"><span style="display:inline-block; width:13px; height:13px; background:#b8743a; transform:rotate(45deg)"></span><span style="font-size:13px; color:#2b2b2b">2 batches need attention today</span></div>
+
+    <div style="padding:0 16px; font:600 13px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:7px">NEEDS ATTENTION</div>
+    <!-- needs-action card -->
+    <div style="margin:0 16px 9px; display:flex; border:2px solid #2b2b2b; border-radius:13px; overflow:hidden; background:#fff">
+      <div style="width:6px; background:var(--accent,#5f7a3f)"></div>
+      <div style="width:52px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 6px,#e0dace 6px,#e0dace 12px)"></div>
+      <div style="flex:1; padding:8px 9px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; line-height:1.1">Nettle FPJ</div><div style="font-size:11px; color:#9a9486">FPJ-03</div><div style="margin-top:5px; display:inline-block; background:#f0e4d6; border:1px solid #b8743a; color:#8a5224; font-size:11px; padding:2px 8px; border-radius:10px">Strain today</div></div>
+      <div style="padding:8px 9px 8px 0; text-align:right; display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between"><div style="font-size:11px; color:#7a7468; border:1px solid #c9c4ba; border-radius:9px; padding:1px 6px; white-space:nowrap">Day 7</div><div style="display:flex; align-items:center; gap:3px"><span style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid #b8743a"></span><span style="font-size:10px; color:#8a5224">Action</span></div></div>
+    </div>
+    <!-- watch card -->
+    <div style="margin:0 16px 9px; display:flex; border:2px solid #2b2b2b; border-radius:13px; overflow:hidden; background:#fff">
+      <div style="width:6px; background:var(--accent,#5f7a3f)"></div>
+      <div style="width:52px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 6px,#e0dace 6px,#e0dace 12px)"></div>
+      <div style="flex:1; padding:8px 9px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; line-height:1.1">Comfrey FFJ</div><div style="font-size:11px; color:#9a9486">FFJ-02</div><div style="margin-top:5px; display:inline-block; background:#f5efe0; border:1px solid #c9b27a; color:#7a6320; font-size:11px; padding:2px 8px; border-radius:10px">White film — worth a look</div></div>
+      <div style="padding:8px 9px 8px 0; text-align:right; display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between"><div style="font-size:11px; color:#7a7468; border:1px solid #c9c4ba; border-radius:9px; padding:1px 6px; white-space:nowrap">Day 21</div><div style="display:flex; align-items:center; gap:3px"><span style="display:inline-block; width:9px; height:9px; background:#c9a93a; transform:rotate(45deg)"></span><span style="font-size:10px; color:#7a6320">Watch</span></div></div>
+    </div>
+
+    <div style="padding:4px 16px 0; font:600 13px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:7px">ALL ACTIVE</div>
+    <div style="margin:0 16px 9px; display:flex; border:2px solid #2b2b2b; border-radius:13px; overflow:hidden; background:#fff">
+      <div style="width:6px; background:var(--accent,#5f7a3f)"></div>
+      <div style="width:52px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 6px,#e0dace 6px,#e0dace 12px)"></div>
+      <div style="flex:1; padding:8px 9px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; line-height:1.1">Fish ferment</div><div style="font-size:11px; color:#9a9486">FISH-01</div></div>
+      <div style="padding:8px 9px 8px 0; text-align:right; display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between"><div style="font-size:11px; color:#7a7468; border:1px solid #c9c4ba; border-radius:9px; padding:1px 6px; white-space:nowrap">Day 45</div><div style="display:flex; align-items:center; gap:3px"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--accent,#5f7a3f)"></span><span style="font-size:10px; color:#5f7a3f">On track</span></div></div>
+    </div>
+
+    <div style="position:absolute; bottom:0; left:0; right:0; height:60px; border-top:2px solid #2b2b2b; background:#fdfcf9; display:flex; align-items:center; justify-content:space-between; padding:0 30px">
+      <div style="font:700 13px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Home</div>
+      <div style="position:relative"><div style="width:50px; height:50px; border-radius:50%; background:#2b2b2b; color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; transform:translateY(-14px); box-shadow:0 3px 8px rgba(0,0,0,.2)">＋</div></div>
+      <div style="font:400 13px 'Plus Jakarta Sans',sans-serif; color:#9a9486">Settings</div>
+    </div>
+  </div>
+</div>
+
+<!-- A3 Home all quiet -->
+<div style="position:absolute; left:860px; top:130px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Home · all quiet</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="padding:14px 18px 6px; display:flex; align-items:baseline; justify-content:space-between"><div style="font:700 20px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Today</div><div style="font-size:12px; color:#9a9486; white-space:nowrap">3 active</div></div>
+    <div style="margin:0 16px 14px; border:2px solid #d8d2c6; border-radius:12px; background:#f6f3ec; padding:11px 12px; text-align:center; font-size:13px; color:#7a7468">All caught up for today 👍</div>
+    <div style="padding:0 16px; font:600 13px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:7px">ALL ACTIVE</div>
+    <div style="margin:0 16px 9px; display:flex; border:2px solid #2b2b2b; border-radius:13px; overflow:hidden; background:#fff">
+      <div style="width:6px; background:var(--accent,#5f7a3f)"></div>
+      <div style="width:52px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 6px,#e0dace 6px,#e0dace 12px)"></div>
+      <div style="flex:1; padding:8px 9px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; line-height:1.1">Fish ferment</div><div style="font-size:11px; color:#9a9486">FISH-01</div></div>
+      <div style="padding:8px 9px 8px 0; text-align:right; display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between"><div style="font-size:11px; color:#7a7468; border:1px solid #c9c4ba; border-radius:9px; padding:1px 6px; white-space:nowrap">Day 45</div><div style="display:flex; align-items:center; gap:3px"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--accent,#5f7a3f)"></span><span style="font-size:10px; color:#5f7a3f">On track</span></div></div>
+    </div>
+    <div style="margin:0 16px 9px; display:flex; border:2px solid #2b2b2b; border-radius:13px; overflow:hidden; background:#fff">
+      <div style="width:6px; background:var(--accent,#5f7a3f)"></div>
+      <div style="width:52px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 6px,#e0dace 6px,#e0dace 12px)"></div>
+      <div style="flex:1; padding:8px 9px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; line-height:1.1">LABS culture</div><div style="font-size:11px; color:#9a9486">LABS-04</div><div style="margin-top:5px; display:inline-block; background:#eef0e8; border:1px solid #b3c08f; color:#5f7a3f; font-size:11px; padding:2px 8px; border-radius:10px">Bubbling lots</div></div>
+      <div style="padding:8px 9px 8px 0; text-align:right; display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between"><div style="font-size:11px; color:#7a7468; border:1px solid #c9c4ba; border-radius:9px; padding:1px 6px; white-space:nowrap">Day 3</div><div style="display:flex; align-items:center; gap:3px"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--accent,#5f7a3f)"></span><span style="font-size:10px; color:#5f7a3f">On track</span></div></div>
+    </div>
+    <div style="margin:0 16px 9px; display:flex; border:2px solid #2b2b2b; border-radius:13px; overflow:hidden; background:#fff">
+      <div style="width:6px; background:var(--accent,#5f7a3f)"></div>
+      <div style="width:52px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 6px,#e0dace 6px,#e0dace 12px)"></div>
+      <div style="flex:1; padding:8px 9px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; line-height:1.1">Banana FPJ</div><div style="font-size:11px; color:#9a9486">FPJ-05</div></div>
+      <div style="padding:8px 9px 8px 0; text-align:right; display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between"><div style="font-size:11px; color:#7a7468; border:1px solid #c9c4ba; border-radius:9px; padding:1px 6px; white-space:nowrap">Day 2</div><div style="display:flex; align-items:center; gap:3px"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--accent,#5f7a3f)"></span><span style="font-size:10px; color:#5f7a3f">On track</span></div></div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; height:60px; border-top:2px solid #2b2b2b; background:#fdfcf9; display:flex; align-items:center; justify-content:space-between; padding:0 30px">
+      <div style="font:700 13px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Home</div>
+      <div style="position:relative"><div style="width:50px; height:50px; border-radius:50%; background:#2b2b2b; color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; transform:translateY(-14px); box-shadow:0 3px 8px rgba(0,0,0,.2)">＋</div></div>
+      <div style="font:400 13px 'Plus Jakarta Sans',sans-serif; color:#9a9486">Settings</div>
+    </div>
+  </div>
+</div>
+
+<!-- A4 Home loading -->
+<div style="position:absolute; left:1250px; top:130px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Home · loading (skeleton)</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="padding:14px 18px 10px"><div style="width:90px; height:20px; background:#e7e2d8; border-radius:6px"></div></div>
+    <div style="padding:0 16px; display:flex; flex-direction:column; gap:12px">
+      <div style="height:74px; border:2px solid #e0dace; border-radius:13px; display:flex; overflow:hidden; background:#fff"><div style="width:58px; background:#ece7dd"></div><div style="flex:1; padding:12px 10px; display:flex; flex-direction:column; gap:8px"><div style="width:120px; height:14px; background:#e7e2d8; border-radius:5px"></div><div style="width:60px; height:11px; background:#ece7dd; border-radius:5px"></div></div></div>
+      <div style="height:74px; border:2px solid #e0dace; border-radius:13px; display:flex; overflow:hidden; background:#fff"><div style="width:58px; background:#ece7dd"></div><div style="flex:1; padding:12px 10px; display:flex; flex-direction:column; gap:8px"><div style="width:140px; height:14px; background:#e7e2d8; border-radius:5px"></div><div style="width:50px; height:11px; background:#ece7dd; border-radius:5px"></div></div></div>
+      <div style="height:74px; border:2px solid #e0dace; border-radius:13px; display:flex; overflow:hidden; background:#fff"><div style="width:58px; background:#ece7dd"></div><div style="flex:1; padding:12px 10px; display:flex; flex-direction:column; gap:8px"><div style="width:110px; height:14px; background:#e7e2d8; border-radius:5px"></div><div style="width:70px; height:11px; background:#ece7dd; border-radius:5px"></div></div></div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; height:60px; border-top:2px solid #2b2b2b; background:#fdfcf9; display:flex; align-items:center; justify-content:space-between; padding:0 30px">
+      <div style="font:700 13px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Home</div>
+      <div style="position:relative"><div style="width:50px; height:50px; border-radius:50%; background:#2b2b2b; color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; transform:translateY(-14px)">＋</div></div>
+      <div style="font:400 13px 'Plus Jakarta Sans',sans-serif; color:#9a9486">Settings</div>
+    </div>
+  </div>
+</div>
+
+<!-- reminder post-it -->
+<sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute; left:1250px; top:560px; width:230px; background:#fef4a8; padding:12px 13px; font:400 14px/1.45 'Plus Jakarta Sans',sans-serif; color:#5a5320; box-shadow:0 2px 7px rgba(0,0,0,.12); transform:rotate(-1.5deg)">
+  <b style="font-family:'Plus Jakarta Sans',sans-serif; font-size:16px">Open Q · reminders</b><br>Showing reminders as an in-app card at the top of Home (your call). OS push can layer on later without redesign.
+</div>
+</sc-if>
+
+<!-- ============================ SECTION B : NEW BATCH ============================ -->
+<div data-drags-parent="0" style="position:absolute; left:80px; top:818px; width:760px; font-family:'Plus Jakarta Sans',sans-serif">
+  <div style="font-size:23px; font-weight:800; letter-spacing:-.01em; color:#2b2b2b">2 · New Batch — 3-tap wizard</div>
+  <div style="font-size:13px; color:#7a7468; margin-top:5px; max-width:560px; line-height:1.4">The only place real choices happen — auto-fill the rest. Under a minute.</div>
+</div>
+
+<!-- B1 Step 1 category -->
+<div style="position:absolute; left:80px; top:900px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Step 1 · category</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; gap:10px; padding:8px 16px 4px"><div style="font-size:22px; color:#2b2b2b">←</div><div style="font:700 18px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">New batch</div></div>
+    <div style="display:flex; gap:6px; padding:6px 16px 14px"><div style="flex:1; height:5px; border-radius:3px; background:#2b2b2b"></div><div style="flex:1; height:5px; border-radius:3px; background:#e0dace"></div><div style="flex:1; height:5px; border-radius:3px; background:#e0dace"></div></div>
+    <div style="padding:0 18px"><div style="font:700 20px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Pick a category</div><div style="font-size:13px; color:#9a9486; margin-bottom:14px">Step 1 of 3</div></div>
+    <div style="padding:0 16px; display:flex; flex-direction:column; gap:11px">
+      <div style="border:2.5px solid #2b2b2b; border-radius:14px; background:#fff; padding:16px 14px; display:flex; align-items:center; justify-content:space-between"><div><div style="font:700 17px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Fertilizers</div><div style="font-size:12px; color:#7a7468">FPJ · FFJ · LABS · fish & plant ferments</div></div><span style="display:inline-block; width:18px; height:18px; border:2.5px solid var(--accent,#5f7a3f); border-radius:50%; position:relative"><span style="position:absolute; inset:3px; background:var(--accent,#5f7a3f); border-radius:50%"></span></span></div>
+      <div style="border:2px dashed #cdc7ba; border-radius:14px; background:#f6f3ec; padding:16px 14px; display:flex; align-items:center; justify-content:space-between; opacity:.75"><div style="font:700 17px 'Plus Jakarta Sans',sans-serif; color:#9a9486">Food</div><div style="font-size:11px; color:#9a9486; border:1px solid #cdc7ba; border-radius:10px; padding:2px 9px">Coming soon</div></div>
+      <div style="border:2px dashed #cdc7ba; border-radius:14px; background:#f6f3ec; padding:16px 14px; display:flex; align-items:center; justify-content:space-between; opacity:.75"><div style="font:700 17px 'Plus Jakarta Sans',sans-serif; color:#9a9486">Beverage</div><div style="font-size:11px; color:#9a9486; border:1px solid #cdc7ba; border-radius:10px; padding:2px 9px">Coming soon</div></div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:14px 16px 18px; background:#fdfcf9"><div style="background:#2b2b2b; color:#fff; text-align:center; font:700 16px 'Plus Jakarta Sans',sans-serif; padding:14px; border-radius:28px">Next</div></div>
+  </div>
+</div>
+
+<!-- B2 Step 2 type -->
+<div style="position:absolute; left:470px; top:900px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Step 2 · type</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; gap:10px; padding:8px 16px 4px"><div style="font-size:22px; color:#2b2b2b">←</div><div style="font:700 18px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">New batch</div></div>
+    <div style="display:flex; gap:6px; padding:6px 16px 14px"><div style="flex:1; height:5px; border-radius:3px; background:#2b2b2b"></div><div style="flex:1; height:5px; border-radius:3px; background:#2b2b2b"></div><div style="flex:1; height:5px; border-radius:3px; background:#e0dace"></div></div>
+    <div style="padding:0 18px"><div style="font:700 20px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Which type?</div><div style="font-size:13px; color:#9a9486; margin-bottom:12px">Fertilizers · loads the right stages & chips</div></div>
+    <div style="padding:0 16px; display:flex; flex-direction:column; gap:9px">
+      <div style="border:2.5px solid #2b2b2b; border-radius:13px; background:#fff; padding:13px 14px; display:flex; justify-content:space-between; align-items:center"><div><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">FPJ</div><div style="font-size:11px; color:#7a7468">Fermented plant juice</div></div><span style="display:inline-block; width:16px; height:16px; border:2.5px solid var(--accent,#5f7a3f); border-radius:50%; position:relative"><span style="position:absolute; inset:3px; background:var(--accent,#5f7a3f); border-radius:50%"></span></span></div>
+      <div style="border:2px solid #d8d2c6; border-radius:13px; background:#fff; padding:13px 14px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">FFJ</div><div style="font-size:11px; color:#7a7468">Fermented fruit juice</div></div>
+      <div style="border:2px solid #d8d2c6; border-radius:13px; background:#fff; padding:13px 14px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">LABS</div><div style="font-size:11px; color:#7a7468">Lactic acid bacteria serum</div></div>
+      <div style="border:2px solid #d8d2c6; border-radius:13px; background:#fff; padding:13px 14px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Fish ferment</div></div>
+      <div style="border:2px dashed #cdc7ba; border-radius:13px; background:#f6f3ec; padding:13px 14px; display:flex; justify-content:space-between; align-items:center"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#7a7468">Custom</div><div style="font-size:11px; color:#9a9486">blank template</div></div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:14px 16px 18px; background:#fdfcf9"><div style="background:#2b2b2b; color:#fff; text-align:center; font:700 16px 'Plus Jakarta Sans',sans-serif; padding:14px; border-radius:28px">Next</div></div>
+  </div>
+</div>
+
+<!-- B3 Step 3 name & size -->
+<div style="position:absolute; left:860px; top:900px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Step 3 · name, code & size</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; gap:10px; padding:8px 16px 4px"><div style="font-size:22px; color:#2b2b2b">←</div><div style="font:700 18px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">New batch</div></div>
+    <div style="display:flex; gap:6px; padding:6px 16px 14px"><div style="flex:1; height:5px; border-radius:3px; background:#2b2b2b"></div><div style="flex:1; height:5px; border-radius:3px; background:#2b2b2b"></div><div style="flex:1; height:5px; border-radius:3px; background:#2b2b2b"></div></div>
+    <div style="padding:0 18px"><div style="font:700 20px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Name it</div><div style="font-size:13px; color:#9a9486; margin-bottom:14px">We filled these in — tweak if you like</div></div>
+    <div style="padding:0 18px; display:flex; flex-direction:column; gap:14px">
+      <div><div style="font-size:12px; color:#7a7468; margin-bottom:5px">Name</div><div style="border:2px solid #2b2b2b; border-radius:11px; background:#fff; padding:12px 13px; font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; display:flex; justify-content:space-between; align-items:center">Nettle FPJ <span style="font-size:13px; color:#9a9486">✎</span></div></div>
+      <div><div style="font-size:12px; color:#7a7468; margin-bottom:5px">Short code <span style="color:#b3aa96">· auto</span></div><div style="border:2px solid #d8d2c6; border-radius:11px; background:#f6f3ec; padding:12px 13px; font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; display:flex; justify-content:space-between; align-items:center">FPJ-03 <span style="font-size:13px; color:#9a9486">✎</span></div></div>
+      <div><div style="font-size:12px; color:#7a7468; margin-bottom:5px">Batch size</div><div style="display:flex; gap:9px"><div style="flex:1; border:2px solid #2b2b2b; border-radius:11px; background:#fff; padding:12px 13px; font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">2.0</div><div style="border:2px solid #2b2b2b; border-radius:11px; background:#fff; padding:12px 16px; font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; display:flex; align-items:center; gap:5px">kg <span style="font-size:11px; color:#9a9486">▾</span></div></div></div>
+      <div style="border:2px dashed #cdc7ba; border-radius:11px; background:#f6f3ec; padding:12px 13px; display:flex; align-items:center; gap:10px; color:#7a7468; font-size:14px"><span style="font-size:18px">⌗</span> Snap a first photo <span style="margin-left:auto; font-size:12px; color:#9a9486">optional</span></div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:14px 16px 18px; background:#fdfcf9"><div style="background:var(--accent,#5f7a3f); color:#fff; text-align:center; font:700 16px 'Plus Jakarta Sans',sans-serif; padding:14px; border-radius:28px">Start batch</div></div>
+  </div>
+</div>
+
+<sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute; left:1210px; top:1080px; width:235px; background:#fef4a8; padding:12px 13px; font:400 14px/1.45 'Plus Jakarta Sans',sans-serif; color:#5a5320; box-shadow:0 2px 7px rgba(0,0,0,.12); transform:rotate(1.5deg)">
+  <b style="font-family:'Plus Jakarta Sans',sans-serif; font-size:16px">Auto-fill is the point</b><br>Name + code prefilled from type. The only required tap is choosing the type. Validation stays inline, never a blocking modal.
+</div>
+</sc-if>
+
+<!-- ============================ SECTION C : BATCH DETAIL ============================ -->
+<div data-drags-parent="0" style="position:absolute; left:80px; top:1598px; width:900px; font-family:'Plus Jakarta Sans',sans-serif">
+  <div style="font-size:23px; font-weight:800; letter-spacing:-.01em; color:#2b2b2b">3 · Batch Detail — the full story</div>
+  <div style="font-size:13px; color:#7a7468; margin-top:5px; max-width:560px; line-height:1.4">Header + timeline + one fixed Log button. Variants A &amp; B explore the header question.</div>
+</div>
+
+<!-- C1 fresh -->
+<div style="position:absolute; left:80px; top:1680px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Detail · fresh (no logs)</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:6px 16px"><div style="font-size:22px; color:#2b2b2b">←</div><div style="font-size:20px; color:#2b2b2b">⋯</div></div>
+    <div style="margin:2px 16px 0; border:2px solid #2b2b2b; border-radius:15px; overflow:hidden; background:#fff">
+      <div style="height:120px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 7px,#e0dace 7px,#e0dace 14px); display:flex; align-items:center; justify-content:center; color:#a39c8c; font:600 18px 'Plus Jakarta Sans',sans-serif">no photo yet</div>
+      <div style="padding:11px 13px"><div style="display:flex; justify-content:space-between; align-items:baseline"><div style="font:700 20px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Banana FPJ</div><div style="font-size:12px; color:#9a9486">FPJ-05</div></div>
+        <div style="display:flex; gap:7px; margin-top:8px; align-items:center"><div style="font-size:11px; color:#7a7468; border:1px solid #c9c4ba; border-radius:9px; padding:2px 8px">Day 2</div><div style="display:flex; align-items:center; gap:4px; border:1px solid #b3c08f; background:#eef0e8; border-radius:9px; padding:2px 8px"><span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--accent,#5f7a3f)"></span><span style="font-size:11px; color:#5f7a3f">On track</span></div></div>
+      </div>
+    </div>
+    <div style="margin:11px 16px; border-left:3px solid var(--accent,#5f7a3f); background:#f3f2ea; border-radius:0 10px 10px 0; padding:9px 11px; font-size:12.5px; color:#54503f; line-height:1.4"><b>Day 2:</b> sugar should be pulling juice out. Liquid forming at the bottom is normal.</div>
+    <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:150px; padding:0 28px; text-align:center; gap:8px; color:#9a9486"><div style="font-size:30px">⌗</div><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">No logs yet</div><div style="font-size:13px">Tap Log to add your first observation.</div></div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:13px 16px 18px; background:linear-gradient(transparent,#fdfcf9 30%)"><div style="background:#2b2b2b; color:#fff; text-align:center; font:700 17px 'Plus Jakarta Sans',sans-serif; padding:15px; border-radius:30px">＋ Log</div></div>
+  </div>
+</div>
+
+<!-- C2 active photo-dominant (Variant B) -->
+<div style="position:absolute; left:470px; top:1680px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Detail · active — A) photo-dominant</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 16px"><div style="font-size:22px; color:#2b2b2b">←</div><div style="font-size:20px; color:#2b2b2b">⋯</div></div>
+    <div style="position:relative; height:158px; margin:0 0 0; background:repeating-linear-gradient(45deg,#e4dfd4,#e4dfd4 8px,#dcd6c9 8px,#dcd6c9 16px); display:flex; align-items:flex-end">
+      <div style="position:absolute; top:8px; right:12px; background:#fff; border:1.5px solid #2b2b2b; border-radius:9px; padding:2px 8px; font-size:11px; color:#2b2b2b">Day 7</div>
+      <div style="width:100%; padding:10px 14px; background:linear-gradient(transparent,rgba(0,0,0,.35)); color:#fff"><div style="display:flex; justify-content:space-between; align-items:baseline"><div style="font:700 21px 'Plus Jakarta Sans',sans-serif; text-shadow:0 1px 3px rgba(0,0,0,.5)">Nettle FPJ</div><div style="font-size:12px; opacity:.92">FPJ-03</div></div></div>
+    </div>
+    <div style="display:flex; gap:7px; padding:9px 14px 6px; align-items:center"><div style="display:flex; align-items:center; gap:4px; border:1px solid #b8743a; background:#f0e4d6; border-radius:9px; padding:3px 9px"><span style="width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid #b8743a"></span><span style="font-size:11px; color:#8a5224">Needs action</span></div></div>
+    <div style="margin:2px 14px 0; border-left:3px solid var(--accent,#5f7a3f); background:#f3f2ea; border-radius:0 10px 10px 0; padding:8px 11px; font-size:12px; color:#54503f; line-height:1.35"><b>Day 7:</b> should smell sweet &amp; sour, bubbling slowing. Strain soon. Flag if it smells rotten.</div>
+    <div style="padding:11px 14px 4px; font:600 12px 'Plus Jakarta Sans',sans-serif; color:#8a857a">TIMELINE</div>
+    <div style="padding:0 14px; display:flex; flex-direction:column; gap:9px">
+      <div style="display:flex; gap:9px"><div style="width:44px; height:44px; border-radius:8px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 5px,#e0dace 5px,#e0dace 10px); flex-shrink:0"></div><div><div style="font-size:11px; color:#9a9486">Day 7 · this morning</div><div style="display:flex; gap:4px; flex-wrap:wrap; margin:3px 0"><span style="font-size:10px; border:1px solid #b8a; border-color:#cbb; background:#f4eef0; border-radius:8px; padding:1px 7px; color:#8a5a6a">Sour</span><span style="font-size:10px; border:1px solid #d8d2c6; border-radius:8px; padding:1px 7px; color:#5a5547">Some bubbles</span><span style="font-size:10px; border:1px solid #c9b27a; background:#f5efe0; border-radius:8px; padding:1px 7px; color:#7a6320">White film</span></div><div style="font-size:11px; color:#6a6557">"film on top, smells tangy"</div></div></div>
+      <div style="display:flex; gap:9px"><div style="width:44px; height:44px; border-radius:8px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 5px,#e0dace 5px,#e0dace 10px); flex-shrink:0"></div><div><div style="font-size:11px; color:#9a9486">Day 4</div><div style="display:flex; gap:4px; flex-wrap:wrap; margin:3px 0"><span style="font-size:10px; border:1px solid #d8d2c6; border-radius:8px; padding:1px 7px; color:#5a5547">Sweet</span><span style="font-size:10px; border:1px solid #d8d2c6; border-radius:8px; padding:1px 7px; color:#5a5547">Bubbling lots</span></div></div></div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:12px 16px 18px; background:linear-gradient(transparent,#fdfcf9 35%)"><div style="background:#2b2b2b; color:#fff; text-align:center; font:700 17px 'Plus Jakarta Sans',sans-serif; padding:15px; border-radius:30px">＋ Log</div></div>
+  </div>
+</div>
+
+<!-- C3 active banner-dominant (Variant C) -->
+<div style="position:absolute; left:860px; top:1680px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Detail · active — B) banner-dominant</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 16px"><div style="font-size:22px; color:#2b2b2b">←</div><div style="font-size:20px; color:#2b2b2b">⋯</div></div>
+    <div style="display:flex; align-items:center; gap:11px; padding:4px 16px 10px">
+      <div style="width:56px; height:56px; border-radius:11px; border:2px solid #2b2b2b; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 6px,#e0dace 6px,#e0dace 12px); flex-shrink:0"></div>
+      <div style="flex:1"><div style="font:700 19px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; line-height:1.05">Nettle FPJ</div><div style="display:flex; gap:6px; align-items:center; margin-top:3px"><span style="font-size:11px; color:#9a9486">FPJ-03</span><span style="font-size:11px; color:#7a7468; border:1px solid #c9c4ba; border-radius:8px; padding:0 6px; white-space:nowrap">Day 7</span></div></div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:2px"><span style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:11px solid #b8743a"></span><span style="font-size:9px; color:#8a5224">Action</span></div>
+    </div>
+    <!-- big banner -->
+    <div style="margin:0 16px; border:2px solid var(--accent,#5f7a3f); background:#eef1e7; border-radius:14px; padding:14px 14px">
+      <div style="font:600 13px 'Plus Jakarta Sans',sans-serif; color:#5f7a3f; letter-spacing:.5px">WHERE IT SHOULD BE</div>
+      <div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; margin:3px 0 5px">Day 7 — time to strain</div>
+      <div style="font-size:13px; color:#4f4b3c; line-height:1.45">Should smell sweet and sour with bubbling slowing down. Strain the solids off soon. Worth a look if it smells rotten or turns ammonia-sharp.</div>
+    </div>
+    <div style="padding:13px 16px 4px; font:600 12px 'Plus Jakarta Sans',sans-serif; color:#8a857a">RECENT</div>
+    <div style="padding:0 16px; display:flex; flex-direction:column; gap:9px">
+      <div style="display:flex; gap:9px"><div style="width:40px; height:40px; border-radius:8px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 5px,#e0dace 5px,#e0dace 10px); flex-shrink:0"></div><div><div style="font-size:11px; color:#9a9486">Day 7 · this morning</div><div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:3px"><span style="font-size:10px; border:1px solid #cbb; background:#f4eef0; border-radius:8px; padding:1px 7px; color:#8a5a6a">Sour</span><span style="font-size:10px; border:1px solid #c9b27a; background:#f5efe0; border-radius:8px; padding:1px 7px; color:#7a6320">White film</span></div></div></div>
+      <div style="display:flex; gap:9px"><div style="width:40px; height:40px; border-radius:8px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 5px,#e0dace 5px,#e0dace 10px); flex-shrink:0"></div><div><div style="font-size:11px; color:#9a9486">Day 4</div><div style="display:flex; gap:4px; flex-wrap:wrap; margin-top:3px"><span style="font-size:10px; border:1px solid #d8d2c6; border-radius:8px; padding:1px 7px; color:#5a5547">Sweet</span></div></div></div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:12px 16px 18px; background:linear-gradient(transparent,#fdfcf9 35%)"><div style="background:#2b2b2b; color:#fff; text-align:center; font:700 17px 'Plus Jakarta Sans',sans-serif; padding:15px; border-radius:30px">＋ Log</div></div>
+  </div>
+</div>
+
+<!-- C4 finished -->
+<div style="position:absolute; left:1250px; top:1680px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Detail · finished / archived</div>
+  <div style="position:relative; width:300px; height:632px; background:#f1efe9; border:2.5px solid #9a958a; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 16px"><div style="font-size:22px; color:#6a6557">←</div><div style="font-size:20px; color:#6a6557">⋯</div></div>
+    <div style="margin:2px 16px 0; border:2px solid #b6b1a5; border-radius:15px; overflow:hidden; background:#fbfaf6; opacity:.96">
+      <div style="position:relative; height:118px; background:repeating-linear-gradient(45deg,#e2ddd2,#e2ddd2 7px,#d8d2c6 7px,#d8d2c6 14px); filter:grayscale(1)"><div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center"><span style="background:#6a6557; color:#fff; font:600 13px 'Plus Jakarta Sans',sans-serif; padding:4px 12px; border-radius:20px">Finished · Day 9</span></div></div>
+      <div style="padding:11px 13px"><div style="display:flex; justify-content:space-between; align-items:baseline"><div style="font:700 19px 'Plus Jakarta Sans',sans-serif; color:#54503f">Garlic FPJ</div><div style="font-size:12px; color:#9a9486">FPJ-02</div></div><div style="font-size:11px; color:#8a857a; margin-top:4px">Strained Apr 14 · 1.8 kg → ~900 ml</div></div>
+    </div>
+    <div style="padding:11px 16px 4px; display:flex; gap:6px; align-items:center"><span style="font:600 11px 'Plus Jakarta Sans',sans-serif; color:#9a958a; letter-spacing:.5px">PHOTO TIMELINE</span><span style="font-size:10px; color:#b6b1a5">· archived, read-only</span></div>
+    <div style="padding:0 16px; display:flex; gap:6px; flex-wrap:wrap">
+      <div style="width:52px; height:52px; border-radius:8px; background:repeating-linear-gradient(45deg,#e2ddd2,#e2ddd2 5px,#d8d2c6 5px,#d8d2c6 10px); filter:grayscale(1)"></div>
+      <div style="width:52px; height:52px; border-radius:8px; background:repeating-linear-gradient(45deg,#e2ddd2,#e2ddd2 5px,#d8d2c6 5px,#d8d2c6 10px); filter:grayscale(1)"></div>
+      <div style="width:52px; height:52px; border-radius:8px; background:repeating-linear-gradient(45deg,#e2ddd2,#e2ddd2 5px,#d8d2c6 5px,#d8d2c6 10px); filter:grayscale(1)"></div>
+      <div style="width:52px; height:52px; border-radius:8px; background:repeating-linear-gradient(45deg,#e2ddd2,#e2ddd2 5px,#d8d2c6 5px,#d8d2c6 10px); filter:grayscale(1)"></div>
+    </div>
+    <div style="padding:14px 16px 4px; font:600 11px 'Plus Jakarta Sans',sans-serif; color:#9a958a; letter-spacing:.5px">WHAT'S NEXT?</div>
+    <div style="padding:0 16px; display:flex; flex-direction:column; gap:8px">
+      <div style="display:flex; align-items:center; gap:11px; border:2px solid #2b2b2b; border-radius:13px; background:#fff; padding:10px 12px">
+        <div style="width:34px; height:34px; border-radius:9px; background:#f0eee6; border:1.5px solid #2b2b2b; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0">⇄</div>
+        <div style="flex:1"><div style="font:700 14px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Move to another container</div><div style="font-size:11px; color:#7a7468">Decant or re-jar — keeps this record</div></div>
+        <span style="font-size:16px; color:#9a9486">›</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:11px; border:2px solid var(--accent,#5f7a3f); border-radius:13px; background:#eef1e7; padding:10px 12px">
+        <div style="width:34px; height:34px; border-radius:9px; background:#fff; border:1.5px solid var(--accent,#5f7a3f); display:flex; align-items:center; justify-content:center; font-size:18px; color:#5f7a3f; flex-shrink:0">＋</div>
+        <div style="flex:1"><div style="font:700 14px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Start a secondary ferment</div><div style="font-size:11px; color:#5f7a3f">New batch, linked back to this one</div></div>
+        <span style="font-size:16px; color:#5f7a3f">›</span>
+      </div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:11px 16px 16px; background:#f1efe9; display:flex; gap:18px; justify-content:center"><span style="font-size:12.5px; color:#6a6557; text-decoration:underline">Reopen batch</span><span style="font-size:12.5px; color:#6a6557; text-decoration:underline">Export</span></div>
+  </div>
+</div>
+
+<sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute; left:560px; top:2335px; width:560px; background:#fef4a8; padding:13px 15px; font:400 14px/1.5 'Plus Jakarta Sans',sans-serif; color:#5a5320; box-shadow:0 2px 7px rgba(0,0,0,.12); transform:rotate(-0.6deg)">
+  <b style="font-family:'Plus Jakarta Sans',sans-serif; font-size:17px">Open Q · header hierarchy — pick one</b><br>
+  <b>A (photo-dominant):</b> the jar is the hero, banner is a one-liner. Best for "match the container / read drift at a glance."&nbsp;&nbsp;<b>B (banner-dominant):</b> the day's expectation leads. Best for "what do I do today." My lean: <b>A</b> for daily scanning, since the photo also carries identity — but B is stronger early in a batch when guidance matters most. Could even switch automatically by status.
+</div>
+</sc-if>
+
+<sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute; left:1250px; top:2335px; width:300px; background:#fef4a8; padding:12px 13px; font:400 13px/1.45 'Plus Jakarta Sans',sans-serif; color:#5a5320; box-shadow:0 2px 7px rgba(0,0,0,.12); transform:rotate(1deg)">
+  <b style="font-size:14px">Finishing a batch → next steps</b><br>"Move container" keeps the same record (re-jar / decant). "Start secondary" opens New Batch pre-linked to this one as its parent — that's batch lineage, pulled forward from the PRD's future list. Worth confirming you want lineage in v1.
+</div>
+</sc-if>
+
+<!-- ============================ SECTION D : QUICK LOG ============================ -->
+<div data-drags-parent="0" style="position:absolute; left:80px; top:2440px; width:1000px; font-family:'Plus Jakarta Sans',sans-serif">
+  <div style="font-size:23px; font-weight:800; letter-spacing:-.01em; color:#2b2b2b">4 · Quick Log — the 20-second screen</div>
+  <div style="font-size:13px; color:#7a7468; margin-top:5px; max-width:560px; line-height:1.4">Photo · tap-chips · voice · note. Nothing required. Variant B explores a chips-first layout.</div>
+</div>
+
+<!-- D1 empty -->
+<div style="position:absolute; left:80px; top:2520px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Quick Log · empty (just opened)</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 16px 8px"><div style="font-size:20px; color:#2b2b2b">✕</div><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Log · Nettle FPJ</div><div style="font-size:11px; color:#9a9486">Day 7</div></div>
+    <div style="margin:0 16px 12px; height:118px; border:2.5px dashed #2b2b2b; border-radius:14px; background:#f6f3ec; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:5px"><div style="font-size:30px; color:#2b2b2b">⌗</div><div style="font:700 15px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Tap to add photo</div></div>
+    <div style="padding:0 16px"><div style="font:600 12px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:7px">SMELL</div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:11px">
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Sweet</span>
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Sour</span>
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Boozy</span>
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Earthy</span>
+        <span style="font-size:13px; border:1.5px solid #c08a4a; color:#8a5a24; border-radius:15px; padding:6px 12px; background:#fff">Ammonia ⚠</span>
+      </div>
+      <div style="font:600 12px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:7px">ACTIVITY</div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:11px">
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Bubbling lots</span>
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Some bubbles</span>
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Calm</span>
+      </div>
+      <div style="font-size:12px; color:#7a7468; text-decoration:underline; text-align:center">＋ More chips (surface…)</div>
+    </div>
+    <div style="position:absolute; bottom:74px; left:16px; right:16px; display:flex; gap:9px">
+      <div style="flex:1; border:2px solid #2b2b2b; border-radius:13px; padding:11px; text-align:center; font:700 14px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; background:#fff">🎤 Hold to talk</div>
+      <div style="border:2px solid #d8d2c6; border-radius:13px; padding:11px 14px; font-size:13px; color:#9a9486; background:#fff">✎ Note</div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:12px 16px 16px; background:#fdfcf9"><div style="background:#cfcabb; color:#fff; text-align:center; font:700 16px 'Plus Jakarta Sans',sans-serif; padding:14px; border-radius:28px">Save</div></div>
+  </div>
+</div>
+
+<!-- D2 filled -->
+<div style="position:absolute; left:470px; top:2520px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Quick Log · photo + chips selected</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 16px 8px"><div style="font-size:20px; color:#2b2b2b">✕</div><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Log · Nettle FPJ</div><div style="font-size:11px; color:#9a9486">Day 7</div></div>
+    <div style="display:flex; gap:8px; padding:0 16px 12px">
+      <div style="width:88px; height:88px; border-radius:12px; background:repeating-linear-gradient(45deg,#e4dfd4,#e4dfd4 6px,#dcd6c9 6px,#dcd6c9 12px); border:2px solid #2b2b2b; position:relative"><div style="position:absolute; top:-6px; right:-6px; width:20px; height:20px; background:#2b2b2b; color:#fff; border-radius:50%; font-size:11px; display:flex; align-items:center; justify-content:center">✓</div></div>
+      <div style="width:88px; height:88px; border-radius:12px; border:2px dashed #b6b1a5; background:#f6f3ec; display:flex; align-items:center; justify-content:center; font-size:24px; color:#9a9486">＋</div>
+    </div>
+    <div style="padding:0 16px"><div style="font:600 12px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:7px">SMELL</div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:11px">
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#2b2b2b; color:#fff">Sweet ✓</span>
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#2b2b2b; color:#fff">Sour ✓</span>
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Boozy</span>
+        <span style="font-size:13px; border:1.5px solid #c08a4a; color:#8a5a24; border-radius:15px; padding:6px 12px; background:#fff">Ammonia ⚠</span>
+      </div>
+      <div style="font:600 12px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:7px">ACTIVITY</div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; margin-bottom:11px">
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Bubbling lots</span>
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#2b2b2b; color:#fff">Some bubbles ✓</span>
+      </div>
+      <div style="font:600 12px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:7px">SURFACE</div>
+      <div style="display:flex; gap:6px; flex-wrap:wrap">
+        <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Clean</span>
+        <span style="font-size:13px; border:1.5px solid #c79a4a; border-radius:15px; padding:6px 12px; background:#f3ead3; color:#7a6320">White film ✓</span>
+        <span style="font-size:13px; border:1.5px solid #c08a4a; color:#8a5a24; border-radius:15px; padding:6px 12px; background:#fff">Fuzzy mold ⚠</span>
+      </div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:12px 16px 16px; background:linear-gradient(transparent,#fdfcf9 30%)"><div style="background:var(--accent,#5f7a3f); color:#fff; text-align:center; font:700 16px 'Plus Jakarta Sans',sans-serif; padding:14px; border-radius:28px">Save observation</div></div>
+  </div>
+</div>
+
+<!-- D3 recording -->
+<div style="position:absolute; left:860px; top:2520px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Quick Log · voice recording</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 16px 8px"><div style="font-size:20px; color:#b6b1a5">✕</div><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#9a9486">Log · Nettle FPJ</div><div style="font-size:11px; color:#c2bcae">Day 7</div></div>
+    <div style="opacity:.35; padding:0 16px; pointer-events:none"><div style="height:74px; border:2px dashed #b6b1a5; border-radius:13px; background:#f6f3ec; margin-bottom:10px"></div><div style="display:flex; gap:6px; flex-wrap:wrap"><span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 11px">Sweet</span><span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 11px">Sour</span><span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 11px">Some bubbles</span></div></div>
+    <div style="position:absolute; left:14px; right:14px; bottom:18px; top:230px; background:#2b2b2b; border-radius:20px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; color:#fff; padding:20px">
+      <div style="display:flex; align-items:center; gap:8px"><span style="width:11px; height:11px; border-radius:50%; background:#e0563f; display:inline-block; animation:recpulse 1s infinite"></span><span style="font-size:13px; color:#e7ddd0">Recording</span></div>
+      <div style="font:700 34px 'Plus Jakarta Sans',sans-serif">0:08</div>
+      <div style="display:flex; align-items:flex-end; gap:3px; height:38px">
+        <span style="width:4px; height:14px; background:#9aa888; border-radius:2px"></span><span style="width:4px; height:30px; background:#b7c79e; border-radius:2px"></span><span style="width:4px; height:20px; background:#9aa888; border-radius:2px"></span><span style="width:4px; height:38px; background:#cddbb0; border-radius:2px"></span><span style="width:4px; height:24px; background:#b7c79e; border-radius:2px"></span><span style="width:4px; height:33px; background:#cddbb0; border-radius:2px"></span><span style="width:4px; height:16px; background:#9aa888; border-radius:2px"></span><span style="width:4px; height:28px; background:#b7c79e; border-radius:2px"></span><span style="width:4px; height:22px; background:#9aa888; border-radius:2px"></span><span style="width:4px; height:34px; background:#cddbb0; border-radius:2px"></span><span style="width:4px; height:18px; background:#9aa888; border-radius:2px"></span>
+      </div>
+      <div style="width:74px; height:74px; border-radius:50%; background:#e0563f; display:flex; align-items:center; justify-content:center; box-shadow:0 0 0 8px rgba(224,86,63,.2)"><span style="width:26px; height:26px; background:#fff; border-radius:5px"></span></div>
+      <div style="font-size:13px; color:#bcb3a4">Release to stop · then we transcribe</div>
+    </div>
+  </div>
+</div>
+
+<!-- D4 transcript ready / offline -->
+<div style="position:absolute; left:1250px; top:2520px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Quick Log · transcript ready</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="font-size:11px; color:#b8743a">⃠ offline</span></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 16px 8px"><div style="font-size:20px; color:#2b2b2b">✕</div><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Log · Nettle FPJ</div><div style="font-size:11px; color:#9a9486">Day 7</div></div>
+    <div style="margin:0 16px 11px; padding:7px 11px; background:#f3efe6; border:1px solid #d8d2c6; border-radius:10px; font-size:11.5px; color:#7a6f5a; display:flex; align-items:center; gap:7px"><span style="font-size:14px">☁</span> Saved offline — will sync when you're back online</div>
+    <div style="padding:0 16px"><div style="font:600 12px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:7px">VOICE NOTE</div>
+      <div style="border:2px solid #2b2b2b; border-radius:13px; background:#fff; padding:11px 12px">
+        <div style="display:flex; align-items:center; gap:6px; margin-bottom:8px"><span style="font-size:13px; color:#5f7a3f">●</span><span style="font-size:12px; color:#5f7a3f">Transcribed</span><span style="margin-left:auto; font-size:12px; color:#7a7468; text-decoration:underline">edit</span></div>
+        <div style="font-size:14px; color:#2b2b2b; line-height:1.5">"Smells sweet and a little sour, white film starting on top, bubbles slowing down. Probably strain it tomorrow."</div>
+        <div style="display:flex; align-items:center; gap:5px; margin-top:9px; padding-top:9px; border-top:1px solid #ece7dd"><span style="font-size:13px">▶</span><div style="flex:1; height:5px; border-radius:3px; background:#e0dace"></div><span style="font-size:11px; color:#9a9486">0:08</span><span style="font-size:12px; color:#7a7468; text-decoration:underline; margin-left:4px">re-record</span></div>
+      </div>
+      <div style="font:600 12px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin:13px 0 7px">FREE NOTE <span style="color:#b3aa96; font-weight:400">· optional</span></div>
+      <div style="border:1.5px dashed #c2bcae; border-radius:11px; background:#faf8f3; padding:11px 12px; font-size:13px; color:#b3aa96">Add anything else…</div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:12px 16px 16px; background:linear-gradient(transparent,#fdfcf9 30%)"><div style="background:var(--accent,#5f7a3f); color:#fff; text-align:center; font:700 16px 'Plus Jakarta Sans',sans-serif; padding:14px; border-radius:28px">Save observation</div></div>
+  </div>
+</div>
+
+<!-- D5 chips-first variant -->
+<div style="position:absolute; left:1640px; top:2520px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Variant B · chips-first layout</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="display:flex; align-items:center; justify-content:space-between; padding:4px 16px 10px"><div style="display:flex; align-items:center; gap:8px"><span style="font-size:18px; color:#2b2b2b">✕</span><span style="font:700 15px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Nettle FPJ · Day 7</span></div><div style="width:42px; height:42px; border-radius:11px; background:#2b2b2b; color:#fff; display:flex; align-items:center; justify-content:center; font-size:19px">⌗</div></div>
+    <div style="padding:0 16px"><div style="font:600 11px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:6px">SMELL</div>
+      <div style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:9px">
+        <span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 10px; background:#2b2b2b; color:#fff">Sweet ✓</span><span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 10px; background:#2b2b2b; color:#fff">Sour ✓</span><span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 10px; background:#fff">Boozy</span><span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 10px; background:#fff">Yeasty</span><span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 10px; background:#fff">Earthy</span><span style="font-size:12px; border:1.5px solid #c08a4a; color:#8a5a24; border-radius:14px; padding:5px 10px; background:#fff">Rotten ⚠</span>
+      </div>
+      <div style="font:600 11px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:6px">ACTIVITY</div>
+      <div style="display:flex; gap:5px; flex-wrap:wrap; margin-bottom:9px">
+        <span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 10px; background:#fff">Bubbling lots</span><span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 10px; background:#2b2b2b; color:#fff">Some bubbles ✓</span><span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 10px; background:#fff">Calm</span>
+      </div>
+      <div style="font:600 11px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin-bottom:6px">SURFACE</div>
+      <div style="display:flex; gap:5px; flex-wrap:wrap">
+        <span style="font-size:12px; border:1.5px solid #2b2b2b; border-radius:14px; padding:5px 10px; background:#fff">Clean</span><span style="font-size:12px; border:1.5px solid #c79a4a; background:#f3ead3; color:#7a6320; border-radius:14px; padding:5px 10px">White film ✓</span><span style="font-size:12px; border:1.5px solid #c08a4a; color:#8a5a24; border-radius:14px; padding:5px 10px; background:#fff">Fuzzy mold ⚠</span><span style="font-size:12px; border:1.5px solid #c08a4a; color:#8a5a24; border-radius:14px; padding:5px 10px; background:#fff">Slime ⚠</span>
+      </div>
+    </div>
+    <div style="position:absolute; bottom:70px; left:16px; right:16px"><div style="border:2px solid #2b2b2b; border-radius:13px; padding:10px; text-align:center; font:700 13px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b; background:#fff">🎤 Hold to talk &nbsp;·&nbsp; ✎ Note</div></div>
+    <div style="position:absolute; bottom:0; left:0; right:0; padding:11px 16px 15px; background:#fdfcf9"><div style="background:var(--accent,#5f7a3f); color:#fff; text-align:center; font:700 16px 'Plus Jakarta Sans',sans-serif; padding:13px; border-radius:28px">Save</div></div>
+  </div>
+</div>
+
+<sc-if value="{{ showAnnotations }}" hint-placeholder-val="{{ true }}">
+<div style="position:absolute; left:860px; top:3175px; width:300px; background:#fef4a8; padding:12px 13px; font:400 13.5px/1.45 'Plus Jakarta Sans',sans-serif; color:#5a5320; box-shadow:0 2px 7px rgba(0,0,0,.12); transform:rotate(-1deg)">
+  <b style="font-family:'Plus Jakarta Sans',sans-serif; font-size:16px">Voice states</b><br>idle → recording (shown) → transcribing → ready/editable → error. On error keep the audio, offer retry. Offline: store audio, transcribe on reconnect, say so plainly.
+</div>
+<div style="position:absolute; left:1640px; top:3175px; width:300px; background:#fef4a8; padding:12px 13px; font:400 13.5px/1.45 'Plus Jakarta Sans',sans-serif; color:#5a5320; box-shadow:0 2px 7px rgba(0,0,0,.12); transform:rotate(1.2deg)">
+  <b style="font-family:'Plus Jakarta Sans',sans-serif; font-size:16px">Variant B — chips-first</b><br>Camera demoted to one tap, top-right. Everything fits one screen, no scroll. Defends the 20-second goal — but photo is less inviting. Worth a usability gut-check.
+</div>
+</sc-if>
+
+<!-- ============================ SECTION E : SETTINGS + COMPONENTS ============================ -->
+<div data-drags-parent="0" style="position:absolute; left:80px; top:3290px; width:600px; font-family:'Plus Jakarta Sans',sans-serif">
+  <div style="font-size:23px; font-weight:800; letter-spacing:-.01em; color:#2b2b2b">5 · Settings &amp; shared components</div>
+  <div style="font-size:13px; color:#7a7468; margin-top:5px; max-width:560px; line-height:1.4">Preferences, data, and about — still single-user in v1. The components sheet is the reusable kit.</div>
+</div>
+
+<!-- E1 settings -->
+<div style="position:absolute; left:80px; top:3370px; width:300px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Settings · low-fi</div>
+  <div style="position:relative; width:300px; height:632px; background:#fdfcf9; border:2.5px solid #2b2b2b; border-radius:30px; overflow:hidden; box-shadow:0 7px 24px rgba(0,0,0,.10); font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:9px 18px 4px; font-size:11px; color:#8a857a"><span>9:41</span><span style="display:inline-block; width:22px; height:11px; border:1.5px solid #8a857a; border-radius:3px"></span></div>
+    <div style="padding:9px 18px 10px"><div style="font:800 22px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Settings</div></div>
+    <div style="padding:0 16px; display:flex; flex-direction:column; gap:0">
+      <div style="font:600 11px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin:4px 2px 8px; letter-spacing:.4px">PREFERENCES</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:11px 4px; border-bottom:1px solid #ece7dd"><span style="font-size:14px; color:#2b2b2b">Default units</span><span style="display:flex; border:1.5px solid #2b2b2b; border-radius:9px; overflow:hidden; font-size:12px"><span style="padding:4px 11px; background:#2b2b2b; color:#fff">Weight</span><span style="padding:4px 11px; color:#2b2b2b">Volume</span></span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:11px 4px; border-bottom:1px solid #ece7dd"><span style="font-size:14px; color:#2b2b2b">Stage reminders</span><span style="width:42px; height:24px; border-radius:12px; background:#2b2b2b; position:relative"><span style="position:absolute; top:2px; right:2px; width:20px; height:20px; border-radius:50%; background:#fff"></span></span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:11px 4px; border-bottom:1px solid #ece7dd"><span style="font-size:14px; color:#2b2b2b">Sounds &amp; haptics</span><span style="width:42px; height:24px; border-radius:12px; background:#cfcabb; position:relative"><span style="position:absolute; top:2px; left:2px; width:20px; height:20px; border-radius:50%; background:#fff"></span></span></div>
+      <div style="font:600 11px 'Plus Jakarta Sans',sans-serif; color:#8a857a; margin:13px 2px 6px; letter-spacing:.4px">DATA &amp; ABOUT</div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:11px 4px; border-bottom:1px solid #ece7dd"><span style="font-size:14px; color:#2b2b2b">Export all data</span><span style="font-size:16px; color:#9a9486">›</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:11px 4px; border-bottom:1px solid #ece7dd"><span style="font-size:14px; color:#2b2b2b">Help &amp; privacy</span><span style="font-size:16px; color:#9a9486">›</span></div>
+      <div style="display:flex; justify-content:space-between; align-items:center; padding:11px 4px"><span style="font-size:14px; color:#2b2b2b">About</span><span style="font-size:12px; color:#9a9486">v1.0</span></div>
+    </div>
+    <div style="position:absolute; bottom:0; left:0; right:0; height:60px; border-top:2px solid #2b2b2b; background:#fdfcf9; display:flex; align-items:center; justify-content:space-between; padding:0 30px">
+      <div style="font:400 13px 'Plus Jakarta Sans',sans-serif; color:#9a9486">Home</div>
+      <div style="position:relative"><div style="width:50px; height:50px; border-radius:50%; background:#2b2b2b; color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; transform:translateY(-14px)">＋</div></div>
+      <div style="font:700 13px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Settings</div>
+    </div>
+  </div>
+</div>
+
+<!-- F components sheet -->
+<div style="position:absolute; left:470px; top:3370px; width:1470px">
+  <div data-drags-parent="1" style="position:absolute; top:-26px; font:600 15px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e">Shared components sheet</div>
+  <div style="position:relative; background:#fff; border:2px solid #2b2b2b; border-radius:8px; box-shadow:0 7px 24px rgba(0,0,0,.10); padding:24px 26px; font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:30px 36px">
+
+      <!-- Batch card -->
+      <div>
+        <div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e; margin-bottom:10px; border-bottom:1.5px dashed #d8d2c6; padding-bottom:5px">Batch card — the hero</div>
+        <div style="display:flex; border:2px solid #2b2b2b; border-radius:13px; overflow:hidden; background:#fff; margin-bottom:10px">
+          <div style="width:6px; background:var(--accent,#5f7a3f)"></div><div style="width:52px; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 6px,#e0dace 6px,#e0dace 12px)"></div>
+          <div style="flex:1; padding:8px 9px"><div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">Nettle FPJ</div><div style="font-size:11px; color:#9a9486">FPJ-03</div></div>
+          <div style="padding:8px 9px 8px 0; text-align:right; display:flex; flex-direction:column; align-items:flex-end; justify-content:space-between"><div style="font-size:11px; color:#7a7468; border:1px solid #c9c4ba; border-radius:9px; padding:1px 6px; white-space:nowrap">Day 7</div><div style="display:flex; align-items:center; gap:3px"><span style="display:inline-block; width:9px; height:9px; border-radius:50%; background:var(--accent,#5f7a3f)"></span><span style="font-size:10px; color:#5f7a3f">On track</span></div></div>
+        </div>
+        <div style="font-size:11.5px; color:#7a7468; line-height:1.5">Color stripe + short code + photo = physical-to-digital match. Name is the dominant element. Reads at arm's length.</div>
+      </div>
+
+      <!-- Status states -->
+      <div>
+        <div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e; margin-bottom:10px; border-bottom:1.5px dashed #d8d2c6; padding-bottom:5px">Status — 3 states (never color alone)</div>
+        <div style="display:flex; flex-direction:column; gap:9px">
+          <div style="display:flex; align-items:center; gap:9px"><span style="display:inline-block; width:14px; height:14px; border-radius:50%; background:var(--accent,#5f7a3f)"></span><span style="font-size:13px; color:#2b2b2b">On track</span><span style="font-size:11px; color:#9a9486">— circle, calm</span></div>
+          <div style="display:flex; align-items:center; gap:9px"><span style="display:inline-block; width:13px; height:13px; background:#c9a93a; transform:rotate(45deg)"></span><span style="font-size:13px; color:#2b2b2b">Watch</span><span style="font-size:11px; color:#9a9486">— diamond, mild caution</span></div>
+          <div style="display:flex; align-items:center; gap:9px"><span style="width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid #b8743a"></span><span style="font-size:13px; color:#2b2b2b">Needs action</span><span style="font-size:11px; color:#9a9486">— triangle, clear not alarming</span></div>
+        </div>
+        <div style="font-size:11.5px; color:#7a7468; line-height:1.5; margin-top:12px">Shape + label back up color for accessibility. Warning chips can nudge a batch toward Watch.</div>
+      </div>
+
+      <!-- Sensory chips -->
+      <div>
+        <div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e; margin-bottom:10px; border-bottom:1.5px dashed #d8d2c6; padding-bottom:5px">Sensory chip — toggle</div>
+        <div style="display:flex; gap:7px; flex-wrap:wrap; margin-bottom:9px">
+          <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#fff">Default</span>
+          <span style="font-size:13px; border:1.5px solid #2b2b2b; border-radius:15px; padding:6px 12px; background:#2b2b2b; color:#fff">Selected ✓</span>
+        </div>
+        <div style="display:flex; gap:7px; flex-wrap:wrap">
+          <span style="font-size:13px; border:1.5px solid #c08a4a; color:#8a5a24; border-radius:15px; padding:6px 12px; background:#fff">Caution ⚠</span>
+          <span style="font-size:13px; border:1.5px solid #c79a4a; background:#f3ead3; color:#7a6320; border-radius:15px; padding:6px 12px">Caution selected ✓</span>
+        </div>
+        <div style="font-size:11.5px; color:#7a7468; line-height:1.5; margin-top:11px">Tailored per ferment type — the template surfaces the most relevant chips first, "More" reveals the rest.</div>
+      </div>
+
+      <!-- Day chip + primary button -->
+      <div>
+        <div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e; margin-bottom:10px; border-bottom:1.5px dashed #d8d2c6; padding-bottom:5px">Day chip &amp; primary button</div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:13px"><span style="font-size:12px; color:#7a7468; border:1px solid #c9c4ba; border-radius:10px; padding:3px 10px">Day 7</span><span style="font-size:11px; color:#9a9486">"Day N" pill</span></div>
+        <div style="background:#2b2b2b; color:#fff; text-align:center; font:700 15px 'Plus Jakarta Sans',sans-serif; padding:13px; border-radius:26px; margin-bottom:8px">＋ Log</div>
+        <div style="font-size:11.5px; color:#7a7468; line-height:1.5">Min 44pt, ~56pt for field actions. Lives in the lower third — thumb zone. Assume gloves.</div>
+      </div>
+
+      <!-- Stage banner -->
+      <div>
+        <div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e; margin-bottom:10px; border-bottom:1.5px dashed #d8d2c6; padding-bottom:5px">Current-stage banner</div>
+        <div style="border-left:3px solid var(--accent,#5f7a3f); background:#f3f2ea; border-radius:0 10px 10px 0; padding:9px 11px; font-size:12.5px; color:#54503f; line-height:1.4; margin-bottom:9px"><b>Day 7:</b> should smell sweet and sour, bubbling slowing. Flag if it smells rotten.</div>
+        <div style="font-size:11.5px; color:#7a7468; line-height:1.5">Plain-language expectation from the type template. Reads like a knowledgeable friend.</div>
+      </div>
+
+      <!-- Identity system -->
+      <div>
+        <div style="font:700 16px 'Plus Jakarta Sans',sans-serif; color:#6f6a5e; margin-bottom:10px; border-bottom:1.5px dashed #d8d2c6; padding-bottom:5px">Identity system</div>
+        <div style="display:flex; align-items:center; gap:10px; margin-bottom:9px">
+          <div style="width:44px; height:44px; border-radius:9px; border:2px solid #2b2b2b; background:repeating-linear-gradient(45deg,#e9e5db,#e9e5db 5px,#e0dace 5px,#e0dace 10px)"></div>
+          <div style="width:5px; height:44px; background:var(--accent,#5f7a3f); border-radius:3px"></div>
+          <div style="font:700 18px 'Plus Jakarta Sans',sans-serif; color:#2b2b2b">FPJ-03</div>
+        </div>
+        <div style="font-size:11.5px; color:#7a7468; line-height:1.5">Photo + category color + bold short code. (Future: printable QR label — leave room, don't build.)</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;$preview&quot;: { &quot;width&quot;: 1200, &quot;height&quot;: 800 },
+  &quot;accent&quot;: { &quot;editor&quot;: &quot;color&quot;, &quot;default&quot;: &quot;#5f7a3f&quot;, &quot;tsType&quot;: &quot;string&quot;, &quot;options&quot;: [&quot;#5f7a3f&quot;, &quot;#3f6f7a&quot;, &quot;#7a5a3f&quot;, &quot;#6a4f7a&quot;], &quot;section&quot;: &quot;Wireframe&quot; },
+  &quot;showAnnotations&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot;, &quot;section&quot;: &quot;Wireframe&quot; }
+}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      accent: this.props.accent ?? '#5f7a3f',
+      showAnnotations: this.props.showAnnotations ?? true
+    };
+  }
+}
+</script>
+</body>
+</html>
