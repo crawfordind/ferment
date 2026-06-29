@@ -40,8 +40,20 @@ export function serializeInputs(inputs: BatchInput[]): string | null {
   return cleaned.length === 0 ? null : JSON.stringify(cleaned);
 }
 
-const MASS_TO_GRAMS: Record<string, number> = { kg: 1000, g: 1 };
-const VOLUME_TO_ML: Record<string, number> = { l: 1000, ml: 1 };
+// Base units are grams and millilitres; imperial units convert to the same base
+// so ratios and salt-% compare cleanly regardless of the unit the user picked.
+const MASS_TO_GRAMS: Record<string, number> = {
+  kg: 1000,
+  g: 1,
+  lb: 453.59237,
+  oz: 28.349523125,
+};
+const VOLUME_TO_ML: Record<string, number> = {
+  l: 1000,
+  ml: 1,
+  gal: 3785.411784,
+  "fl oz": 29.5735295625,
+};
 
 /** Normalize a quantity to a base unit (grams for mass, ml for volume); null if not comparable. */
 function toBase(

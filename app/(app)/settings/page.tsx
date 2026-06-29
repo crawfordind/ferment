@@ -3,18 +3,18 @@
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { useTemperatureUnit } from "@/components/providers/temperature-unit-provider";
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
 import {
-  TEMPERATURE_UNIT_LABELS,
-  unitSuffix,
-  type TemperatureUnit,
-} from "@/lib/temperature";
+  MEASUREMENT_SYSTEM_HINTS,
+  MEASUREMENT_SYSTEM_LABELS,
+  type MeasurementSystem,
+} from "@/lib/units";
 
-const UNIT_OPTIONS: TemperatureUnit[] = ["C", "F"];
+const SYSTEM_OPTIONS: MeasurementSystem[] = ["metric", "imperial"];
 
 export default function SettingsPage() {
   const [locking, setLocking] = useState(false);
-  const { unit, setUnit } = useTemperatureUnit();
+  const { system, setSystem } = useMeasurementSystem();
 
   async function handleLock() {
     setLocking(true);
@@ -34,32 +34,39 @@ export default function SettingsPage() {
       </p>
 
       <section className="mt-8 border-t border-hairline pt-6">
-        <h2 className="text-sm font-semibold text-ink">Temperature unit</h2>
+        <h2 className="text-sm font-semibold text-ink">Measurement system</h2>
         <p className="mt-1 text-xs text-muted">
-          Choose how temperatures are shown and entered. Readings are always
-          stored in Celsius and converted automatically.
+          Sets the units used throughout the app — temperature, batch size,
+          yield, and recipe amounts. Temperatures are always stored in Celsius
+          and converted automatically; existing amounts keep the unit they were
+          saved with.
         </p>
         <div
           role="radiogroup"
-          aria-label="Temperature unit"
+          aria-label="Measurement system"
           className="mt-3 inline-flex rounded-[var(--radius-card)] border-2 border-border p-1"
         >
-          {UNIT_OPTIONS.map((option) => {
-            const selected = unit === option;
+          {SYSTEM_OPTIONS.map((option) => {
+            const selected = system === option;
             return (
               <button
                 key={option}
                 type="button"
                 role="radio"
                 aria-checked={selected}
-                onClick={() => setUnit(option)}
+                onClick={() => setSystem(option)}
                 className={`min-h-tap-min rounded-[calc(var(--radius-card)-2px)] px-4 py-2 text-sm font-medium transition-colors ${
                   selected
                     ? "bg-accent text-white"
                     : "text-secondary hover:text-ink"
                 }`}
               >
-                {TEMPERATURE_UNIT_LABELS[option]} ({unitSuffix(option)})
+                {MEASUREMENT_SYSTEM_LABELS[option]}
+                <span
+                  className={`ml-2 text-xs ${selected ? "text-white/80" : "text-muted"}`}
+                >
+                  {MEASUREMENT_SYSTEM_HINTS[option]}
+                </span>
               </button>
             );
           })}

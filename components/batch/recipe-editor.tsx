@@ -2,9 +2,13 @@
 
 import { Plus, X } from "lucide-react";
 
-import { type BatchInput, computeRatio, computeSaltPercent } from "@/lib/inputs";
-
-const UNITS = ["kg", "g", "L", "ml"];
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
+import {
+  type BatchInput,
+  computeRatio,
+  computeSaltPercent,
+} from "@/lib/inputs";
+import { defaultUnitFor, unitOptions } from "@/lib/units";
 
 /** Repeatable ingredient rows with a live ratio / salt-% preview. */
 export function RecipeEditor({
@@ -14,12 +18,19 @@ export function RecipeEditor({
   inputs: BatchInput[];
   onChange: (next: BatchInput[]) => void;
 }) {
+  const { system } = useMeasurementSystem();
+
   function update(index: number, patch: Partial<BatchInput>) {
-    onChange(inputs.map((row, i) => (i === index ? { ...row, ...patch } : row)));
+    onChange(
+      inputs.map((row, i) => (i === index ? { ...row, ...patch } : row)),
+    );
   }
 
   function add() {
-    onChange([...inputs, { name: "", quantity: null, unit: "kg" }]);
+    onChange([
+      ...inputs,
+      { name: "", quantity: null, unit: defaultUnitFor("mass", system) },
+    ]);
   }
 
   function remove(index: number) {
@@ -61,7 +72,7 @@ export function RecipeEditor({
             aria-label={`Ingredient ${index + 1} unit`}
             className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-2 py-2 text-ink focus:border-accent focus:outline-none"
           >
-            {UNITS.map((unit) => (
+            {unitOptions(system, row.unit).map((unit) => (
               <option key={unit} value={unit}>
                 {unit}
               </option>

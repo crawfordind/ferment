@@ -13,7 +13,7 @@ import { presignPhotoApi } from "@/lib/api/client";
 import { useBatch } from "@/hooks/use-batch";
 import { useCreateObservation } from "@/hooks/use-observations";
 import { useCapturePhoto } from "@/hooks/use-photos";
-import { useTemperatureUnit } from "@/components/providers/temperature-unit-provider";
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
 import { toCelsius, unitSuffix } from "@/lib/temperature";
 import { newId } from "@/lib/id";
 import { saveAudioBlobLocal } from "@/offline/repository";
@@ -73,7 +73,7 @@ export default function QuickLogPage() {
   const batchQuery = useBatch(batchId);
   const createObservation = useCreateObservation(batchId);
   const capturePhoto = useCapturePhoto(batchId);
-  const { unit: temperatureUnit } = useTemperatureUnit();
+  const { temperatureUnit } = useMeasurementSystem();
 
   // Pre-generate the observation id so photos captured before Save link to it.
   const observationId = useMemo(() => newId(), []);
