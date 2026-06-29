@@ -26,7 +26,9 @@ describe("parseInputs / serializeInputs", () => {
   });
 
   it("drops nameless rows and serializes null when nothing remains", () => {
-    expect(serializeInputs([{ name: "  ", quantity: 1, unit: "kg" }])).toBeNull();
+    expect(
+      serializeInputs([{ name: "  ", quantity: 1, unit: "kg" }]),
+    ).toBeNull();
     expect(parseInputs('[{"name":"","quantity":1,"unit":"kg"}]')).toEqual([]);
   });
 
@@ -56,7 +58,27 @@ describe("computeRatio", () => {
   });
 
   it("returns null with fewer than two comparable inputs", () => {
-    expect(computeRatio([{ name: "Nettle", quantity: 1, unit: "kg" }])).toBeNull();
+    expect(
+      computeRatio([{ name: "Nettle", quantity: 1, unit: "kg" }]),
+    ).toBeNull();
+  });
+
+  it("normalizes imperial mass units (2 lb : 1 lb => 2 : 1)", () => {
+    expect(
+      computeRatio([
+        { name: "Fruit", quantity: 2, unit: "lb" },
+        { name: "Sugar", quantity: 1, unit: "lb" },
+      ]),
+    ).toBe("2 : 1");
+  });
+
+  it("normalizes imperial volume units (1 gal : 1 gal => 1 : 1)", () => {
+    expect(
+      computeRatio([
+        { name: "Water", quantity: 1, unit: "gal" },
+        { name: "Whey", quantity: 1, unit: "gal" },
+      ]),
+    ).toBe("1 : 1");
   });
 });
 

@@ -4,6 +4,8 @@ import { CloudOff } from "lucide-react";
 
 import { ChipTag } from "@/components/chips/chip-tag";
 import { useIsPending } from "@/components/providers/sync-provider";
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
+import { formatTemperature } from "@/lib/temperature";
 import { useObservationPhotos } from "@/hooks/use-photos";
 import { computeDayInProcess } from "@/lib/day";
 import type { LocalObservation } from "@/offline/dexie";
@@ -30,6 +32,7 @@ export function ObservationRow({
   const day = computeDayInProcess(startedAt, observation.observedAt);
   const photos = useObservationPhotos(observation.id).data ?? [];
   const pending = useIsPending(observation.id);
+  const { temperatureUnit } = useMeasurementSystem();
 
   return (
     <li className="flex gap-3 rounded-[var(--radius-card)] border border-hairline bg-white p-3">
@@ -80,7 +83,7 @@ export function ObservationRow({
               <span>{observation.brix}°Bx</span>
             ) : null}
             {observation.tempC != null ? (
-              <span>{observation.tempC}°C</span>
+              <span>{formatTemperature(observation.tempC, temperatureUnit)}</span>
             ) : null}
           </div>
         ) : null}

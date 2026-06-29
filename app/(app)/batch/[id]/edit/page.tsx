@@ -4,12 +4,12 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import { RecipeEditor } from "@/components/batch/recipe-editor";
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
 import { Button } from "@/components/ui/button";
 import { useBatch, useUpdateBatch } from "@/hooks/use-batch";
 import { type BatchInput, parseInputs, serializeInputs } from "@/lib/inputs";
+import { unitOptions } from "@/lib/units";
 import { cn } from "@/lib/utils";
-
-const SIZE_UNITS = ["kg", "g", "L", "ml"];
 
 export default function EditBatchPage() {
   const params = useParams<{ id: string }>();
@@ -17,6 +17,7 @@ export default function EditBatchPage() {
   const router = useRouter();
   const batchQuery = useBatch(batchId);
   const updateBatch = useUpdateBatch(batchId);
+  const { system } = useMeasurementSystem();
 
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
@@ -121,7 +122,7 @@ export default function EditBatchPage() {
               className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
             />
             <div className="flex flex-1 gap-1.5">
-              {SIZE_UNITS.map((unit) => (
+              {unitOptions(system, sizeUnit).map((unit) => (
                 <button
                   key={unit}
                   type="button"
@@ -158,7 +159,7 @@ export default function EditBatchPage() {
               className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
             />
             <div className="flex flex-1 gap-1.5">
-              {SIZE_UNITS.map((unit) => (
+              {unitOptions(system, yieldUnit).map((unit) => (
                 <button
                   key={unit}
                   type="button"

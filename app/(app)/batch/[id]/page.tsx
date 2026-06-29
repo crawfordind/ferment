@@ -6,6 +6,8 @@ import { useParams, useRouter } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
 
 import { ObservationRow } from "@/components/batch/observation-row";
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
+import { formatTemperature } from "@/lib/temperature";
 import { PhotoThumb } from "@/components/batch/photo-thumb";
 import { StageBanner } from "@/components/batch/stage-banner";
 import { StatusIndicator } from "@/components/batch/status-indicator";
@@ -129,6 +131,7 @@ export default function BatchDetailPage() {
   const batchId = params.id;
   const batchQuery = useBatch(batchId);
   const observationsQuery = useObservations(batchId);
+  const { temperatureUnit } = useMeasurementSystem();
 
   if (batchQuery.isLoading) {
     return (
@@ -265,7 +268,9 @@ export default function BatchDetailPage() {
             {latestReading.tempC != null ? (
               <span className="text-ink">
                 Temp{" "}
-                <span className="font-semibold">{latestReading.tempC}°C</span>
+                <span className="font-semibold">
+                  {formatTemperature(latestReading.tempC, temperatureUnit)}
+                </span>
               </span>
             ) : null}
           </div>
