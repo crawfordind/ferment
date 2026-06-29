@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 
 import { BatchCard } from "@/components/batch/batch-card";
 import { BatchCardSkeleton } from "@/components/batch/batch-card-skeleton";
@@ -105,6 +106,16 @@ export default function HomePage() {
         <p className="text-sm text-status-needs-action-text" role="alert">
           Could not load batches. Showing what is saved on this device.
         </p>
+      ) : null}
+
+      {!batchesQuery.isLoading ? (
+        <Link
+          href="/archive"
+          className="mt-auto inline-flex items-center justify-between gap-1 rounded-[var(--radius-card)] px-1 py-2 text-sm font-semibold text-secondary transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+        >
+          Finished &amp; archived batches
+          <ChevronRight className="size-4" aria-hidden />
+        </Link>
       ) : null}
     </main>
   );

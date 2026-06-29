@@ -281,6 +281,14 @@ export async function syncBatchesFromServer() {
   return remote;
 }
 
+/** Like syncBatchesFromServer, but includes archived batches (for History). */
+export async function syncAllBatchesFromServer() {
+  const { fetchBatches } = await import("@/lib/api/client");
+  const remote = await fetchBatches();
+  await hydrateBatchesFromServer(remote);
+  return remote;
+}
+
 export async function syncObservationsFromServer(batchId: string) {
   const { fetchObservations } = await import("@/lib/api/client");
   const remote = await fetchObservations(batchId);

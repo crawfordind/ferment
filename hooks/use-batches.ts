@@ -11,6 +11,7 @@ import type { FermentType } from "@/lib/schema";
 import {
   readLocalBatches,
   saveBatchLocal,
+  syncAllBatchesFromServer,
   syncBatchesFromServer,
 } from "@/offline/repository";
 
@@ -21,6 +22,24 @@ export function useBatches() {
       try {
         if (typeof navigator !== "undefined" && navigator.onLine) {
           await syncBatchesFromServer();
+        }
+      } catch {
+        // Fall back to local cache when offline or API unavailable.
+      }
+
+      return readLocalBatches();
+    },
+  });
+}
+
+/** All batches including archived — backs the History (finished/archived) view. */
+export function useAllBatches() {
+  return useQuery({
+    queryKey: queryKeys.allBatches(),
+    queryFn: async () => {
+      try {
+        if (typeof navigator !== "undefined" && navigator.onLine) {
+          await syncAllBatchesFromServer();
         }
       } catch {
         // Fall back to local cache when offline or API unavailable.
@@ -55,7 +74,9 @@ export function useCreateBatch() {
 
       const batch: BatchUpsertInput = {
         id: newId(),
-        code: input.code?.trim() || generateNextBatchCode(input.type, existingCodes),
+        code:
+          input.code?.trim() ||
+          generateNextBatchCode(input.type, existingCodes),
         name: input.name?.trim() || suggestBatchName(input.type),
         category: "fertilizer",
         type: input.type,
