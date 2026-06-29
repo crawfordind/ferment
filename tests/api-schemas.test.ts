@@ -34,6 +34,31 @@ describe("batchUpsertSchema", () => {
       }),
     ).toThrow();
   });
+
+  it("accepts recipe, yield, cost, and lot fields", () => {
+    const parsed = batchUpsertSchema.parse({
+      id: "batch-1",
+      code: "FOOD-01",
+      name: "Sauerkraut",
+      category: "food",
+      type: "food",
+      templateId: "tpl-food",
+      status: "finished",
+      health: "on_track",
+      startedAt: 1,
+      currentStageIndex: 0,
+      inputs: '[{"name":"Cabbage","quantity":1,"unit":"kg"}]',
+      yieldValue: 0.8,
+      yieldUnit: "L",
+      costAmount: 4.5,
+      lotId: "FOOD-01-20260628",
+      createdAt: 1,
+      updatedAt: 1,
+    });
+
+    expect(parsed.yieldValue).toBe(0.8);
+    expect(parsed.lotId).toBe("FOOD-01-20260628");
+  });
 });
 
 describe("observationUpsertSchema", () => {
@@ -48,6 +73,23 @@ describe("observationUpsertSchema", () => {
     });
 
     expect(parsed.chipKeys).toEqual([]);
+  });
+
+  it("accepts numeric pH/Brix/temperature readings", () => {
+    const parsed = observationUpsertSchema.parse({
+      id: "obs-1",
+      batchId: "batch-1",
+      observedAt: 1,
+      transcriptStatus: "none",
+      ph: 3.8,
+      brix: 6,
+      tempC: 21.5,
+      createdAt: 1,
+      updatedAt: 1,
+    });
+
+    expect(parsed.ph).toBe(3.8);
+    expect(parsed.tempC).toBe(21.5);
   });
 });
 

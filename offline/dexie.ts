@@ -9,6 +9,9 @@ import type {
 export type OutboxKind = "batch" | "observation" | "photo" | "transcript";
 export type OutboxStatus = "pending" | "processing" | "done" | "failed";
 
+// These alias the API DTOs, so added non-indexed fields (recipe inputs, yield,
+// cost on batches; pH/Brix/temp on observations) flow through with no Dexie
+// version bump — `.stores()` only declares indexes, not the full record shape.
 export type LocalBatch = BatchUpsertInput;
 export type LocalObservation = ObservationUpsertInput;
 export type LocalPhoto = PhotoUpsertInput;

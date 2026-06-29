@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 
 import { createClient } from "@libsql/client";
@@ -10,19 +10,22 @@ export async function createTestDb() {
   const client = createClient({ url: ":memory:" });
   const db = drizzle(client, { schema });
 
-  const migrationPath = join(
-    process.cwd(),
-    "drizzle",
-    "0000_blushing_switch.sql",
-  );
-  const migrationSql = readFileSync(migrationPath, "utf8");
-  const statements = migrationSql
-    .split("--> statement-breakpoint")
-    .map((statement) => statement.trim())
-    .filter(Boolean);
+  // Apply every migration in order so the test schema tracks the real one.
+  const drizzleDir = join(process.cwd(), "drizzle");
+  const migrationFiles = readdirSync(drizzleDir)
+    .filter((file) => file.endsWith(".sql"))
+    .sort();
 
-  for (const statement of statements) {
-    await client.execute(statement);
+  for (const file of migrationFiles) {
+    const migrationSql = readFileSync(join(drizzleDir, file), "utf8");
+    const statements = migrationSql
+      .split("--> statement-breakpoint")
+      .map((statement) => statement.trim())
+      .filter(Boolean);
+
+    for (const statement of statements) {
+      await client.execute(statement);
+    }
   }
 
   await client.execute(`

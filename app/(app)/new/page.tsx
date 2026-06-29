@@ -4,10 +4,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Camera } from "lucide-react";
 
+import { RecipeEditor } from "@/components/batch/recipe-editor";
 import { Button } from "@/components/ui/button";
 import { useBatches, useCreateBatch } from "@/hooks/use-batches";
 import { capturePhotoForBatch } from "@/hooks/use-photos";
 import { generateNextBatchCode, suggestBatchName } from "@/lib/codes";
+import type { BatchInput } from "@/lib/inputs";
 import { SEED_TEMPLATES } from "@/lib/seed-data";
 import type { FermentType } from "@/lib/schema";
 import { cn } from "@/lib/utils";
@@ -16,7 +18,7 @@ type Category = { key: string; label: string; available: boolean };
 
 const CATEGORIES: Category[] = [
   { key: "fertilizer", label: "Fertilizers", available: true },
-  { key: "food", label: "Food", available: false },
+  { key: "food", label: "Food", available: true },
   { key: "beverage", label: "Beverage", available: false },
 ];
 
@@ -97,11 +99,13 @@ export default function NewBatchPage() {
   const createBatch = useCreateBatch();
 
   const [step, setStep] = useState(1);
+  const [category, setCategory] = useState("fertilizer");
   const [type, setType] = useState<FermentType | null>(null);
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [sizeValue, setSizeValue] = useState("");
   const [sizeUnit, setSizeUnit] = useState("kg");
+  const [inputs, setInputs] = useState<BatchInput[]>([]);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
   const [starting, setStarting] = useState(false);
@@ -126,6 +130,11 @@ export default function NewBatchPage() {
     [batchesQuery.data, type],
   );
 
+  const templatesForCategory = useMemo(
+    () => SEED_TEMPLATES.filter((template) => template.category === category),
+    [category],
+  );
+
   // Auto-fill name, code, and default unit when a type is chosen.
   useEffect(() => {
     if (!type) return;
@@ -146,11 +155,13 @@ export default function NewBatchPage() {
         type,
         name,
         code,
+        category,
         sizeValue:
           parsedSize !== null && Number.isFinite(parsedSize)
             ? parsedSize
             : null,
         sizeUnit,
+        inputs,
       });
 
       // Attach the optional first photo now that the batch id exists.
@@ -181,13 +192,21 @@ export default function NewBatchPage() {
       {step === 1 ? (
         <section className="flex flex-1 flex-col gap-3">
           <p className="text-sm text-secondary">What are you making?</p>
-          {CATEGORIES.map((category) => (
+          {CATEGORIES.map((option) => (
             <OptionRow
-              key={category.key}
-              title={category.label}
-              selected={category.available}
-              disabled={!category.available}
-              badge={category.available ? undefined : "Coming soon"}
+              key={option.key}
+              title={option.label}
+              selected={option.available && category === option.key}
+              disabled={!option.available}
+              badge={option.available ? undefined : "Coming soon"}
+              onClick={
+                option.available
+                  ? () => {
+                      setCategory(option.key);
+                      setType(null);
+                    }
+                  : undefined
+              }
             />
           ))}
         </section>
@@ -196,12 +215,14 @@ export default function NewBatchPage() {
       {step === 2 ? (
         <section className="flex flex-1 flex-col gap-3">
           <p className="text-sm text-secondary">Pick a ferment type.</p>
-          {SEED_TEMPLATES.map((template) => (
+          {templatesForCategory.map((template) => (
             <OptionRow
               key={template.type}
               title={template.name}
               subtitle={
-                template.type === "custom" ? "Blank template" : undefined
+                template.type === "custom" || template.type === "food"
+                  ? "Blank template"
+                  : undefined
               }
               selected={type === template.type}
               onClick={() => setType(template.type)}
@@ -273,6 +294,14 @@ export default function NewBatchPage() {
                 ))}
               </div>
             </div>
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <span className="text-sm font-medium text-ink">Recipe</span>
+            <p className="text-xs text-muted">
+              Ingredients and amounts, so the batch is repeatable. Optional.
+            </p>
+            <RecipeEditor inputs={inputs} onChange={setInputs} />
           </div>
 
           <div className="flex flex-col gap-1.5">

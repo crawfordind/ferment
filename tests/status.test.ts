@@ -1,10 +1,11 @@
 import { describe, expect, it } from "vitest";
 
 import { getSeedTemplate } from "@/lib/seed-data";
-import { computeHealth, healthFromChips } from "@/lib/status";
+import { computeHealth, healthFromChips, healthFromPh } from "@/lib/status";
 
 const MS_PER_DAY = 86_400_000;
 const fpj = getSeedTemplate("fpj")!;
+const food = getSeedTemplate("food")!;
 
 function at(day: number): number {
   return day * MS_PER_DAY;
@@ -58,5 +59,48 @@ describe("computeHealth", () => {
 
   it("stays on_track with no observation inside the schedule", () => {
     expect(computeHealth({ startedAt: 0 }, null, fpj, at(2))).toBe("on_track");
+  });
+
+  it("escalates to watch when a lacto ferment's pH stays high past its window", () => {
+    expect(
+      computeHealth(
+        { startedAt: 0, type: "food" },
+        { chipKeys: [], ph: 5.2 },
+        food,
+        at(6),
+      ),
+    ).toBe("watch");
+  });
+
+  it("stays on_track when a high pH is still within the early window", () => {
+    expect(
+      computeHealth(
+        { startedAt: 0, type: "food" },
+        { chipKeys: [], ph: 5.2 },
+        food,
+        at(2),
+      ),
+    ).toBe("on_track");
+  });
+});
+
+describe("healthFromPh", () => {
+  it("is on_track once a lacto ferment has acidified", () => {
+    expect(healthFromPh("food", 3.8, 6)).toBe("on_track");
+  });
+
+  it("is watch when pH stays above the ceiling past the window", () => {
+    expect(healthFromPh("food", 4.8, 6)).toBe("watch");
+    expect(healthFromPh("labs", 5.0, 6)).toBe("watch");
+  });
+
+  it("is on_track before the check-after day even if pH is high", () => {
+    expect(healthFromPh("food", 5.0, 1)).toBe("on_track");
+  });
+
+  it("is on_track for types without a pH rule, or with no reading", () => {
+    expect(healthFromPh("fpj", 6.0, 30)).toBe("on_track");
+    expect(healthFromPh("food", null, 10)).toBe("on_track");
+    expect(healthFromPh(undefined, 6.0, 10)).toBe("on_track");
   });
 });

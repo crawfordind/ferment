@@ -71,6 +71,20 @@ export function ObservationRow({
           </div>
         ) : null}
 
+        {observation.ph != null ||
+        observation.brix != null ||
+        observation.tempC != null ? (
+          <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-xs font-medium text-secondary">
+            {observation.ph != null ? <span>pH {observation.ph}</span> : null}
+            {observation.brix != null ? (
+              <span>{observation.brix}°Bx</span>
+            ) : null}
+            {observation.tempC != null ? (
+              <span>{observation.tempC}°C</span>
+            ) : null}
+          </div>
+        ) : null}
+
         {observation.voiceTranscript ? (
           <p className="text-sm italic text-secondary">
             “{observation.voiceTranscript}”

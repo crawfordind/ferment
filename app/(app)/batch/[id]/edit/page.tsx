@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
+import { RecipeEditor } from "@/components/batch/recipe-editor";
 import { Button } from "@/components/ui/button";
 import { useBatch, useUpdateBatch } from "@/hooks/use-batch";
+import { type BatchInput, parseInputs, serializeInputs } from "@/lib/inputs";
 import { cn } from "@/lib/utils";
 
 const SIZE_UNITS = ["kg", "g", "L", "ml"];
@@ -20,6 +22,11 @@ export default function EditBatchPage() {
   const [code, setCode] = useState("");
   const [sizeValue, setSizeValue] = useState("");
   const [sizeUnit, setSizeUnit] = useState("kg");
+  const [inputs, setInputs] = useState<BatchInput[]>([]);
+  const [yieldValue, setYieldValue] = useState("");
+  const [yieldUnit, setYieldUnit] = useState("L");
+  const [costAmount, setCostAmount] = useState("");
+  const [lotId, setLotId] = useState("");
   const [hydrated, setHydrated] = useState(false);
 
   // Seed the form once from the loaded batch.
@@ -30,6 +37,11 @@ export default function EditBatchPage() {
     setCode(batch.code);
     setSizeValue(batch.sizeValue != null ? String(batch.sizeValue) : "");
     setSizeUnit(batch.sizeUnit ?? "kg");
+    setInputs(parseInputs(batch.inputs));
+    setYieldValue(batch.yieldValue != null ? String(batch.yieldValue) : "");
+    setYieldUnit(batch.yieldUnit ?? "L");
+    setCostAmount(batch.costAmount != null ? String(batch.costAmount) : "");
+    setLotId(batch.lotId ?? "");
     setHydrated(true);
   }, [batchQuery.data, hydrated]);
 
@@ -47,13 +59,21 @@ export default function EditBatchPage() {
     const trimmedCode = code.trim().toUpperCase();
     if (!trimmedName || !trimmedCode) return;
 
-    const parsedSize = sizeValue.trim() ? Number(sizeValue) : null;
+    const toNumber = (value: string): number | null => {
+      const parsed = value.trim() ? Number(value) : null;
+      return parsed !== null && Number.isFinite(parsed) ? parsed : null;
+    };
+
     await updateBatch.mutateAsync({
       name: trimmedName,
       code: trimmedCode,
-      sizeValue:
-        parsedSize !== null && Number.isFinite(parsedSize) ? parsedSize : null,
+      sizeValue: toNumber(sizeValue),
       sizeUnit,
+      inputs: serializeInputs(inputs),
+      yieldValue: toNumber(yieldValue),
+      yieldUnit,
+      costAmount: toNumber(costAmount),
+      lotId: lotId.trim() || null,
     });
     router.replace(`/batch/${batchId}`);
   }
@@ -119,6 +139,73 @@ export default function EditBatchPage() {
               ))}
             </div>
           </div>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm font-medium text-ink">Recipe</span>
+          <RecipeEditor inputs={inputs} onChange={setInputs} />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <span className="text-sm font-medium text-ink">Yield</span>
+          <div className="flex gap-2">
+            <input
+              inputMode="decimal"
+              placeholder="Optional"
+              value={yieldValue}
+              onChange={(event) => setYieldValue(event.target.value)}
+              aria-label="Yield amount"
+              className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            />
+            <div className="flex flex-1 gap-1.5">
+              {SIZE_UNITS.map((unit) => (
+                <button
+                  key={unit}
+                  type="button"
+                  onClick={() => setYieldUnit(unit)}
+                  aria-pressed={yieldUnit === unit}
+                  className={cn(
+                    "min-h-tap-min flex-1 rounded-[var(--radius-chip)] border-2 text-sm font-semibold transition-colors",
+                    yieldUnit === unit
+                      ? "border-accent bg-subtle-fill text-ink"
+                      : "border-border bg-white text-secondary hover:bg-subtle-fill",
+                  )}
+                >
+                  {unit}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="batch-cost" className="text-sm font-medium text-ink">
+            Input cost
+          </label>
+          <input
+            id="batch-cost"
+            inputMode="decimal"
+            placeholder="Optional"
+            value={costAmount}
+            onChange={(event) => setCostAmount(event.target.value)}
+            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+          />
+          <p className="text-xs text-muted">
+            Total ingredient cost. Shown as cost per unit of yield.
+          </p>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="batch-lot" className="text-sm font-medium text-ink">
+            Lot ID
+          </label>
+          <input
+            id="batch-lot"
+            value={lotId}
+            onChange={(event) => setLotId(event.target.value)}
+            placeholder="Auto-assigned on finish"
+            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 font-medium uppercase tracking-wide text-ink focus:border-accent focus:outline-none"
+          />
         </div>
       </section>
 

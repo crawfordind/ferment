@@ -3,7 +3,7 @@ import type { FermentType } from "@/lib/schema";
 export type SeedTemplate = {
   id: string;
   type: FermentType;
-  category: "fertilizer";
+  category: string;
   name: string;
   defaultUnit: string;
   stages: {
@@ -200,6 +200,25 @@ export const SEED_TEMPLATES: SeedTemplate[] = [
         expectationText:
           "Day 8+: slow plant breakdown. Should smell earthy-sour. White film can be normal; flag fuzzy mold or slime.",
         actionLabel: "Check weekly",
+      },
+    ],
+  },
+  {
+    id: "tpl-food",
+    type: "food",
+    category: "food",
+    name: "Food ferment",
+    defaultUnit: "kg",
+    stages: [
+      {
+        id: "stage-food-0",
+        stageIndex: 0,
+        name: "Ferment",
+        dayStart: 0,
+        dayEnd: null,
+        expectationText:
+          "Day 0+: keep ingredients fully submerged under brine and out of direct sun. Log smell, surface, and pH each check-in — souring (falling pH) is the sign it's working. Use your own recipe's safety guidance to decide when it's ready.",
+        actionLabel: "Check in",
       },
     ],
   },

@@ -15,6 +15,7 @@ export const fermentTypeSchema = z.enum([
   "labs",
   "fish",
   "plant",
+  "food",
   "custom",
 ]);
 
@@ -33,6 +34,10 @@ export const batchUpsertSchema = z.object({
   finishedAt: z.number().int().nullable().optional(),
   currentStageIndex: z.number().int().default(0),
   thumbnailPhotoId: z.string().nullable().optional(),
+  inputs: z.string().nullable().optional(),
+  yieldValue: z.number().nullable().optional(),
+  yieldUnit: z.string().nullable().optional(),
+  costAmount: z.number().nullable().optional(),
   lotId: z.string().nullable().optional(),
   coaUrl: z.string().nullable().optional(),
   sopVersion: z.string().nullable().optional(),
@@ -55,6 +60,9 @@ export const observationUpsertSchema = z.object({
   voiceAudioKey: z.string().nullable().optional(),
   voiceTranscript: z.string().nullable().optional(),
   transcriptStatus: transcriptStatusSchema,
+  ph: z.number().nullable().optional(),
+  brix: z.number().nullable().optional(),
+  tempC: z.number().nullable().optional(),
   chipKeys: z.array(z.string()).default([]),
   createdAt: z.number().int(),
   updatedAt: z.number().int(),

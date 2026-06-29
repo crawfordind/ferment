@@ -6,6 +6,7 @@ import { queryKeys } from "@/lib/api/query-keys";
 import type { BatchUpsertInput } from "@/lib/api/schemas";
 import { generateNextBatchCode, suggestBatchName } from "@/lib/codes";
 import { newId } from "@/lib/id";
+import { type BatchInput, serializeInputs } from "@/lib/inputs";
 import { getSeedTemplate } from "@/lib/seed-data";
 import type { FermentType } from "@/lib/schema";
 import {
@@ -58,8 +59,10 @@ export function useCreateBatch() {
       type: FermentType;
       name?: string;
       code?: string;
+      category?: string;
       sizeValue?: number | null;
       sizeUnit?: string | null;
+      inputs?: BatchInput[];
     }) => {
       const template = getSeedTemplate(input.type);
       if (!template) {
@@ -78,7 +81,7 @@ export function useCreateBatch() {
           input.code?.trim() ||
           generateNextBatchCode(input.type, existingCodes),
         name: input.name?.trim() || suggestBatchName(input.type),
-        category: "fertilizer",
+        category: input.category ?? template.category,
         type: input.type,
         templateId: template.id,
         sizeValue: input.sizeValue ?? null,
@@ -89,6 +92,7 @@ export function useCreateBatch() {
         finishedAt: null,
         currentStageIndex: 0,
         thumbnailPhotoId: null,
+        inputs: input.inputs ? serializeInputs(input.inputs) : null,
         createdAt: now,
         updatedAt: now,
       };

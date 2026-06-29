@@ -50,6 +50,12 @@ export const batches = sqliteTable("batches", {
   finishedAt: integer("finished_at"),
   currentStageIndex: integer("current_stage_index").notNull().default(0),
   thumbnailPhotoId: text("thumbnail_photo_id"),
+  /** Recipe/inputs as a JSON-encoded BatchInput[] (see lib/inputs.ts). */
+  inputs: text("inputs"),
+  /** Finished output and input cost for cost-per-unit (see lib/economics.ts). */
+  yieldValue: real("yield_value"),
+  yieldUnit: text("yield_unit"),
+  costAmount: real("cost_amount"),
   lotId: text("lot_id"),
   coaUrl: text("coa_url"),
   sopVersion: text("sop_version"),
@@ -68,6 +74,10 @@ export const observations = sqliteTable("observations", {
   voiceAudioKey: text("voice_audio_key"),
   voiceTranscript: text("voice_transcript"),
   transcriptStatus: text("transcript_status").notNull(),
+  /** Quantitative readings (nullable; captured during a check-in). */
+  ph: real("ph"),
+  brix: real("brix"),
+  tempC: real("temp_c"),
   createdAt: integer("created_at").notNull(),
   updatedAt: integer("updated_at").notNull(),
 });
@@ -157,6 +167,7 @@ export type FermentType =
   | "labs"
   | "fish"
   | "plant"
+  | "food"
   | "custom";
 
 export type Template = typeof templates.$inferSelect;

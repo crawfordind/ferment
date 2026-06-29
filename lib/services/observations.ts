@@ -45,6 +45,9 @@ export async function upsertObservation(
       voiceAudioKey: input.voiceAudioKey ?? null,
       voiceTranscript: input.voiceTranscript ?? null,
       transcriptStatus: input.transcriptStatus,
+      ph: input.ph ?? null,
+      brix: input.brix ?? null,
+      tempC: input.tempC ?? null,
       createdAt: input.createdAt,
       updatedAt: input.updatedAt,
     })
@@ -58,6 +61,9 @@ export async function upsertObservation(
         voiceAudioKey: input.voiceAudioKey ?? null,
         voiceTranscript: input.voiceTranscript ?? null,
         transcriptStatus: input.transcriptStatus,
+        ph: input.ph ?? null,
+        brix: input.brix ?? null,
+        tempC: input.tempC ?? null,
         updatedAt: input.updatedAt,
       },
     });

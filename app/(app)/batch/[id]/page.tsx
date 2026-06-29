@@ -14,6 +14,9 @@ import { Button } from "@/components/ui/button";
 import { useBatch, useUpdateBatch } from "@/hooks/use-batch";
 import { useObservations } from "@/hooks/use-observations";
 import { computeDayInProcess } from "@/lib/day";
+import { costPerUnit, formatCostPerUnit } from "@/lib/economics";
+import { computeRatio, computeSaltPercent, parseInputs } from "@/lib/inputs";
+import { generateLotId } from "@/lib/lots";
 import { getSeedTemplate } from "@/lib/seed-data";
 import { currentStage } from "@/lib/stages";
 
@@ -68,9 +71,20 @@ function OverflowMenu({ batchId }: { batchId: string }) {
                 <button
                   role="menuitem"
                   className="flex min-h-tap-min w-full items-center px-4 text-left text-sm text-ink hover:bg-subtle-fill"
-                  onClick={() =>
-                    apply({ status: "finished", finishedAt: Date.now() })
-                  }
+                  onClick={() => {
+                    const finishedAt = Date.now();
+                    const batch = batchQuery.data;
+                    // Stamp a traceability lot id on finish if none set yet.
+                    const lotId =
+                      batch && !batch.lotId
+                        ? generateLotId(batch.code, finishedAt)
+                        : undefined;
+                    apply({
+                      status: "finished",
+                      finishedAt,
+                      ...(lotId ? { lotId } : {}),
+                    });
+                  }}
                 >
                   Finish batch
                 </button>
@@ -142,6 +156,18 @@ export default function BatchDetailPage() {
   const observations = observationsQuery.data ?? [];
   const finished = batch.status !== "active";
 
+  const recipe = parseInputs(batch.inputs);
+  const ratio = computeRatio(recipe);
+  const saltPercent = computeSaltPercent(recipe);
+  const latestReading =
+    observations.find(
+      (observation) =>
+        observation.ph != null ||
+        observation.brix != null ||
+        observation.tempC != null,
+    ) ?? null;
+  const cost = costPerUnit(batch.costAmount, batch.yieldValue, batch.yieldUnit);
+
   return (
     <main className="flex flex-1 flex-col gap-4 px-4 py-6">
       {/* Header */}
@@ -184,6 +210,99 @@ export default function BatchDetailPage() {
       {/* Stage banner */}
       {template && !finished ? (
         <StageBanner stage={currentStage(batch, template)} />
+      ) : null}
+
+      {/* Recipe */}
+      {recipe.length > 0 ? (
+        <section className="rounded-[var(--radius-card)] border border-hairline bg-white p-4">
+          <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
+            Recipe
+          </h2>
+          <ul className="flex flex-col gap-1">
+            {recipe.map((item, index) => (
+              <li
+                key={index}
+                className="flex items-baseline justify-between gap-3 text-sm"
+              >
+                <span className="text-ink">{item.name}</span>
+                <span className="shrink-0 text-secondary">
+                  {item.quantity != null
+                    ? `${item.quantity} ${item.unit}`.trim()
+                    : "—"}
+                </span>
+              </li>
+            ))}
+          </ul>
+          {ratio || saltPercent !== null ? (
+            <p className="mt-2 border-t border-hairline pt-2 text-xs text-muted">
+              {ratio ? `Ratio ${ratio}` : null}
+              {ratio && saltPercent !== null ? " · " : null}
+              {saltPercent !== null ? `Salt ${saltPercent.toFixed(1)}%` : null}
+            </p>
+          ) : null}
+        </section>
+      ) : null}
+
+      {/* Latest measurements */}
+      {latestReading ? (
+        <section className="rounded-[var(--radius-card)] border border-hairline bg-white p-4">
+          <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
+            Latest measurements · Day{" "}
+            {computeDayInProcess(batch.startedAt, latestReading.observedAt)}
+          </h2>
+          <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
+            {latestReading.ph != null ? (
+              <span className="text-ink">
+                pH <span className="font-semibold">{latestReading.ph}</span>
+              </span>
+            ) : null}
+            {latestReading.brix != null ? (
+              <span className="text-ink">
+                Brix{" "}
+                <span className="font-semibold">{latestReading.brix}°Bx</span>
+              </span>
+            ) : null}
+            {latestReading.tempC != null ? (
+              <span className="text-ink">
+                Temp{" "}
+                <span className="font-semibold">{latestReading.tempC}°C</span>
+              </span>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
+
+      {/* Yield, cost & lot (finished batches) */}
+      {finished && (batch.yieldValue != null || cost || batch.lotId) ? (
+        <section className="rounded-[var(--radius-card)] border border-hairline bg-white p-4">
+          <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
+            Batch record
+          </h2>
+          <dl className="flex flex-col gap-1 text-sm">
+            {batch.yieldValue != null ? (
+              <div className="flex justify-between gap-3">
+                <dt className="text-secondary">Yield</dt>
+                <dd className="text-ink">
+                  {batch.yieldValue} {batch.yieldUnit ?? ""}
+                </dd>
+              </div>
+            ) : null}
+            {cost ? (
+              <div className="flex justify-between gap-3">
+                <dt className="text-secondary">Cost per unit</dt>
+                <dd className="text-ink">{formatCostPerUnit(cost)}</dd>
+              </div>
+            ) : null}
+            {batch.lotId ? (
+              <div className="flex justify-between gap-3">
+                <dt className="text-secondary">Lot</dt>
+                <dd className="font-medium uppercase tracking-wide text-ink">
+                  {batch.lotId}
+                </dd>
+              </div>
+            ) : null}
+          </dl>
+        </section>
       ) : null}
 
       {/* Timeline */}

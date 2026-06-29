@@ -8,6 +8,13 @@
       "when": 1782602342361,
       "tag": "0000_blushing_switch",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1782699393571,
+      "tag": "0001_shallow_tyrannus",
+      "breakpoints": true
     }
   ]
 }

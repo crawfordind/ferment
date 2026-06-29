@@ -79,6 +79,9 @@ export default function QuickLogPage() {
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [showMore, setShowMore] = useState(false);
   const [note, setNote] = useState("");
+  const [ph, setPh] = useState("");
+  const [brix, setBrix] = useState("");
+  const [tempC, setTempC] = useState("");
   const [photoIds, setPhotoIds] = useState<string[]>([]);
   const [voice, setVoice] = useState<VoiceResult>({
     audioBlob: null,
@@ -143,6 +146,13 @@ export default function QuickLogPage() {
       }
     }
 
+    const parseReading = (value: string): number | null => {
+      const trimmed = value.trim();
+      if (!trimmed) return null;
+      const parsed = Number(trimmed);
+      return Number.isFinite(parsed) ? parsed : null;
+    };
+
     await createObservation.mutateAsync({
       id: observationId,
       note: note.trim() || null,
@@ -150,6 +160,9 @@ export default function QuickLogPage() {
       voiceTranscript,
       voiceAudioKey,
       transcriptStatus,
+      ph: parseReading(ph),
+      brix: parseReading(brix),
+      tempC: parseReading(tempC),
     });
     router.replace(`/batch/${batchId}`);
   }
@@ -248,6 +261,37 @@ export default function QuickLogPage() {
             </button>
           </div>
         ) : null}
+      </section>
+
+      {/* Measurements */}
+      <section className="flex flex-col gap-2">
+        <h3 className="text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
+          Measurements
+        </h3>
+        <div className="grid grid-cols-3 gap-2">
+          {(
+            [
+              { label: "pH", value: ph, setValue: setPh, hint: "0–14" },
+              { label: "Brix", value: brix, setValue: setBrix, hint: "°Bx" },
+              { label: "Temp", value: tempC, setValue: setTempC, hint: "°C" },
+            ] as const
+          ).map((field) => (
+            <label key={field.label} className="flex flex-col gap-1">
+              <span className="text-xs font-medium text-secondary">
+                {field.label}
+                <span className="ml-1 font-normal text-muted">{field.hint}</span>
+              </span>
+              <input
+                inputMode="decimal"
+                value={field.value}
+                onChange={(event) => field.setValue(event.target.value)}
+                placeholder="—"
+                aria-label={`${field.label} reading`}
+                className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+              />
+            </label>
+          ))}
+        </div>
       </section>
 
       {/* Voice note */}

@@ -1,5 +1,5 @@
 import { getChip } from "@/lib/chips";
-import type { BatchHealth } from "@/lib/schema";
+import type { BatchHealth, FermentType } from "@/lib/schema";
 import {
   currentStage,
   dayInProcess,
@@ -12,6 +12,32 @@ const NEEDS_ACTION_CHIPS = new Set([
   "surface_fuzzy_mold",
   "surface_slime",
 ]);
+
+/**
+ * Conservative pH ceilings for lacto-type ferments: past `afterDay`, a pH still
+ * above `ceiling` means it hasn't acidified as expected — a "watch", never
+ * needs_action on pH alone. Only defined where a threshold is defensible.
+ */
+const PH_RULES: Partial<Record<FermentType, { ceiling: number; afterDay: number }>> = {
+  labs: { ceiling: 4.5, afterDay: 5 },
+  food: { ceiling: 4.6, afterDay: 4 },
+};
+
+/** Health implied by a pH reading for a given ferment type and day-in-process. */
+export function healthFromPh(
+  type: FermentType | undefined,
+  ph: number | null | undefined,
+  day: number,
+): BatchHealth {
+  if (!type || ph === null || ph === undefined || !Number.isFinite(ph)) {
+    return "on_track";
+  }
+  const rule = PH_RULES[type];
+  if (!rule) {
+    return "on_track";
+  }
+  return day >= rule.afterDay && ph > rule.ceiling ? "watch" : "on_track";
+}
 
 const SEVERITY_RANK: Record<BatchHealth, number> = {
   on_track: 0,
@@ -44,8 +70,8 @@ export function healthFromChips(chipKeys: string[]): BatchHealth {
  * stage-action timing. Returns the most severe signal.
  */
 export function computeHealth(
-  batch: { startedAt: number },
-  latestObservation: { chipKeys: string[] } | null,
+  batch: { startedAt: number; type?: FermentType },
+  latestObservation: { chipKeys: string[]; ph?: number | null } | null,
   template: { stages: StageLike[] },
   now: number = Date.now(),
 ): BatchHealth {
@@ -53,6 +79,10 @@ export function computeHealth(
 
   if (latestObservation) {
     health = maxHealth(health, healthFromChips(latestObservation.chipKeys));
+    health = maxHealth(
+      health,
+      healthFromPh(batch.type, latestObservation.ph, dayInProcess(batch, now)),
+    );
   }
 
   const stage = currentStage(batch, template, now);

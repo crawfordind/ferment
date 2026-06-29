@@ -44,6 +44,9 @@ export function useCreateObservation(batchId: string) {
       transcriptStatus?: ObservationUpsertInput["transcriptStatus"];
       voiceTranscript?: string | null;
       voiceAudioKey?: string | null;
+      ph?: number | null;
+      brix?: number | null;
+      tempC?: number | null;
     }) => {
       const batch = await readLocalBatch(batchId);
       if (!batch) {
@@ -59,6 +62,9 @@ export function useCreateObservation(batchId: string) {
         voiceAudioKey: input.voiceAudioKey ?? null,
         voiceTranscript: input.voiceTranscript ?? null,
         transcriptStatus: input.transcriptStatus ?? "none",
+        ph: input.ph ?? null,
+        brix: input.brix ?? null,
+        tempC: input.tempC ?? null,
         chipKeys: input.chipKeys ?? [],
         createdAt: now,
         updatedAt: now,
@@ -71,7 +77,7 @@ export function useCreateObservation(batchId: string) {
       if (template) {
         const health = computeHealth(
           batch,
-          { chipKeys: observation.chipKeys },
+          { chipKeys: observation.chipKeys, ph: observation.ph },
           template,
         );
         if (health !== batch.health) {

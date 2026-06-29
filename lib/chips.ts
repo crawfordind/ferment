@@ -98,6 +98,18 @@ export const CHIPS_BY_TYPE: Record<FermentType, string[]> = {
     "surface_clean",
     "surface_slime",
   ],
+  food: [
+    "smell_sour",
+    "smell_sweet",
+    "smell_yeasty",
+    "smell_rotten",
+    "activity_bubbling_lots",
+    "activity_some_bubbles",
+    "surface_clean",
+    "surface_white_film",
+    "surface_fuzzy_mold",
+    "surface_slime",
+  ],
   custom: [
     "smell_sweet",
     "smell_sour",

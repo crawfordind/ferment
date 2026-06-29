@@ -6,6 +6,7 @@ const TYPE_PREFIX: Record<FermentType, string> = {
   labs: "LABS",
   fish: "FISH",
   plant: "PLANT",
+  food: "FOOD",
   custom: "CUSTOM",
 };
 
@@ -15,6 +16,7 @@ const DEFAULT_NAMES: Record<FermentType, string> = {
   labs: "LABS serum",
   fish: "Fish ferment",
   plant: "Plant ferment",
+  food: "Food ferment",
   custom: "Custom batch",
 };
 
