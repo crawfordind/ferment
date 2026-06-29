@@ -86,30 +86,42 @@ async function flushEntry(entry: OutboxEntry) {
 }
 
 let flushInFlight: Promise<{ flushed: number; pending: number }> | null = null;
+let flushRequeued = false;
 
 export async function flushOutbox(options?: { force?: boolean }) {
-  if (typeof navigator !== "undefined" && !navigator.onLine && !options?.force) {
+  if (
+    typeof navigator !== "undefined" &&
+    !navigator.onLine &&
+    !options?.force
+  ) {
     return { flushed: 0, pending: await countPendingOutbox() };
   }
 
-  // Coalesce concurrent flushes so overlapping callers don't double-send.
+  // Coalesce concurrent flushes so overlapping callers don't double-send. A
+  // caller arriving mid-flush flags a re-run so entries it just enqueued get
+  // drained in the same cycle instead of being stranded until the next trigger
+  // (e.g. a batch create followed immediately by its photo + cover patch).
   if (flushInFlight) {
+    flushRequeued = true;
     return flushInFlight;
   }
 
   flushInFlight = (async () => {
     const db = getLocalDb();
-    const pending = getPendingOutboxEntries(await db.outbox.toArray());
     let flushed = 0;
 
-    for (const entry of pending) {
-      try {
-        await flushEntry(entry);
-        flushed += 1;
-      } catch {
-        // Entry marked failed inside flushEntry; keep going with the rest.
+    do {
+      flushRequeued = false;
+      const pending = getPendingOutboxEntries(await db.outbox.toArray());
+      for (const entry of pending) {
+        try {
+          await flushEntry(entry);
+          flushed += 1;
+        } catch {
+          // Entry marked failed inside flushEntry; keep going with the rest.
+        }
       }
-    }
+    } while (flushRequeued);
 
     return { flushed, pending: await countPendingOutbox() };
   })();
@@ -131,7 +143,9 @@ export async function countPendingOutbox() {
 export async function getPendingEntityIds() {
   const db = getLocalDb();
   const entries = await db.outbox.toArray();
-  return new Set(getPendingOutboxEntries(entries).map((entry) => entry.entityId));
+  return new Set(
+    getPendingOutboxEntries(entries).map((entry) => entry.entityId),
+  );
 }
 
 export async function saveBatchLocal(input: LocalBatch) {

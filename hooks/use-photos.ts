@@ -42,60 +42,77 @@ async function uploadToR2(photoId: string, ext: string, blob: Blob) {
   }
 }
 
+/**
+ * Capture a photo into the offline store, set it as the batch cover, and
+ * upload to R2 (best-effort, retried by the sync layer when offline). Plain
+ * async so it can run imperatively outside React Query — e.g. in the New Batch
+ * wizard, where the photo is attached right after the batch is created.
+ */
+export async function capturePhotoForBatch(
+  batchId: string,
+  file: File,
+  observationId: string | null = null,
+): Promise<PhotoUpsertInput> {
+  const photoId = newId();
+  const ext = imageExtFromFile(file);
+  const r2Key = `photos/${photoId}.${ext}`;
+  const now = Date.now();
+
+  // Store the blob locally first so thumbnails render instantly and the
+  // upload can be retried offline (Phase 8.3).
+  await savePhotoBlobLocal(photoId, file);
+  const size = await imageSize(file);
+
+  const photo: PhotoUpsertInput = {
+    id: photoId,
+    batchId,
+    observationId,
+    r2Key,
+    width: size?.width ?? null,
+    height: size?.height ?? null,
+    takenAt: now,
+    uploadStatus: "pending",
+    createdAt: now,
+  };
+  await savePhotoLocal(photo);
+
+  // Optimistically make this the batch cover.
+  try {
+    await patchBatchLocal(batchId, {
+      thumbnailPhotoId: photoId,
+      updatedAt: now,
+    });
+  } catch {
+    // Batch may not exist locally yet; cover is non-critical.
+  }
+
+  // Online happy path: upload now and mark done. On failure we leave it
+  // pending for the reconnect flush rather than blocking capture.
+  if (typeof navigator === "undefined" || navigator.onLine) {
+    try {
+      await uploadToR2(photoId, ext, file);
+      await savePhotoLocal({ ...photo, uploadStatus: "done" });
+    } catch {
+      // Stay pending; sync layer retries later.
+    }
+  }
+
+  return photo;
+}
+
 export function useCapturePhoto(batchId: string) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (input: { file: File; observationId?: string | null }) => {
-      const photoId = newId();
-      const ext = imageExtFromFile(input.file);
-      const r2Key = `photos/${photoId}.${ext}`;
-      const now = Date.now();
-
-      // Store the blob locally first so thumbnails render instantly and the
-      // upload can be retried offline (Phase 8.3).
-      await savePhotoBlobLocal(photoId, input.file);
-      const size = await imageSize(input.file);
-
-      const photo: PhotoUpsertInput = {
-        id: photoId,
-        batchId,
-        observationId: input.observationId ?? null,
-        r2Key,
-        width: size?.width ?? null,
-        height: size?.height ?? null,
-        takenAt: now,
-        uploadStatus: "pending",
-        createdAt: now,
-      };
-      await savePhotoLocal(photo);
-
-      // Optimistically make this the batch cover.
-      try {
-        await patchBatchLocal(batchId, {
-          thumbnailPhotoId: photoId,
-          updatedAt: now,
-        });
-      } catch {
-        // Batch may not exist locally yet; cover is non-critical.
-      }
-
-      // Online happy path: upload now and mark done. On failure we leave it
-      // pending for the reconnect flush rather than blocking capture.
-      if (typeof navigator === "undefined" || navigator.onLine) {
-        try {
-          await uploadToR2(photoId, ext, input.file);
-          await savePhotoLocal({ ...photo, uploadStatus: "done" });
-        } catch {
-          // Stay pending; sync layer retries later.
-        }
-      }
-
-      return photo;
-    },
+    mutationFn: (input: { file: File; observationId?: string | null }) =>
+      capturePhotoForBatch(batchId, input.file, input.observationId ?? null),
     onSuccess: (photo) => {
-      void queryClient.invalidateQueries({ queryKey: queryKeys.photo(photo.id) });
-      void queryClient.invalidateQueries({ queryKey: queryKeys.batch(batchId) });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.photo(photo.id),
+      });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.batch(batchId),
+      });
       void queryClient.invalidateQueries({ queryKey: queryKeys.batches() });
       if (photo.observationId) {
         void queryClient.invalidateQueries({

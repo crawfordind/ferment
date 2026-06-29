@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Camera } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { PhotoPlaceholder } from "@/components/batch/photo-placeholder";
 import { useBatches, useCreateBatch } from "@/hooks/use-batches";
+import { capturePhotoForBatch } from "@/hooks/use-photos";
 import { generateNextBatchCode, suggestBatchName } from "@/lib/codes";
 import { SEED_TEMPLATES } from "@/lib/seed-data";
 import type { FermentType } from "@/lib/schema";
@@ -101,6 +102,21 @@ export default function NewBatchPage() {
   const [code, setCode] = useState("");
   const [sizeValue, setSizeValue] = useState("");
   const [sizeUnit, setSizeUnit] = useState("kg");
+  const [coverFile, setCoverFile] = useState<File | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string | null>(null);
+  const [starting, setStarting] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  // Preview the chosen cover photo before the batch exists.
+  useEffect(() => {
+    if (!coverFile) {
+      setCoverPreview(null);
+      return;
+    }
+    const url = URL.createObjectURL(coverFile);
+    setCoverPreview(url);
+    return () => URL.revokeObjectURL(url);
+  }, [coverFile]);
 
   const existingCodes = useMemo(
     () =>
@@ -122,17 +138,34 @@ export default function NewBatchPage() {
   }, [type]);
 
   async function handleStart() {
-    if (!type) return;
-    const parsedSize = sizeValue.trim() ? Number(sizeValue) : null;
-    const batch = await createBatch.mutateAsync({
-      type,
-      name,
-      code,
-      sizeValue:
-        parsedSize !== null && Number.isFinite(parsedSize) ? parsedSize : null,
-      sizeUnit,
-    });
-    router.replace(`/batch/${batch.id}`);
+    if (!type || starting) return;
+    setStarting(true);
+    try {
+      const parsedSize = sizeValue.trim() ? Number(sizeValue) : null;
+      const batch = await createBatch.mutateAsync({
+        type,
+        name,
+        code,
+        sizeValue:
+          parsedSize !== null && Number.isFinite(parsedSize)
+            ? parsedSize
+            : null,
+        sizeUnit,
+      });
+
+      // Attach the optional first photo now that the batch id exists.
+      if (coverFile) {
+        try {
+          await capturePhotoForBatch(batch.id, coverFile);
+        } catch {
+          // Non-blocking: the batch is created; the photo can be added later.
+        }
+      }
+
+      router.replace(`/batch/${batch.id}`);
+    } finally {
+      setStarting(false);
+    }
   }
 
   return (
@@ -180,7 +213,10 @@ export default function NewBatchPage() {
       {step === 3 ? (
         <section className="flex flex-1 flex-col gap-5">
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="batch-name" className="text-sm font-medium text-ink">
+            <label
+              htmlFor="batch-name"
+              className="text-sm font-medium text-ink"
+            >
               Name
             </label>
             <input
@@ -192,7 +228,10 @@ export default function NewBatchPage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label htmlFor="batch-code" className="text-sm font-medium text-ink">
+            <label
+              htmlFor="batch-code"
+              className="text-sm font-medium text-ink"
+            >
               Short code
             </label>
             <input
@@ -238,10 +277,41 @@ export default function NewBatchPage() {
 
           <div className="flex flex-col gap-1.5">
             <span className="text-sm font-medium text-ink">First photo</span>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className="hidden"
+              onChange={(event) => {
+                setCoverFile(event.target.files?.[0] ?? null);
+                event.target.value = "";
+              }}
+            />
             <div className="flex items-center gap-3">
-              <PhotoPlaceholder className="size-16 rounded-lg" />
+              <button
+                type="button"
+                onClick={() => fileInputRef.current?.click()}
+                aria-label={
+                  coverPreview ? "Change first photo" : "Add first photo"
+                }
+                className="flex size-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border-2 border-dashed border-border bg-subtle-fill text-secondary"
+              >
+                {coverPreview ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={coverPreview}
+                    alt="First photo preview"
+                    className="size-full object-cover"
+                  />
+                ) : (
+                  <Camera className="size-6" aria-hidden />
+                )}
+              </button>
               <p className="text-sm text-muted">
-                Snap one now or add it later. Skippable.
+                {coverFile
+                  ? "Looks good — tap to retake. Skippable."
+                  : "Snap one now or add it later. Skippable."}
               </p>
             </div>
           </div>
@@ -287,10 +357,10 @@ export default function NewBatchPage() {
               type="button"
               size="lg"
               className="flex-1"
-              disabled={!type || createBatch.isPending}
+              disabled={!type || starting}
               onClick={handleStart}
             >
-              {createBatch.isPending ? "Starting…" : "Start batch"}
+              {starting ? "Starting…" : "Start batch"}
             </Button>
           )}
         </div>
