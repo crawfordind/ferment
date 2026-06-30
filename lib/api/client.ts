@@ -78,6 +78,12 @@ export async function patchBatchApi(id: string, input: BatchPatchInput) {
   return data.batch;
 }
 
+export async function fetchPhotos(batchId: string) {
+  const response = await fetch(`/api/batches/${batchId}/photos`);
+  const data = await parseResponse<{ photos: PhotoDto[] }>(response);
+  return data.photos;
+}
+
 export async function fetchObservations(batchId: string) {
   const response = await fetch(`/api/batches/${batchId}/observations`);
   const data = await parseResponse<{ observations: ObservationDto[] }>(response);

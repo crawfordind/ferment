@@ -11,10 +11,12 @@ import { imageExtFromFile, publicPhotoUrl } from "@/lib/photo-url";
 import {
   patchBatchLocal,
   readLocalPhoto,
+  readLocalPhotosForBatch,
   readLocalPhotosForObservation,
   readPhotoBlob,
   savePhotoBlobLocal,
   savePhotoLocal,
+  syncPhotosFromServer,
 } from "@/offline/repository";
 
 async function imageSize(
@@ -114,6 +116,9 @@ export function useCapturePhoto(batchId: string) {
         queryKey: queryKeys.batch(batchId),
       });
       void queryClient.invalidateQueries({ queryKey: queryKeys.batches() });
+      void queryClient.invalidateQueries({
+        queryKey: queryKeys.batchPhotos(batchId),
+      });
       if (photo.observationId) {
         void queryClient.invalidateQueries({
           queryKey: queryKeys.observationPhotos(photo.observationId),
@@ -165,5 +170,43 @@ export function useObservationPhotos(observationId: string) {
     queryKey: queryKeys.observationPhotos(observationId),
     enabled: Boolean(observationId),
     queryFn: () => readLocalPhotosForObservation(observationId),
+  });
+}
+
+/**
+ * Every photo for a batch (cover + all observations'), synced from the server so
+ * images captured on another device show up here. Pulls remote rows into the
+ * local cache, then returns the merged set; on a successful sync it nudges the
+ * per-photo `usePhotoSrc` queries so freshly-hydrated R2 keys render right away.
+ */
+export function useBatchPhotos(batchId: string) {
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: queryKeys.batchPhotos(batchId),
+    enabled: Boolean(batchId),
+    queryFn: async () => {
+      let synced = false;
+      try {
+        if (typeof navigator === "undefined" || navigator.onLine) {
+          await syncPhotosFromServer(batchId);
+          synced = true;
+        }
+      } catch {
+        // Offline or server error: fall back to the local cache.
+      }
+
+      const photos = await readLocalPhotosForBatch(batchId);
+
+      if (synced) {
+        for (const photo of photos) {
+          void queryClient.invalidateQueries({
+            queryKey: queryKeys.photo(photo.id),
+          });
+        }
+      }
+
+      return photos;
+    },
   });
 }
