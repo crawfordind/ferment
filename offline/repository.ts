@@ -228,6 +228,39 @@ export async function readLocalPhotosForObservation(observationId: string) {
     .sortBy("createdAt");
 }
 
+export async function readLocalPhotosForBatch(batchId: string) {
+  const db = getLocalDb();
+  return db.photos.where("batchId").equals(batchId).sortBy("createdAt");
+}
+
+/**
+ * Merge server photo rows into the local cache. Rows this device already has are
+ * left alone (it owns the captured blob and may have a fresher upload status);
+ * we only fill in photos captured on other devices, and upgrade a locally
+ * pending row once the server confirms the upload finished.
+ */
+export async function hydratePhotosFromServer(remotePhotos: PhotoUpsertInput[]) {
+  const db = getLocalDb();
+  for (const remote of remotePhotos) {
+    const local = await db.photos.get(remote.id);
+    if (!local) {
+      await db.photos.put(remote);
+    } else if (
+      local.uploadStatus !== "done" &&
+      remote.uploadStatus === "done"
+    ) {
+      await db.photos.put({ ...local, ...remote });
+    }
+  }
+}
+
+export async function syncPhotosFromServer(batchId: string) {
+  const { fetchPhotos } = await import("@/lib/api/client");
+  const remote = await fetchPhotos(batchId);
+  await hydratePhotosFromServer(remote);
+  return remote;
+}
+
 /**
  * Merge server rows into the local cache with last-write-wins by `updatedAt`,
  * so a server read-back never clobbers a newer un-flushed local write. Rows that

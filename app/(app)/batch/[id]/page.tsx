@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
 
+import { CreationRow } from "@/components/batch/creation-row";
 import { ObservationRow } from "@/components/batch/observation-row";
 import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
 import { formatTemperature } from "@/lib/temperature";
@@ -15,6 +16,8 @@ import { DayChip } from "@/components/batch/day-chip";
 import { Button } from "@/components/ui/button";
 import { useBatch, useUpdateBatch } from "@/hooks/use-batch";
 import { useObservations } from "@/hooks/use-observations";
+import { useBatchPhotos } from "@/hooks/use-photos";
+import type { LocalPhoto } from "@/offline/dexie";
 import { computeDayInProcess } from "@/lib/day";
 import { costPerUnit, formatCostPerUnit } from "@/lib/economics";
 import { computeRatio, computeSaltPercent, parseInputs } from "@/lib/inputs";
@@ -131,6 +134,7 @@ export default function BatchDetailPage() {
   const batchId = params.id;
   const batchQuery = useBatch(batchId);
   const observationsQuery = useObservations(batchId);
+  const photosQuery = useBatchPhotos(batchId);
   const { temperatureUnit } = useMeasurementSystem();
 
   if (batchQuery.isLoading) {
@@ -158,6 +162,21 @@ export default function BatchDetailPage() {
   const day = computeDayInProcess(batch.startedAt);
   const observations = observationsQuery.data ?? [];
   const finished = batch.status !== "active";
+
+  // Group every synced photo by its observation; photos with no observation are
+  // the creation/cover shots and get their own timeline entry.
+  const photos = photosQuery.data ?? [];
+  const photosByObservation = new Map<string, LocalPhoto[]>();
+  const creationPhotos: LocalPhoto[] = [];
+  for (const photo of photos) {
+    if (photo.observationId) {
+      const list = photosByObservation.get(photo.observationId) ?? [];
+      list.push(photo);
+      photosByObservation.set(photo.observationId, list);
+    } else {
+      creationPhotos.push(photo);
+    }
+  }
 
   const recipe = parseInputs(batch.inputs);
   const ratio = computeRatio(recipe);
@@ -317,7 +336,7 @@ export default function BatchDetailPage() {
         </h2>
         {observationsQuery.isLoading && observations.length === 0 ? (
           <div className="h-20 animate-pulse rounded-[var(--radius-card)] bg-subtle-fill" />
-        ) : observations.length === 0 ? (
+        ) : observations.length === 0 && creationPhotos.length === 0 ? (
           <div className="rounded-[var(--radius-card)] border border-dashed border-border px-4 py-10 text-center">
             <p className="text-sm text-secondary">
               No logs yet. Tap Log to add your first.
@@ -330,8 +349,12 @@ export default function BatchDetailPage() {
                 key={observation.id}
                 observation={observation}
                 startedAt={batch.startedAt}
+                photos={photosByObservation.get(observation.id) ?? []}
               />
             ))}
+            {creationPhotos.length > 0 ? (
+              <CreationRow photos={creationPhotos} startedAt={batch.startedAt} />
+            ) : null}
           </ul>
         )}
       </section>

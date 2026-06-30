@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 
 import type { PhotoUpsertInput } from "@/lib/api/schemas";
 import type { Database } from "@/lib/db";
@@ -48,4 +48,19 @@ export async function upsertPhoto(db: Database, input: PhotoUpsertInput) {
     .limit(1);
 
   return photo;
+}
+
+/**
+ * All photos for a batch (cover + every observation's), oldest first. Drives the
+ * read-back so a photo captured on one device shows up on the others — the local
+ * cache only ever holds what that device itself captured.
+ */
+export async function listPhotosForBatch(db: Database, batchId: string) {
+  await getBatchById(db, batchId);
+
+  return db
+    .select()
+    .from(photos)
+    .where(eq(photos.batchId, batchId))
+    .orderBy(asc(photos.createdAt));
 }
