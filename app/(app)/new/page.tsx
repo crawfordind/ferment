@@ -122,6 +122,22 @@ export default function NewBatchPage() {
     return () => URL.revokeObjectURL(url);
   }, [coverFile]);
 
+  // Deep-link from the Knowledge Base: /new?type=<fermentType> preselects the
+  // matching template and jumps to the details step. Read from location directly
+  // to avoid a Suspense boundary for useSearchParams.
+  const prefilled = useRef(false);
+  useEffect(() => {
+    if (prefilled.current) return;
+    prefilled.current = true;
+    const requested = new URLSearchParams(window.location.search).get("type");
+    if (!requested) return;
+    const template = SEED_TEMPLATES.find((t) => t.type === requested);
+    if (!template) return;
+    setCategory(template.category);
+    setType(template.type);
+    setStep(3);
+  }, []);
+
   const existingCodes = useMemo(
     () =>
       (batchesQuery.data ?? [])

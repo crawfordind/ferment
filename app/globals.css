@@ -56,3 +56,72 @@
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
 }
+
+/* Knowledge-base article prose. Styles the HTML compiled from content/knowledge/*.md. */
+.kb-prose {
+  color: var(--ink);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+.kb-prose > * + * {
+  margin-top: 0.75rem;
+}
+.kb-prose h2 {
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  margin-top: 1.5rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--hairline);
+}
+.kb-prose h3 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  margin-top: 1rem;
+}
+.kb-prose strong {
+  font-weight: 700;
+  color: var(--ink);
+}
+.kb-prose a {
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: underline;
+}
+.kb-prose ul,
+.kb-prose ol {
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.kb-prose ul {
+  list-style: disc;
+}
+.kb-prose ol {
+  list-style: decimal;
+}
+.kb-prose li::marker {
+  color: var(--muted);
+}
+.kb-prose blockquote {
+  border-left: 3px solid var(--accent);
+  background: var(--subtle-fill);
+  border-radius: var(--radius-card);
+  padding: 0.75rem 1rem;
+  color: var(--secondary);
+  font-size: 0.9375rem;
+}
+.kb-prose blockquote strong {
+  color: var(--accent);
+}
+.kb-prose code {
+  background: var(--subtle-fill);
+  border-radius: 6px;
+  padding: 0.1rem 0.35rem;
+  font-size: 0.85em;
+}
+.kb-prose hr {
+  border: none;
+  border-top: 1px solid var(--hairline);
+}

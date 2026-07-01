@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Settings } from "lucide-react";
+import { BookOpen, Home, Settings } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -28,6 +28,15 @@ export function BottomNav() {
         >
           <Home className="size-6" aria-hidden />
           <span>Home</span>
+        </Link>
+
+        <Link
+          href="/knowledge"
+          className={cn(navLinkClass, pathname.startsWith("/knowledge") && "text-accent")}
+          aria-current={pathname.startsWith("/knowledge") ? "page" : undefined}
+        >
+          <BookOpen className="size-6" aria-hidden />
+          <span>Learn</span>
         </Link>
 
         <Link
