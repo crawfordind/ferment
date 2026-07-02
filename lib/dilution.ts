@@ -7,6 +7,8 @@
  * Pure and dependency-free so it runs offline and is easy to test.
  */
 
+import type { MeasurementSystem } from "./units";
+
 export type DilutionRatio = {
   /** Strongest (smallest denominator) parts of water per 1 part concentrate. */
   min: number;
@@ -103,6 +105,27 @@ export function formatMl(ml: number): string {
 export function formatDoseRange(dose: DoseRange): string {
   const min = formatMl(dose.minMl);
   const max = formatMl(dose.maxMl);
+  return min === max ? min : `${min}–${max}`;
+}
+
+const ML_PER_FL_OZ = 29.5735295625;
+
+/** Format a fluid-ounce dose, tuned for the small amounts a dose usually is. */
+function formatFlOz(ml: number): string {
+  if (!Number.isFinite(ml)) return "—";
+  const flOz = ml / ML_PER_FL_OZ;
+  const rounded = flOz >= 10 ? Math.round(flOz * 10) / 10 : Math.round(flOz * 100) / 100;
+  return `${rounded} fl oz`;
+}
+
+/**
+ * Format a dose range in the unit the user's system uses for small volumes —
+ * millilitres for metric, fluid ounces for imperial.
+ */
+export function formatDose(dose: DoseRange, system: MeasurementSystem): string {
+  const fmt = system === "imperial" ? formatFlOz : formatMl;
+  const min = fmt(dose.minMl);
+  const max = fmt(dose.maxMl);
   return min === max ? min : `${min}–${max}`;
 }
 

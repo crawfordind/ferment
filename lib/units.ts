@@ -57,6 +57,83 @@ export function unitDimension(unit: string): Dimension | null {
   return UNIT_DIMENSION[unit.trim().toLowerCase()] ?? null;
 }
 
+// Conversion factors to a base unit (grams for mass, millilitres for volume).
+// Keyed lowercase so lookups are case-insensitive ("mL" → "ml", "L" → "l").
+const TO_BASE: Record<string, number> = {
+  kg: 1000,
+  g: 1,
+  lb: 453.59237,
+  oz: 28.349523125,
+  l: 1000,
+  ml: 1,
+  gal: 3785.411784,
+  "fl oz": 29.5735295625,
+};
+
+// Units that measure a "small" amount; everything else recognized is "large".
+// Converting preserves the tier so a recipe in kg shows as lb (not oz).
+const SMALL_UNITS = new Set(["g", "oz", "ml", "fl oz"]);
+
+// The unit to display for each system, dimension, and tier.
+const DISPLAY_UNIT: Record<
+  MeasurementSystem,
+  Record<Dimension, { large: string; small: string }>
+> = {
+  metric: {
+    mass: { large: "kg", small: "g" },
+    volume: { large: "L", small: "mL" },
+  },
+  imperial: {
+    mass: { large: "lb", small: "oz" },
+    volume: { large: "gal", small: "fl oz" },
+  },
+};
+
+export type Quantity = { value: number; unit: string };
+
+/**
+ * Convert a stored quantity into the unit the user's system displays, keeping
+ * the same dimension and size tier. A batch made in `kg` shows as `lb` for an
+ * imperial user; a `500 g` input shows as `oz`. Unrecognized units (e.g. a
+ * custom "part") pass through untouched — amounts are never silently dropped.
+ */
+export function convertQuantity(
+  value: number,
+  unit: string,
+  system: MeasurementSystem,
+): Quantity {
+  const key = unit.trim().toLowerCase();
+  const dimension = UNIT_DIMENSION[key];
+  const fromFactor = TO_BASE[key];
+  if (!dimension || fromFactor === undefined || !Number.isFinite(value)) {
+    return { value, unit };
+  }
+
+  const tier = SMALL_UNITS.has(key) ? "small" : "large";
+  const targetUnit = DISPLAY_UNIT[system][dimension][tier];
+  const toFactor = TO_BASE[targetUnit.toLowerCase()];
+  return { value: (value * fromFactor) / toFactor, unit: targetUnit };
+}
+
+/** Round to at most 2 decimals and drop trailing zeros (5 → "5", 2.2 → "2.2"). */
+export function formatAmount(value: number): string {
+  if (!Number.isFinite(value)) return "";
+  return String(Math.round(value * 100) / 100);
+}
+
+/**
+ * Convert then format a stored quantity for display in the user's system,
+ * e.g. `formatQuantity(5, "kg", "imperial")` → "11.02 lb".
+ */
+export function formatQuantity(
+  value: number,
+  unit: string,
+  system: MeasurementSystem,
+): string {
+  const converted = convertQuantity(value, unit, system);
+  return `${formatAmount(converted.value)} ${converted.unit}`.trim();
+}
+
 const DEFAULT_MASS: Record<MeasurementSystem, string> = {
   metric: "kg",
   imperial: "lb",

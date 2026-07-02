@@ -26,6 +26,7 @@ import { computeRatio, computeSaltPercent, parseInputs } from "@/lib/inputs";
 import { getDocByFermentType } from "@/lib/knowledge";
 import { generateLotId } from "@/lib/lots";
 import { getSeedTemplate } from "@/lib/seed-data";
+import { convertQuantity, formatQuantity } from "@/lib/units";
 import { currentStage } from "@/lib/stages";
 
 function OverflowMenu({ batchId }: { batchId: string }) {
@@ -138,7 +139,7 @@ export default function BatchDetailPage() {
   const batchQuery = useBatch(batchId);
   const observationsQuery = useObservations(batchId);
   const photosQuery = useBatchPhotos(batchId);
-  const { temperatureUnit } = useMeasurementSystem();
+  const { system, temperatureUnit } = useMeasurementSystem();
 
   if (batchQuery.isLoading) {
     return (
@@ -191,7 +192,18 @@ export default function BatchDetailPage() {
         observation.brix != null ||
         observation.tempC != null,
     ) ?? null;
-  const cost = costPerUnit(batch.costAmount, batch.yieldValue, batch.yieldUnit);
+  // Show every stored amount in the user's selected system (a batch made in kg
+  // reads as lb for an imperial user); cost-per-unit follows the same converted
+  // yield so its unit matches what's displayed.
+  const convertedYield =
+    batch.yieldValue != null
+      ? convertQuantity(batch.yieldValue, batch.yieldUnit ?? "", system)
+      : null;
+  const cost = costPerUnit(
+    batch.costAmount,
+    convertedYield?.value ?? batch.yieldValue,
+    convertedYield?.unit ?? batch.yieldUnit,
+  );
 
   // Guidance keys off the most recent observation that carried sensory chips.
   const latestChips =
@@ -222,7 +234,7 @@ export default function BatchDetailPage() {
             <p className="text-[11px] font-medium uppercase tracking-wide text-muted">
               {batch.code}
               {batch.sizeValue
-                ? ` · ${batch.sizeValue} ${batch.sizeUnit ?? ""}`.trimEnd()
+                ? ` · ${formatQuantity(batch.sizeValue, batch.sizeUnit ?? "", system)}`.trimEnd()
                 : ""}
             </p>
             {finished ? (
@@ -264,7 +276,7 @@ export default function BatchDetailPage() {
                 <span className="text-ink">{item.name}</span>
                 <span className="shrink-0 text-secondary">
                   {item.quantity != null
-                    ? `${item.quantity} ${item.unit}`.trim()
+                    ? formatQuantity(item.quantity, item.unit, system)
                     : "—"}
                 </span>
               </li>
@@ -322,7 +334,7 @@ export default function BatchDetailPage() {
               <div className="flex justify-between gap-3">
                 <dt className="text-secondary">Yield</dt>
                 <dd className="text-ink">
-                  {batch.yieldValue} {batch.yieldUnit ?? ""}
+                  {formatQuantity(batch.yieldValue, batch.yieldUnit ?? "", system)}
                 </dd>
               </div>
             ) : null}

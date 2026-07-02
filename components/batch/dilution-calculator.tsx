@@ -6,7 +6,7 @@ import { Droplets } from "lucide-react";
 import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
 import {
   doseForWater,
-  formatDoseRange,
+  formatDose,
   parseDilutionRatio,
   volumeToMl,
   WATER_UNITS_IMPERIAL,
@@ -123,7 +123,7 @@ export function DilutionCalculator({
           <p className="text-ink">
             Add{" "}
             <span className="font-semibold text-accent">
-              {formatDoseRange(dose)}
+              {formatDose(dose, system)}
             </span>{" "}
             to {waterValue} {waterUnit} of water.
           </p>
