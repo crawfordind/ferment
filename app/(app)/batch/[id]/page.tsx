@@ -6,7 +6,9 @@ import { useParams, useRouter } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
 
 import { CreationRow } from "@/components/batch/creation-row";
+import { DilutionCalculator } from "@/components/batch/dilution-calculator";
 import { ObservationRow } from "@/components/batch/observation-row";
+import { TroubleshootingNote } from "@/components/batch/troubleshooting-note";
 import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
 import { formatTemperature } from "@/lib/temperature";
 import { PhotoThumb } from "@/components/batch/photo-thumb";
@@ -21,6 +23,7 @@ import type { LocalPhoto } from "@/offline/dexie";
 import { computeDayInProcess } from "@/lib/day";
 import { costPerUnit, formatCostPerUnit } from "@/lib/economics";
 import { computeRatio, computeSaltPercent, parseInputs } from "@/lib/inputs";
+import { getDocByFermentType } from "@/lib/knowledge";
 import { generateLotId } from "@/lib/lots";
 import { getSeedTemplate } from "@/lib/seed-data";
 import { currentStage } from "@/lib/stages";
@@ -190,6 +193,13 @@ export default function BatchDetailPage() {
     ) ?? null;
   const cost = costPerUnit(batch.costAmount, batch.yieldValue, batch.yieldUnit);
 
+  // Guidance keys off the most recent observation that carried sensory chips.
+  const latestChips =
+    observations.find((observation) => observation.chipKeys.length > 0)
+      ?.chipKeys ?? [];
+  // Dilution comes from the recipe this batch type was made from.
+  const dilution = getDocByFermentType(batch.type)?.dilution ?? null;
+
   return (
     <main className="flex flex-1 flex-col gap-4 px-4 py-6">
       {/* Header */}
@@ -232,6 +242,11 @@ export default function BatchDetailPage() {
       {/* Stage banner */}
       {template && !finished ? (
         <StageBanner stage={currentStage(batch, template)} />
+      ) : null}
+
+      {/* "Is this normal?" — guidance from the latest sensory reading. */}
+      {!finished && latestChips.length > 0 ? (
+        <TroubleshootingNote chipKeys={latestChips} type={batch.type} />
       ) : null}
 
       {/* Recipe */}
@@ -326,6 +341,26 @@ export default function BatchDetailPage() {
               </div>
             ) : null}
           </dl>
+        </section>
+      ) : null}
+
+      {/* Use it — dilution helper + record an application (finished batches). */}
+      {finished ? (
+        <section className="flex flex-col gap-4 rounded-[var(--radius-card)] border border-hairline bg-white p-4">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
+            Use it
+          </h2>
+          {dilution ? (
+            <DilutionCalculator dilution={dilution} />
+          ) : (
+            <p className="text-sm text-muted">
+              Mix into water and apply to your crop. Record each use below to
+              track what worked.
+            </p>
+          )}
+          <Button asChild variant="outline" size="lg" className="w-full">
+            <Link href={`/batch/${batchId}/apply`}>＋ Record application</Link>
+          </Button>
         </section>
       ) : null}
 

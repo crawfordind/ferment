@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Camera, Plus } from "lucide-react";
 
 import { PhotoThumb } from "@/components/batch/photo-thumb";
+import { TroubleshootingNote } from "@/components/batch/troubleshooting-note";
 import { SensoryChip } from "@/components/chips/sensory-chip";
 import { VoiceRecorder, type VoiceResult } from "@/components/voice/voice-recorder";
 import { Button } from "@/components/ui/button";
@@ -265,6 +266,12 @@ export default function QuickLogPage() {
             </button>
           </div>
         ) : null}
+
+        {/* "Is this normal?" — reassurance + fixes for the selected signs. */}
+        <TroubleshootingNote
+          chipKeys={Array.from(selected)}
+          type={batchQuery.data?.type}
+        />
       </section>
 
       {/* Measurements */}

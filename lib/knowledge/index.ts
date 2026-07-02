@@ -36,6 +36,14 @@ export function getDoc(id: string): KnowledgeDoc | undefined {
   return KNOWLEDGE_DOCS.find((d) => d.id === id);
 }
 
+/** The recipe doc a batch type was made from, for dilution/application guidance. */
+export function getDocByFermentType(
+  fermentType: string | undefined,
+): KnowledgeDoc | undefined {
+  if (!fermentType) return undefined;
+  return KNOWLEDGE_DOCS.find((d) => d.fermentType === fermentType);
+}
+
 /** Human-facing order + labels for the Nutritive Cycle stages. */
 export const STAGE_META: Record<NutritiveStage, { label: string; short: string; order: number }> = {
   vegetative: { label: "Vegetative growth", short: "Grow (N)", order: 1 },

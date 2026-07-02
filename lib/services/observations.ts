@@ -48,6 +48,7 @@ export async function upsertObservation(
       ph: input.ph ?? null,
       brix: input.brix ?? null,
       tempC: input.tempC ?? null,
+      application: input.application ?? null,
       createdAt: input.createdAt,
       updatedAt: input.updatedAt,
     })
@@ -64,6 +65,7 @@ export async function upsertObservation(
         ph: input.ph ?? null,
         brix: input.brix ?? null,
         tempC: input.tempC ?? null,
+        application: input.application ?? null,
         updatedAt: input.updatedAt,
       },
     });

@@ -78,6 +78,8 @@ export const observations = sqliteTable("observations", {
   ph: real("ph"),
   brix: real("brix"),
   tempC: real("temp_c"),
+  /** Application record as JSON-encoded Application (see lib/applications.ts). */
+  application: text("application"),
   createdAt: integer("created_at").notNull(),
   updatedAt: integer("updated_at").notNull(),
 });

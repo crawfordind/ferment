@@ -1,10 +1,11 @@
 "use client";
 
-import { CloudOff } from "lucide-react";
+import { CloudOff, Sprout } from "lucide-react";
 
 import { ChipTag } from "@/components/chips/chip-tag";
 import { useIsPending } from "@/components/providers/sync-provider";
 import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
+import { doseLabel, parseApplication } from "@/lib/applications";
 import { formatTemperature } from "@/lib/temperature";
 import { computeDayInProcess } from "@/lib/day";
 import type { LocalObservation, LocalPhoto } from "@/offline/dexie";
@@ -33,12 +34,18 @@ export function ObservationRow({
   const day = computeDayInProcess(startedAt, observation.observedAt);
   const pending = useIsPending(observation.id);
   const { temperatureUnit } = useMeasurementSystem();
+  const application = parseApplication(observation.application);
+  const dose = application ? doseLabel(application) : null;
 
   return (
     <li className="flex gap-3 rounded-[var(--radius-card)] border border-hairline bg-white p-3">
       <div className="size-14 shrink-0">
         {photos.length > 0 ? (
           <PhotoThumb photoId={photos[0].id} className="size-14 rounded-lg" />
+        ) : application ? (
+          <div className="flex size-14 items-center justify-center rounded-lg bg-subtle-fill">
+            <Sprout className="size-6 text-accent" aria-hidden />
+          </div>
         ) : (
           <PhotoPlaceholder className="size-14 rounded-lg" />
         )}
@@ -57,6 +64,24 @@ export function ObservationRow({
             {formatObservedAt(observation.observedAt)}
           </span>
         </div>
+
+        {application ? (
+          <div className="flex flex-col gap-0.5">
+            <p className="text-sm font-semibold text-ink">
+              Applied to {application.target}
+            </p>
+            <p className="text-xs text-secondary">
+              {[
+                application.dilution,
+                dose && application.waterValue != null && application.waterUnit
+                  ? `${dose} in ${application.waterValue} ${application.waterUnit}`
+                  : null,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
+          </div>
+        ) : null}
 
         {observation.chipKeys.length > 0 ? (
           <div className="flex flex-wrap gap-1.5">
