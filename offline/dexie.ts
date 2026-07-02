@@ -3,6 +3,7 @@ import Dexie, { type EntityTable } from "dexie";
 import type {
   BatchUpsertInput,
   ObservationUpsertInput,
+  PhotoDto,
   PhotoUpsertInput,
 } from "@/lib/api/schemas";
 
@@ -14,7 +15,9 @@ export type OutboxStatus = "pending" | "processing" | "done" | "failed";
 // version bump — `.stores()` only declares indexes, not the full record shape.
 export type LocalBatch = BatchUpsertInput;
 export type LocalObservation = ObservationUpsertInput;
-export type LocalPhoto = PhotoUpsertInput;
+// Carries the server-resolved `publicUrl` (non-indexed) so a photo captured on
+// another device renders here without the browser needing the R2 base URL.
+export type LocalPhoto = PhotoDto;
 
 /** Captured image bytes held locally for instant thumbnails and offline upload. */
 export type LocalPhotoBlob = {

@@ -108,4 +108,7 @@ export type ObservationDto = ObservationUpsertInput & {
   dayInProcess: number;
   chipKeys: string[];
 };
-export type PhotoDto = PhotoUpsertInput;
+// The server resolves the R2 public URL and sends it alongside each row, so
+// other devices can render a photo without relying on the browser-only
+// NEXT_PUBLIC_R2_PUBLIC_BASE_URL being set at build time.
+export type PhotoDto = PhotoUpsertInput & { publicUrl?: string | null };
