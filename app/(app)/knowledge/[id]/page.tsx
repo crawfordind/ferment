@@ -4,6 +4,7 @@ import { ChevronLeft, Clock, Droplets, FlaskConical, Gauge } from "lucide-react"
 
 import { CATEGORY_META, SOURCE_LABELS, difficultyLabel, getAllDocs, getDoc } from "@/lib/knowledge";
 import { Button } from "@/components/ui/button";
+import { DilutionCalculator } from "@/components/batch/dilution-calculator";
 import { CategoryIcon } from "@/components/knowledge/category-icon";
 import { StageBadge } from "@/components/knowledge/stage-badge";
 import { StepStrip } from "@/components/knowledge/step-strip";
@@ -92,6 +93,16 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
           </Button>
         ) : null}
       </header>
+
+      {/* Dilution calculator — turn the ratio into an actual dose to apply. */}
+      {doc.dilution ? (
+        <section className="flex flex-col gap-3 rounded-[var(--radius-card)] border-2 border-hairline bg-white p-4">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
+            Dilution calculator
+          </h2>
+          <DilutionCalculator dilution={doc.dilution} />
+        </section>
+      ) : null}
 
       {/* Ingredients */}
       {doc.ingredients.length > 0 ? (

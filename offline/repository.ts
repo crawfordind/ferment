@@ -337,6 +337,7 @@ export async function syncObservationsFromServer(batchId: string) {
       ph: observation.ph,
       brix: observation.brix,
       tempC: observation.tempC,
+      application: observation.application,
       chipKeys: observation.chipKeys,
       createdAt: observation.createdAt,
       updatedAt: observation.updatedAt,

@@ -63,6 +63,7 @@ export const observationUpsertSchema = z.object({
   ph: z.number().nullable().optional(),
   brix: z.number().nullable().optional(),
   tempC: z.number().nullable().optional(),
+  application: z.string().nullable().optional(),
   chipKeys: z.array(z.string()).default([]),
   createdAt: z.number().int(),
   updatedAt: z.number().int(),
