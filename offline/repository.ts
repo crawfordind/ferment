@@ -8,6 +8,7 @@ import type {
   BatchPatchInput,
   BatchUpsertInput,
   ObservationUpsertInput,
+  PhotoDto,
   PhotoUpsertInput,
 } from "@/lib/api/schemas";
 import { newId } from "@/lib/id";
@@ -239,7 +240,7 @@ export async function readLocalPhotosForBatch(batchId: string) {
  * we only fill in photos captured on other devices, and upgrade a locally
  * pending row once the server confirms the upload finished.
  */
-export async function hydratePhotosFromServer(remotePhotos: PhotoUpsertInput[]) {
+export async function hydratePhotosFromServer(remotePhotos: PhotoDto[]) {
   const db = getLocalDb();
   for (const remote of remotePhotos) {
     const local = await db.photos.get(remote.id);
@@ -250,11 +251,15 @@ export async function hydratePhotosFromServer(remotePhotos: PhotoUpsertInput[]) 
       remote.uploadStatus === "done"
     ) {
       await db.photos.put({ ...local, ...remote });
+    } else if (remote.publicUrl && local.publicUrl !== remote.publicUrl) {
+      // Backfill the server-resolved public URL onto rows we already have
+      // (e.g. captured before this field existed) without touching status.
+      await db.photos.put({ ...local, publicUrl: remote.publicUrl });
     }
   }
 }
 
-export async function syncPhotosFromServer(batchId: string) {
+export async function syncPhotosFromServer(batchId: string): Promise<PhotoDto[]> {
   const { fetchPhotos } = await import("@/lib/api/client");
   const remote = await fetchPhotos(batchId);
   await hydratePhotosFromServer(remote);

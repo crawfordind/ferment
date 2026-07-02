@@ -143,7 +143,11 @@ export function usePhotoSrc(photoId: string | null | undefined) {
         readPhotoBlob(photoId!),
         readLocalPhoto(photoId!),
       ]);
-      return { blob, r2Key: photo?.r2Key ?? null };
+      return {
+        blob,
+        r2Key: photo?.r2Key ?? null,
+        publicUrl: photo?.publicUrl ?? null,
+      };
     },
   });
 
@@ -158,6 +162,11 @@ export function usePhotoSrc(photoId: string | null | undefined) {
 
   if (objectUrl) {
     return objectUrl;
+  }
+  // Prefer the URL the server resolved (works even when the browser build has
+  // no NEXT_PUBLIC_R2_PUBLIC_BASE_URL); fall back to building it client-side.
+  if (data?.publicUrl) {
+    return data.publicUrl;
   }
   if (data?.r2Key) {
     return publicPhotoUrl(data.r2Key);
