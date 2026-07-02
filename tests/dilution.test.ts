@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   doseForWater,
+  formatDose,
   formatDoseRange,
   formatMl,
   parseDilutionRatio,
@@ -86,5 +87,24 @@ describe("formatting", () => {
 
   it("shows a range when min and max differ", () => {
     expect(formatDoseRange({ minMl: 15, maxMl: 18.75 })).toBe("15 mL–18.8 mL");
+  });
+});
+
+describe("formatDose (system-aware)", () => {
+  it("uses millilitres for metric", () => {
+    expect(formatDose({ minMl: 15, maxMl: 15 }, "metric")).toBe("15 mL");
+  });
+
+  it("converts to fluid ounces for imperial", () => {
+    // 29.57 mL ≈ 1 fl oz.
+    expect(formatDose({ minMl: 29.5735295625, maxMl: 29.5735295625 }, "imperial")).toBe(
+      "1 fl oz",
+    );
+  });
+
+  it("shows an imperial range", () => {
+    expect(formatDose({ minMl: 15, maxMl: 18.75 }, "imperial")).toBe(
+      "0.51 fl oz–0.63 fl oz",
+    );
   });
 });

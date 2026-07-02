@@ -5,8 +5,10 @@ import { CloudOff, Sprout } from "lucide-react";
 import { ChipTag } from "@/components/chips/chip-tag";
 import { useIsPending } from "@/components/providers/sync-provider";
 import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
-import { doseLabel, parseApplication } from "@/lib/applications";
+import { parseApplication } from "@/lib/applications";
+import { formatDose } from "@/lib/dilution";
 import { formatTemperature } from "@/lib/temperature";
+import { formatQuantity } from "@/lib/units";
 import { computeDayInProcess } from "@/lib/day";
 import type { LocalObservation, LocalPhoto } from "@/offline/dexie";
 
@@ -33,9 +35,23 @@ export function ObservationRow({
 }) {
   const day = computeDayInProcess(startedAt, observation.observedAt);
   const pending = useIsPending(observation.id);
-  const { temperatureUnit } = useMeasurementSystem();
+  const { system, temperatureUnit } = useMeasurementSystem();
   const application = parseApplication(observation.application);
-  const dose = application ? doseLabel(application) : null;
+  // Stored amounts display in the user's current system, converting if needed.
+  const dose =
+    application && (application.doseMinMl != null || application.doseMaxMl != null)
+      ? formatDose(
+          {
+            minMl: application.doseMinMl ?? application.doseMaxMl ?? 0,
+            maxMl: application.doseMaxMl ?? application.doseMinMl ?? 0,
+          },
+          system,
+        )
+      : null;
+  const water =
+    application && application.waterValue != null && application.waterUnit
+      ? formatQuantity(application.waterValue, application.waterUnit, system)
+      : null;
 
   return (
     <li className="flex gap-3 rounded-[var(--radius-card)] border border-hairline bg-white p-3">
@@ -73,9 +89,7 @@ export function ObservationRow({
             <p className="text-xs text-secondary">
               {[
                 application.dilution,
-                dose && application.waterValue != null && application.waterUnit
-                  ? `${dose} in ${application.waterValue} ${application.waterUnit}`
-                  : null,
+                dose && water ? `${dose} in ${water}` : water,
               ]
                 .filter(Boolean)
                 .join(" · ")}
