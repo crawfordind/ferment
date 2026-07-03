@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Archive, Plus, Settings, type LucideIcon } from "lucide-react";
+import { Archive, BookOpen, Home, Plus, Settings, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -14,10 +14,12 @@ type NavItem = {
   primary?: boolean;
 };
 
+// New sits dead-center as the create CTA, flanked evenly on both sides.
 const NAV_ITEMS: NavItem[] = [
   { href: "/", label: "Home", icon: Home },
   { href: "/archive", label: "Past", icon: Archive },
   { href: "/new", label: "New", icon: Plus, primary: true },
+  { href: "/knowledge", label: "Learn", icon: BookOpen },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
@@ -29,7 +31,7 @@ export function BottomNav() {
       className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-surface pb-[env(safe-area-inset-bottom)]"
       aria-label="Main navigation"
     >
-      <ul className="mx-auto grid max-w-lg grid-cols-4">
+      <ul className="mx-auto grid max-w-lg grid-cols-5">
         {NAV_ITEMS.map(({ href, label, icon: Icon, primary }) => {
           const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
 

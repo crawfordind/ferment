@@ -5,6 +5,7 @@ export const queryKeys = {
   batch: (id: string) => ["batch", id] as const,
   observations: (batchId: string) => ["observations", batchId] as const,
   photo: (id: string) => ["photo", id] as const,
+  batchPhotos: (batchId: string) => ["batch-photos", batchId] as const,
   observationPhotos: (observationId: string) =>
     ["observation-photos", observationId] as const,
 };

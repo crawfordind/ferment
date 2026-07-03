@@ -47,6 +47,7 @@ export function useCreateObservation(batchId: string) {
       ph?: number | null;
       brix?: number | null;
       tempC?: number | null;
+      application?: string | null;
     }) => {
       const batch = await readLocalBatch(batchId);
       if (!batch) {
@@ -65,6 +66,7 @@ export function useCreateObservation(batchId: string) {
         ph: input.ph ?? null,
         brix: input.brix ?? null,
         tempC: input.tempC ?? null,
+        application: input.application ?? null,
         chipKeys: input.chipKeys ?? [],
         createdAt: now,
         updatedAt: now,
@@ -73,8 +75,10 @@ export function useCreateObservation(batchId: string) {
       await saveObservationLocal(observation);
 
       // Recompute and persist health from this latest observation + stage timing.
+      // An application (using the finished product) is not an observation of the
+      // ferment itself, so it never moves batch health.
       const template = getSeedTemplate(batch.type);
-      if (template) {
+      if (template && !observation.application) {
         const health = computeHealth(
           batch,
           { chipKeys: observation.chipKeys, ph: observation.ph },

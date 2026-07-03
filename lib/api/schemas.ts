@@ -63,6 +63,7 @@ export const observationUpsertSchema = z.object({
   ph: z.number().nullable().optional(),
   brix: z.number().nullable().optional(),
   tempC: z.number().nullable().optional(),
+  application: z.string().nullable().optional(),
   chipKeys: z.array(z.string()).default([]),
   createdAt: z.number().int(),
   updatedAt: z.number().int(),
@@ -108,4 +109,7 @@ export type ObservationDto = ObservationUpsertInput & {
   dayInProcess: number;
   chipKeys: string[];
 };
-export type PhotoDto = PhotoUpsertInput;
+// The server resolves the R2 public URL and sends it alongside each row, so
+// other devices can render a photo without relying on the browser-only
+// NEXT_PUBLIC_R2_PUBLIC_BASE_URL being set at build time.
+export type PhotoDto = PhotoUpsertInput & { publicUrl?: string | null };

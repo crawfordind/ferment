@@ -1,12 +1,16 @@
 "use client";
 
-import { CloudOff } from "lucide-react";
+import { CloudOff, Sprout } from "lucide-react";
 
 import { ChipTag } from "@/components/chips/chip-tag";
 import { useIsPending } from "@/components/providers/sync-provider";
-import { useObservationPhotos } from "@/hooks/use-photos";
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
+import { parseApplication } from "@/lib/applications";
+import { formatDose } from "@/lib/dilution";
+import { formatTemperature } from "@/lib/temperature";
+import { formatQuantity } from "@/lib/units";
 import { computeDayInProcess } from "@/lib/day";
-import type { LocalObservation } from "@/offline/dexie";
+import type { LocalObservation, LocalPhoto } from "@/offline/dexie";
 
 import { PhotoThumb } from "./photo-thumb";
 import { PhotoPlaceholder } from "./photo-placeholder";
@@ -23,30 +27,44 @@ function formatObservedAt(observedAt: number): string {
 export function ObservationRow({
   observation,
   startedAt,
+  photos = [],
 }: {
   observation: LocalObservation;
   startedAt: number;
+  photos?: LocalPhoto[];
 }) {
   const day = computeDayInProcess(startedAt, observation.observedAt);
-  const photos = useObservationPhotos(observation.id).data ?? [];
   const pending = useIsPending(observation.id);
+  const { system, temperatureUnit } = useMeasurementSystem();
+  const application = parseApplication(observation.application);
+  // Stored amounts display in the user's current system, converting if needed.
+  const dose =
+    application && (application.doseMinMl != null || application.doseMaxMl != null)
+      ? formatDose(
+          {
+            minMl: application.doseMinMl ?? application.doseMaxMl ?? 0,
+            maxMl: application.doseMaxMl ?? application.doseMinMl ?? 0,
+          },
+          system,
+        )
+      : null;
+  const water =
+    application && application.waterValue != null && application.waterUnit
+      ? formatQuantity(application.waterValue, application.waterUnit, system)
+      : null;
 
   return (
     <li className="flex gap-3 rounded-[var(--radius-card)] border border-hairline bg-white p-3">
-      <div className="relative size-14 shrink-0">
+      <div className="size-14 shrink-0">
         {photos.length > 0 ? (
-          <PhotoThumb
-            photoId={photos[0].id}
-            className="size-14 rounded-lg"
-          />
+          <PhotoThumb photoId={photos[0].id} className="size-14 rounded-lg" />
+        ) : application ? (
+          <div className="flex size-14 items-center justify-center rounded-lg bg-subtle-fill">
+            <Sprout className="size-6 text-accent" aria-hidden />
+          </div>
         ) : (
           <PhotoPlaceholder className="size-14 rounded-lg" />
         )}
-        {photos.length > 1 ? (
-          <span className="absolute bottom-0 right-0 rounded-tl-md rounded-br-lg bg-ink/70 px-1 text-[10px] font-semibold text-white">
-            +{photos.length - 1}
-          </span>
-        ) : null}
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
@@ -62,6 +80,22 @@ export function ObservationRow({
             {formatObservedAt(observation.observedAt)}
           </span>
         </div>
+
+        {application ? (
+          <div className="flex flex-col gap-0.5">
+            <p className="text-sm font-semibold text-ink">
+              Applied to {application.target}
+            </p>
+            <p className="text-xs text-secondary">
+              {[
+                application.dilution,
+                dose && water ? `${dose} in ${water}` : water,
+              ]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
+          </div>
+        ) : null}
 
         {observation.chipKeys.length > 0 ? (
           <div className="flex flex-wrap gap-1.5">
@@ -80,7 +114,7 @@ export function ObservationRow({
               <span>{observation.brix}°Bx</span>
             ) : null}
             {observation.tempC != null ? (
-              <span>{observation.tempC}°C</span>
+              <span>{formatTemperature(observation.tempC, temperatureUnit)}</span>
             ) : null}
           </div>
         ) : null}
@@ -99,6 +133,18 @@ export function ObservationRow({
           <p className="text-xs text-muted">
             Voice note saved · transcribing on reconnect
           </p>
+        ) : null}
+
+        {photos.length > 1 ? (
+          <div className="flex flex-wrap gap-1.5 pt-0.5">
+            {photos.slice(1).map((photo) => (
+              <PhotoThumb
+                key={photo.id}
+                photoId={photo.id}
+                className="size-12 rounded-md"
+              />
+            ))}
+          </div>
         ) : null}
       </div>
     </li>

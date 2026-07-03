@@ -5,7 +5,12 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
 
+import { CreationRow } from "@/components/batch/creation-row";
+import { DilutionCalculator } from "@/components/batch/dilution-calculator";
 import { ObservationRow } from "@/components/batch/observation-row";
+import { TroubleshootingNote } from "@/components/batch/troubleshooting-note";
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
+import { formatTemperature } from "@/lib/temperature";
 import { PhotoThumb } from "@/components/batch/photo-thumb";
 import { StageBanner } from "@/components/batch/stage-banner";
 import { StatusIndicator } from "@/components/batch/status-indicator";
@@ -13,11 +18,15 @@ import { DayChip } from "@/components/batch/day-chip";
 import { Button } from "@/components/ui/button";
 import { useBatch, useUpdateBatch } from "@/hooks/use-batch";
 import { useObservations } from "@/hooks/use-observations";
+import { useBatchPhotos } from "@/hooks/use-photos";
+import type { LocalPhoto } from "@/offline/dexie";
 import { computeDayInProcess } from "@/lib/day";
 import { costPerUnit, formatCostPerUnit } from "@/lib/economics";
 import { computeRatio, computeSaltPercent, parseInputs } from "@/lib/inputs";
+import { getDocByFermentType } from "@/lib/knowledge";
 import { generateLotId } from "@/lib/lots";
 import { getSeedTemplate } from "@/lib/seed-data";
+import { convertQuantity, formatQuantity } from "@/lib/units";
 import { currentStage } from "@/lib/stages";
 
 function OverflowMenu({ batchId }: { batchId: string }) {
@@ -129,6 +138,8 @@ export default function BatchDetailPage() {
   const batchId = params.id;
   const batchQuery = useBatch(batchId);
   const observationsQuery = useObservations(batchId);
+  const photosQuery = useBatchPhotos(batchId);
+  const { system, temperatureUnit } = useMeasurementSystem();
 
   if (batchQuery.isLoading) {
     return (
@@ -156,6 +167,21 @@ export default function BatchDetailPage() {
   const observations = observationsQuery.data ?? [];
   const finished = batch.status !== "active";
 
+  // Group every synced photo by its observation; photos with no observation are
+  // the creation/cover shots and get their own timeline entry.
+  const photos = photosQuery.data ?? [];
+  const photosByObservation = new Map<string, LocalPhoto[]>();
+  const creationPhotos: LocalPhoto[] = [];
+  for (const photo of photos) {
+    if (photo.observationId) {
+      const list = photosByObservation.get(photo.observationId) ?? [];
+      list.push(photo);
+      photosByObservation.set(photo.observationId, list);
+    } else {
+      creationPhotos.push(photo);
+    }
+  }
+
   const recipe = parseInputs(batch.inputs);
   const ratio = computeRatio(recipe);
   const saltPercent = computeSaltPercent(recipe);
@@ -166,7 +192,25 @@ export default function BatchDetailPage() {
         observation.brix != null ||
         observation.tempC != null,
     ) ?? null;
-  const cost = costPerUnit(batch.costAmount, batch.yieldValue, batch.yieldUnit);
+  // Show every stored amount in the user's selected system (a batch made in kg
+  // reads as lb for an imperial user); cost-per-unit follows the same converted
+  // yield so its unit matches what's displayed.
+  const convertedYield =
+    batch.yieldValue != null
+      ? convertQuantity(batch.yieldValue, batch.yieldUnit ?? "", system)
+      : null;
+  const cost = costPerUnit(
+    batch.costAmount,
+    convertedYield?.value ?? batch.yieldValue,
+    convertedYield?.unit ?? batch.yieldUnit,
+  );
+
+  // Guidance keys off the most recent observation that carried sensory chips.
+  const latestChips =
+    observations.find((observation) => observation.chipKeys.length > 0)
+      ?.chipKeys ?? [];
+  // Dilution comes from the recipe this batch type was made from.
+  const dilution = getDocByFermentType(batch.type)?.dilution ?? null;
 
   return (
     <main className="flex flex-1 flex-col gap-4 px-4 py-6">
@@ -190,7 +234,7 @@ export default function BatchDetailPage() {
             <p className="text-[11px] font-medium uppercase tracking-wide text-muted">
               {batch.code}
               {batch.sizeValue
-                ? ` · ${batch.sizeValue} ${batch.sizeUnit ?? ""}`.trimEnd()
+                ? ` · ${formatQuantity(batch.sizeValue, batch.sizeUnit ?? "", system)}`.trimEnd()
                 : ""}
             </p>
             {finished ? (
@@ -212,6 +256,11 @@ export default function BatchDetailPage() {
         <StageBanner stage={currentStage(batch, template)} />
       ) : null}
 
+      {/* "Is this normal?" — guidance from the latest sensory reading. */}
+      {!finished && latestChips.length > 0 ? (
+        <TroubleshootingNote chipKeys={latestChips} type={batch.type} />
+      ) : null}
+
       {/* Recipe */}
       {recipe.length > 0 ? (
         <section className="rounded-[var(--radius-card)] border border-hairline bg-white p-4">
@@ -227,7 +276,7 @@ export default function BatchDetailPage() {
                 <span className="text-ink">{item.name}</span>
                 <span className="shrink-0 text-secondary">
                   {item.quantity != null
-                    ? `${item.quantity} ${item.unit}`.trim()
+                    ? formatQuantity(item.quantity, item.unit, system)
                     : "—"}
                 </span>
               </li>
@@ -265,7 +314,9 @@ export default function BatchDetailPage() {
             {latestReading.tempC != null ? (
               <span className="text-ink">
                 Temp{" "}
-                <span className="font-semibold">{latestReading.tempC}°C</span>
+                <span className="font-semibold">
+                  {formatTemperature(latestReading.tempC, temperatureUnit)}
+                </span>
               </span>
             ) : null}
           </div>
@@ -283,7 +334,7 @@ export default function BatchDetailPage() {
               <div className="flex justify-between gap-3">
                 <dt className="text-secondary">Yield</dt>
                 <dd className="text-ink">
-                  {batch.yieldValue} {batch.yieldUnit ?? ""}
+                  {formatQuantity(batch.yieldValue, batch.yieldUnit ?? "", system)}
                 </dd>
               </div>
             ) : null}
@@ -305,6 +356,26 @@ export default function BatchDetailPage() {
         </section>
       ) : null}
 
+      {/* Use it — dilution helper + record an application (finished batches). */}
+      {finished ? (
+        <section className="flex flex-col gap-4 rounded-[var(--radius-card)] border border-hairline bg-white p-4">
+          <h2 className="text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
+            Use it
+          </h2>
+          {dilution ? (
+            <DilutionCalculator dilution={dilution} />
+          ) : (
+            <p className="text-sm text-muted">
+              Mix into water and apply to your crop. Record each use below to
+              track what worked.
+            </p>
+          )}
+          <Button asChild variant="outline" size="lg" className="w-full">
+            <Link href={`/batch/${batchId}/apply`}>＋ Record application</Link>
+          </Button>
+        </section>
+      ) : null}
+
       {/* Timeline */}
       <section className="flex flex-col gap-3 pb-28">
         <h2 className="px-1 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
@@ -312,7 +383,7 @@ export default function BatchDetailPage() {
         </h2>
         {observationsQuery.isLoading && observations.length === 0 ? (
           <div className="h-20 animate-pulse rounded-[var(--radius-card)] bg-subtle-fill" />
-        ) : observations.length === 0 ? (
+        ) : observations.length === 0 && creationPhotos.length === 0 ? (
           <div className="rounded-[var(--radius-card)] border border-dashed border-border px-4 py-10 text-center">
             <p className="text-sm text-secondary">
               No logs yet. Tap Log to add your first.
@@ -325,8 +396,12 @@ export default function BatchDetailPage() {
                 key={observation.id}
                 observation={observation}
                 startedAt={batch.startedAt}
+                photos={photosByObservation.get(observation.id) ?? []}
               />
             ))}
+            {creationPhotos.length > 0 ? (
+              <CreationRow photos={creationPhotos} startedAt={batch.startedAt} />
+            ) : null}
           </ul>
         )}
       </section>

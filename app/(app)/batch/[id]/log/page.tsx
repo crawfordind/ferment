@@ -6,6 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { Camera, Plus } from "lucide-react";
 
 import { PhotoThumb } from "@/components/batch/photo-thumb";
+import { TroubleshootingNote } from "@/components/batch/troubleshooting-note";
 import { SensoryChip } from "@/components/chips/sensory-chip";
 import { VoiceRecorder, type VoiceResult } from "@/components/voice/voice-recorder";
 import { Button } from "@/components/ui/button";
@@ -13,6 +14,8 @@ import { presignPhotoApi } from "@/lib/api/client";
 import { useBatch } from "@/hooks/use-batch";
 import { useCreateObservation } from "@/hooks/use-observations";
 import { useCapturePhoto } from "@/hooks/use-photos";
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
+import { toCelsius, unitSuffix } from "@/lib/temperature";
 import { newId } from "@/lib/id";
 import { saveAudioBlobLocal } from "@/offline/repository";
 import {
@@ -71,6 +74,7 @@ export default function QuickLogPage() {
   const batchQuery = useBatch(batchId);
   const createObservation = useCreateObservation(batchId);
   const capturePhoto = useCapturePhoto(batchId);
+  const { temperatureUnit } = useMeasurementSystem();
 
   // Pre-generate the observation id so photos captured before Save link to it.
   const observationId = useMemo(() => newId(), []);
@@ -81,7 +85,8 @@ export default function QuickLogPage() {
   const [note, setNote] = useState("");
   const [ph, setPh] = useState("");
   const [brix, setBrix] = useState("");
-  const [tempC, setTempC] = useState("");
+  // Held in the user's preferred unit; converted to Celsius on save.
+  const [temp, setTemp] = useState("");
   const [photoIds, setPhotoIds] = useState<string[]>([]);
   const [voice, setVoice] = useState<VoiceResult>({
     audioBlob: null,
@@ -162,7 +167,7 @@ export default function QuickLogPage() {
       transcriptStatus,
       ph: parseReading(ph),
       brix: parseReading(brix),
-      tempC: parseReading(tempC),
+      tempC: toCelsius(parseReading(temp), temperatureUnit),
     });
     router.replace(`/batch/${batchId}`);
   }
@@ -261,6 +266,12 @@ export default function QuickLogPage() {
             </button>
           </div>
         ) : null}
+
+        {/* "Is this normal?" — reassurance + fixes for the selected signs. */}
+        <TroubleshootingNote
+          chipKeys={Array.from(selected)}
+          type={batchQuery.data?.type}
+        />
       </section>
 
       {/* Measurements */}
@@ -273,7 +284,12 @@ export default function QuickLogPage() {
             [
               { label: "pH", value: ph, setValue: setPh, hint: "0–14" },
               { label: "Brix", value: brix, setValue: setBrix, hint: "°Bx" },
-              { label: "Temp", value: tempC, setValue: setTempC, hint: "°C" },
+              {
+                label: "Temp",
+                value: temp,
+                setValue: setTemp,
+                hint: unitSuffix(temperatureUnit),
+              },
             ] as const
           ).map((field) => (
             <label key={field.label} className="flex flex-col gap-1">

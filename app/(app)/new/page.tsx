@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Camera } from "lucide-react";
 
 import { RecipeEditor } from "@/components/batch/recipe-editor";
+import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
 import { Button } from "@/components/ui/button";
 import { useBatches, useCreateBatch } from "@/hooks/use-batches";
 import { capturePhotoForBatch } from "@/hooks/use-photos";
@@ -12,6 +13,7 @@ import { generateNextBatchCode, suggestBatchName } from "@/lib/codes";
 import type { BatchInput } from "@/lib/inputs";
 import { SEED_TEMPLATES } from "@/lib/seed-data";
 import type { FermentType } from "@/lib/schema";
+import { defaultUnitFor, preferredUnit, quantityUnitsFor } from "@/lib/units";
 import { cn } from "@/lib/utils";
 
 type Category = { key: string; label: string; available: boolean };
@@ -21,8 +23,6 @@ const CATEGORIES: Category[] = [
   { key: "food", label: "Food", available: true },
   { key: "beverage", label: "Beverage", available: false },
 ];
-
-const SIZE_UNITS = ["kg", "g", "L", "ml"];
 
 function ProgressBar({ step }: { step: number }) {
   return (
@@ -97,6 +97,7 @@ export default function NewBatchPage() {
   const router = useRouter();
   const batchesQuery = useBatches();
   const createBatch = useCreateBatch();
+  const { system } = useMeasurementSystem();
 
   const [step, setStep] = useState(1);
   const [category, setCategory] = useState("fertilizer");
@@ -104,7 +105,9 @@ export default function NewBatchPage() {
   const [name, setName] = useState("");
   const [code, setCode] = useState("");
   const [sizeValue, setSizeValue] = useState("");
-  const [sizeUnit, setSizeUnit] = useState("kg");
+  const [sizeUnit, setSizeUnit] = useState(() =>
+    defaultUnitFor("mass", "metric"),
+  );
   const [inputs, setInputs] = useState<BatchInput[]>([]);
   const [coverFile, setCoverFile] = useState<File | null>(null);
   const [coverPreview, setCoverPreview] = useState<string | null>(null);
@@ -121,6 +124,22 @@ export default function NewBatchPage() {
     setCoverPreview(url);
     return () => URL.revokeObjectURL(url);
   }, [coverFile]);
+
+  // Deep-link from the Knowledge Base: /new?type=<fermentType> preselects the
+  // matching template and jumps to the details step. Read from location directly
+  // to avoid a Suspense boundary for useSearchParams.
+  const prefilled = useRef(false);
+  useEffect(() => {
+    if (prefilled.current) return;
+    prefilled.current = true;
+    const requested = new URLSearchParams(window.location.search).get("type");
+    if (!requested) return;
+    const template = SEED_TEMPLATES.find((t) => t.type === requested);
+    if (!template) return;
+    setCategory(template.category);
+    setType(template.type);
+    setStep(3);
+  }, []);
 
   const existingCodes = useMemo(
     () =>
@@ -141,10 +160,16 @@ export default function NewBatchPage() {
     const template = SEED_TEMPLATES.find((t) => t.type === type);
     setName(suggestBatchName(type));
     setCode(generateNextBatchCode(type, existingCodes));
-    setSizeUnit(template?.defaultUnit ?? "kg");
-    // existingCodes intentionally omitted: only re-seed on type change.
+    setSizeUnit(preferredUnit(template?.defaultUnit ?? "kg", system));
+    // existingCodes/system intentionally omitted: only re-seed on type change.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type]);
+
+  // Keep the size unit in the active system (e.g. kg → lb) as the preference
+  // resolves on mount or the user switches systems.
+  useEffect(() => {
+    setSizeUnit((unit) => preferredUnit(unit, system));
+  }, [system]);
 
   async function handleStart() {
     if (!type || starting) return;
@@ -276,7 +301,7 @@ export default function NewBatchPage() {
                 className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
               />
               <div className="flex flex-1 gap-1.5">
-                {SIZE_UNITS.map((unit) => (
+                {quantityUnitsFor(system).map((unit) => (
                   <button
                     key={unit}
                     type="button"
