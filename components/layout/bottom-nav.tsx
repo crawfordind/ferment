@@ -2,12 +2,26 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BookOpen, Home, Settings } from "lucide-react";
+import { Archive, BookOpen, Home, Plus, Settings, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-const navLinkClass =
-  "flex min-h-[var(--tap-min)] min-w-[var(--tap-min)] flex-col items-center justify-center gap-0.5 text-xs font-medium text-secondary transition-colors";
+type NavItem = {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+  /** The primary create action — rendered as a filled accent chip. */
+  primary?: boolean;
+};
+
+// New sits dead-center as the create CTA, flanked evenly on both sides.
+const NAV_ITEMS: NavItem[] = [
+  { href: "/", label: "Home", icon: Home },
+  { href: "/archive", label: "Past", icon: Archive },
+  { href: "/new", label: "New", icon: Plus, primary: true },
+  { href: "/knowledge", label: "Learn", icon: BookOpen },
+  { href: "/settings", label: "Settings", icon: Settings },
+];
 
 export function BottomNav() {
   const pathname = usePathname();
@@ -17,49 +31,43 @@ export function BottomNav() {
       className="fixed inset-x-0 bottom-0 z-50 border-t border-hairline bg-surface pb-[env(safe-area-inset-bottom)]"
       aria-label="Main navigation"
     >
-      <div className="mx-auto flex max-w-lg items-end justify-around px-4 pt-2">
-        <Link
-          href="/"
-          className={cn(
-            navLinkClass,
-            pathname === "/" && "text-accent",
-          )}
-          aria-current={pathname === "/" ? "page" : undefined}
-        >
-          <Home className="size-6" aria-hidden />
-          <span>Home</span>
-        </Link>
+      <ul className="mx-auto grid max-w-lg grid-cols-5">
+        {NAV_ITEMS.map(({ href, label, icon: Icon, primary }) => {
+          const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
 
-        <Link
-          href="/knowledge"
-          className={cn(navLinkClass, pathname.startsWith("/knowledge") && "text-accent")}
-          aria-current={pathname.startsWith("/knowledge") ? "page" : undefined}
-        >
-          <BookOpen className="size-6" aria-hidden />
-          <span>Learn</span>
-        </Link>
-
-        <Link
-          href="/new"
-          className="relative -top-3 flex min-h-[var(--tap-primary)] min-w-[var(--tap-primary)] items-center justify-center rounded-full bg-accent text-2xl font-bold text-white shadow-[0_3px_8px_rgba(0,0,0,0.2)] transition-colors hover:bg-accent/90"
-          aria-label="New batch"
-          aria-current={pathname === "/new" ? "page" : undefined}
-        >
-          ＋
-        </Link>
-
-        <Link
-          href="/settings"
-          className={cn(
-            navLinkClass,
-            pathname === "/settings" && "text-accent",
-          )}
-          aria-current={pathname === "/settings" ? "page" : undefined}
-        >
-          <Settings className="size-6" aria-hidden />
-          <span>Settings</span>
-        </Link>
-      </div>
+          return (
+            <li key={href} className="flex">
+              <Link
+                href={href}
+                aria-current={isActive ? "page" : undefined}
+                className="group flex min-h-[var(--tap-min)] flex-1 flex-col items-center justify-center gap-1 py-2 text-[11px] font-medium"
+              >
+                <span
+                  className={cn(
+                    "flex size-9 items-center justify-center rounded-full transition-colors",
+                    primary
+                      ? "bg-accent text-white shadow-[0_2px_6px_rgba(95,122,63,0.35)] group-hover:bg-accent/90"
+                      : cn(
+                          "text-secondary group-hover:text-ink",
+                          isActive && "bg-accent/10 text-accent",
+                        ),
+                  )}
+                >
+                  <Icon className="size-[22px]" strokeWidth={2} aria-hidden />
+                </span>
+                <span
+                  className={cn(
+                    "transition-colors",
+                    isActive || primary ? "text-accent" : "text-secondary",
+                  )}
+                >
+                  {label}
+                </span>
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }
