@@ -121,7 +121,7 @@ export default function EditBatchPage() {
               aria-label="Batch size amount"
               className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
             />
-            <div className="flex flex-1 gap-1.5">
+            <div className="flex flex-1 flex-wrap gap-1.5">
               {unitOptions(system, sizeUnit).map((unit) => (
                 <button
                   key={unit}
@@ -129,7 +129,7 @@ export default function EditBatchPage() {
                   onClick={() => setSizeUnit(unit)}
                   aria-pressed={sizeUnit === unit}
                   className={cn(
-                    "min-h-tap-min flex-1 rounded-[var(--radius-chip)] border-2 text-sm font-semibold transition-colors",
+                    "min-h-tap-min grow basis-14 rounded-[var(--radius-chip)] border-2 text-sm font-semibold transition-colors",
                     sizeUnit === unit
                       ? "border-accent bg-subtle-fill text-ink"
                       : "border-border bg-white text-secondary hover:bg-subtle-fill",
@@ -158,7 +158,7 @@ export default function EditBatchPage() {
               aria-label="Yield amount"
               className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
             />
-            <div className="flex flex-1 gap-1.5">
+            <div className="flex flex-1 flex-wrap gap-1.5">
               {unitOptions(system, yieldUnit).map((unit) => (
                 <button
                   key={unit}
@@ -166,7 +166,7 @@ export default function EditBatchPage() {
                   onClick={() => setYieldUnit(unit)}
                   aria-pressed={yieldUnit === unit}
                   className={cn(
-                    "min-h-tap-min flex-1 rounded-[var(--radius-chip)] border-2 text-sm font-semibold transition-colors",
+                    "min-h-tap-min grow basis-14 rounded-[var(--radius-chip)] border-2 text-sm font-semibold transition-colors",
                     yieldUnit === unit
                       ? "border-accent bg-subtle-fill text-ink"
                       : "border-border bg-white text-secondary hover:bg-subtle-fill",

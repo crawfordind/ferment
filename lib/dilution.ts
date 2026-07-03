@@ -21,7 +21,12 @@ const VOLUME_TO_ML: Record<string, number> = {
   l: 1000,
   ml: 1,
   gal: 3785.411784,
+  qt: 946.352946,
+  pt: 473.176473,
+  cup: 236.5882365,
   "fl oz": 29.5735295625,
+  tbsp: 14.78676478125,
+  tsp: 4.92892159375,
 };
 
 /**
@@ -131,4 +136,4 @@ export function formatDose(dose: DoseRange, system: MeasurementSystem): string {
 
 /** Units offered in the dilution calculator UI, per measurement system. */
 export const WATER_UNITS_METRIC = ["L", "mL"] as const;
-export const WATER_UNITS_IMPERIAL = ["gal", "fl oz"] as const;
+export const WATER_UNITS_IMPERIAL = ["gal", "qt", "pt", "cup", "fl oz"] as const;

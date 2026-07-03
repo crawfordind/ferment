@@ -52,7 +52,12 @@ const VOLUME_TO_ML: Record<string, number> = {
   l: 1000,
   ml: 1,
   gal: 3785.411784,
+  qt: 946.352946,
+  pt: 473.176473,
+  cup: 236.5882365,
   "fl oz": 29.5735295625,
+  tbsp: 14.78676478125,
+  tsp: 4.92892159375,
 };
 
 /** Normalize a quantity to a base unit (grams for mass, ml for volume); null if not comparable. */
