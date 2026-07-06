@@ -11,6 +11,7 @@ import {
   patchBatchLocal,
   readLocalBatch,
   readLocalObservations,
+  readRecentObservations,
   saveObservationLocal,
   syncObservationsFromServer,
 } from "@/offline/repository";
@@ -30,6 +31,18 @@ export function useObservations(batchId: string) {
       return readLocalObservations(batchId);
     },
     enabled: Boolean(batchId),
+  });
+}
+
+/**
+ * Recent observations across all batches (local cache) for dashboard stats.
+ * `sinceMs` should be day-bucketed by the caller so the query key stays stable
+ * within a day.
+ */
+export function useRecentObservations(sinceMs: number) {
+  return useQuery({
+    queryKey: queryKeys.recentObservations(sinceMs),
+    queryFn: () => readRecentObservations(sinceMs),
   });
 }
 

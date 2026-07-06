@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, ChevronLeft, ChevronRight, Lightbulb } from "lucide-react";
 
-import { FERMENT_TIPS } from "@/lib/tips";
+import { useBatches } from "@/hooks/use-batches";
+import { FERMENT_TIPS, personalizeTips } from "@/lib/tips";
 import { cn } from "@/lib/utils";
 import { Widget } from "./widget";
 
@@ -14,7 +15,19 @@ const ROTATE_MS = 9000;
 export function FeaturedTipsWidget() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
-  const count = FERMENT_TIPS.length;
+  const batchesQuery = useBatches();
+
+  // Personalise the order to the shelves the user is actively fermenting.
+  const { tips, matchedIds } = useMemo(() => {
+    const sections = new Set(
+      (batchesQuery.data ?? [])
+        .filter((b) => b.status === "active")
+        .map((b) => b.category),
+    );
+    return personalizeTips(FERMENT_TIPS, sections);
+  }, [batchesQuery.data]);
+
+  const count = tips.length;
 
   // Rotate on a timer; reset the clock whenever the user steps through manually
   // (via `index`) or hovers/focuses to read (via `paused`).
@@ -25,7 +38,10 @@ export function FeaturedTipsWidget() {
   }, [index, paused, count]);
 
   if (count === 0) return null;
-  const tip = FERMENT_TIPS[index];
+  // Keep the index in range if the personalised list reorders after data loads.
+  const safeIndex = index % count;
+  const tip = tips[safeIndex];
+  const matched = matchedIds.has(tip.id);
 
   const go = (delta: number) => setIndex((i) => (i + delta + count) % count);
 
@@ -42,9 +58,16 @@ export function FeaturedTipsWidget() {
           aria-live="polite"
           className="flex min-h-[132px] flex-col gap-1.5 rounded-[var(--radius-card)] bg-subtle-fill p-3"
         >
-          <span className="text-[11px] font-semibold uppercase tracking-wide text-accent">
-            {tip.tag}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-wide text-accent">
+              {tip.tag}
+            </span>
+            {matched ? (
+              <span className="rounded-[var(--radius-chip)] bg-accent/10 px-1.5 py-0.5 text-[10px] font-semibold text-accent">
+                For your ferments
+              </span>
+            ) : null}
+          </div>
           <p className="text-sm font-bold text-ink">{tip.title}</p>
           <p className="text-sm leading-snug text-secondary">{tip.body}</p>
           {tip.learnMore ? (
@@ -70,17 +93,17 @@ export function FeaturedTipsWidget() {
           </button>
 
           <div className="flex items-center gap-1.5" role="tablist" aria-label="Choose tip">
-            {FERMENT_TIPS.map((t, i) => (
+            {tips.map((t, i) => (
               <button
                 key={t.id}
                 type="button"
                 role="tab"
-                aria-selected={i === index}
+                aria-selected={i === safeIndex}
                 aria-label={`Tip ${i + 1}: ${t.title}`}
                 onClick={() => setIndex(i)}
                 className={cn(
                   "h-1.5 rounded-full transition-all",
-                  i === index ? "w-4 bg-accent" : "w-1.5 bg-border hover:bg-secondary",
+                  i === safeIndex ? "w-4 bg-accent" : "w-1.5 bg-border hover:bg-secondary",
                 )}
               />
             ))}

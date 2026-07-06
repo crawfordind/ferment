@@ -312,6 +312,12 @@ export async function readLocalObservations(batchId: string) {
     .then((rows) => rows.reverse());
 }
 
+/** Observations across all batches at or after `sinceMs`, for dashboard stats. */
+export async function readRecentObservations(sinceMs: number) {
+  const db = getLocalDb();
+  return db.observations.where("observedAt").aboveOrEqual(sinceMs).toArray();
+}
+
 export async function syncBatchesFromServer() {
   const { fetchBatches } = await import("@/lib/api/client");
   const remote = await fetchBatches({ excludeArchived: true });
