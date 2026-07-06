@@ -1,14 +1,25 @@
 import { getAllDocs } from "@/lib/knowledge";
+import type { KbSection } from "@/lib/knowledge/types";
 import { KnowledgeBrowser } from "@/components/knowledge/knowledge-browser";
 
 export const metadata = {
   title: "Knowledge Base · Ferment",
 };
 
-export default function KnowledgePage() {
+const SECTIONS: KbSection[] = ["fertilizer", "food", "beverage"];
+
+export default async function KnowledgePage({
+  searchParams,
+}: {
+  searchParams: Promise<{ section?: string }>;
+}) {
   // Slim the payload for the client: the list/search needs everything except the
   // rendered article HTML, which only the detail page uses.
   const docs = getAllDocs().map((d) => ({ ...d, bodyHtml: "" }));
+
+  // Let other surfaces (e.g. the dashboard's Learn widget) deep-link a shelf.
+  const requested = (await searchParams).section;
+  const initialSection = SECTIONS.find((s) => s === requested) ?? "fertilizer";
 
   return (
     <main className="flex flex-1 flex-col gap-5 px-4 py-6">
@@ -18,7 +29,7 @@ export default function KnowledgePage() {
           Recipes and the science behind them — split into Fertilizers, Food, and Beverage.
         </p>
       </header>
-      <KnowledgeBrowser docs={docs} />
+      <KnowledgeBrowser docs={docs} initialSection={initialSection} />
     </main>
   );
 }

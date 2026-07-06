@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Archive, BookOpen, Home, Plus, Settings, type LucideIcon } from "lucide-react";
+import { BookOpen, Home, Plus, Settings, Sprout, type LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -17,7 +17,7 @@ type NavItem = {
 // New sits dead-center as the create CTA, flanked evenly on both sides.
 const NAV_ITEMS: NavItem[] = [
   { href: "/", label: "Home", icon: Home },
-  { href: "/archive", label: "Past", icon: Archive },
+  { href: "/batches", label: "Ferments", icon: Sprout },
   { href: "/new", label: "New", icon: Plus, primary: true },
   { href: "/knowledge", label: "Learn", icon: BookOpen },
   { href: "/settings", label: "Settings", icon: Settings },
