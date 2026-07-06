@@ -32,7 +32,19 @@ export function temperatureUnitFor(system: MeasurementSystem): TemperatureUnit {
 }
 
 const METRIC_UNITS = ["kg", "g", "L", "ml"];
-const IMPERIAL_UNITS = ["lb", "oz", "gal", "fl oz"];
+// Standard US / imperial units: mass first, then volume from largest to
+// smallest (gallon → quart → pint → cup → fluid ounce → tablespoon → teaspoon).
+const IMPERIAL_UNITS = [
+  "lb",
+  "oz",
+  "gal",
+  "qt",
+  "pt",
+  "cup",
+  "fl oz",
+  "tbsp",
+  "tsp",
+];
 
 /** Quantity units to offer for the given system. */
 export function quantityUnitsFor(system: MeasurementSystem): string[] {
@@ -49,7 +61,12 @@ const UNIT_DIMENSION: Record<string, Dimension> = {
   l: "volume",
   ml: "volume",
   gal: "volume",
+  qt: "volume",
+  pt: "volume",
+  cup: "volume",
   "fl oz": "volume",
+  tbsp: "volume",
+  tsp: "volume",
 };
 
 /** Whether a unit measures mass or volume; null if unrecognized. */
@@ -66,13 +83,27 @@ const TO_BASE: Record<string, number> = {
   oz: 28.349523125,
   l: 1000,
   ml: 1,
+  // US customary volumes, in millilitres.
   gal: 3785.411784,
+  qt: 946.352946,
+  pt: 473.176473,
+  cup: 236.5882365,
   "fl oz": 29.5735295625,
+  tbsp: 14.78676478125,
+  tsp: 4.92892159375,
 };
 
 // Units that measure a "small" amount; everything else recognized is "large".
 // Converting preserves the tier so a recipe in kg shows as lb (not oz).
-const SMALL_UNITS = new Set(["g", "oz", "ml", "fl oz"]);
+const SMALL_UNITS = new Set([
+  "g",
+  "oz",
+  "ml",
+  "cup",
+  "fl oz",
+  "tbsp",
+  "tsp",
+]);
 
 // The unit to display for each system, dimension, and tier.
 const DISPLAY_UNIT: Record<
@@ -106,6 +137,13 @@ export function convertQuantity(
   const dimension = UNIT_DIMENSION[key];
   const fromFactor = TO_BASE[key];
   if (!dimension || fromFactor === undefined || !Number.isFinite(value)) {
+    return { value, unit };
+  }
+
+  // If the stored unit already belongs to the user's system, keep it as-is —
+  // a US cook who logged "2 cup" should see "2 cup", not "16 fl oz". Only
+  // cross-system amounts (a metric batch viewed in imperial) get converted.
+  if (quantityUnitsFor(system).some((u) => u.toLowerCase() === key)) {
     return { value, unit };
   }
 

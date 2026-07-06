@@ -24,8 +24,18 @@ describe("quantityUnitsFor", () => {
     expect(quantityUnitsFor("metric")).toEqual(["kg", "g", "L", "ml"]);
   });
 
-  it("offers imperial units for imperial", () => {
-    expect(quantityUnitsFor("imperial")).toEqual(["lb", "oz", "gal", "fl oz"]);
+  it("offers standard US units for imperial, including cups", () => {
+    expect(quantityUnitsFor("imperial")).toEqual([
+      "lb",
+      "oz",
+      "gal",
+      "qt",
+      "pt",
+      "cup",
+      "fl oz",
+      "tbsp",
+      "tsp",
+    ]);
   });
 });
 
@@ -35,6 +45,14 @@ describe("unitDimension", () => {
     expect(unitDimension("lb")).toBe("mass");
     expect(unitDimension("ml")).toBe("volume");
     expect(unitDimension("fl oz")).toBe("volume");
+  });
+
+  it("recognizes standard US volume units", () => {
+    expect(unitDimension("cup")).toBe("volume");
+    expect(unitDimension("qt")).toBe("volume");
+    expect(unitDimension("pt")).toBe("volume");
+    expect(unitDimension("tbsp")).toBe("volume");
+    expect(unitDimension("tsp")).toBe("volume");
   });
 
   it("is case-insensitive and trims", () => {
@@ -82,7 +100,12 @@ describe("unitOptions", () => {
       "lb",
       "oz",
       "gal",
+      "qt",
+      "pt",
+      "cup",
       "fl oz",
+      "tbsp",
+      "tsp",
     ]);
   });
 
@@ -125,6 +148,30 @@ describe("convertQuantity", () => {
       value: 3,
       unit: "part",
     });
+  });
+
+  it("keeps a US unit the user picked in their own system (cups stay cups)", () => {
+    expect(convertQuantity(2, "cup", "imperial")).toEqual({
+      value: 2,
+      unit: "cup",
+    });
+    expect(convertQuantity(0.5, "tsp", "imperial")).toEqual({
+      value: 0.5,
+      unit: "tsp",
+    });
+  });
+
+  it("converts a US amount viewed in metric by tier (cups → mL)", () => {
+    // A US recipe logged in cups reads in mL for a metric user, keeping the
+    // small-volume tier so cross-system amounts stay meaningful.
+    const cupsInMetric = convertQuantity(4, "cup", "metric");
+    expect(cupsInMetric.unit).toBe("mL");
+    expect(cupsInMetric.value).toBeCloseTo(946.35, 1);
+  });
+
+  it("preserves decimal quantities through conversion", () => {
+    const { value } = convertQuantity(1.5, "kg", "imperial");
+    expect(value).toBeCloseTo(3.3069, 3);
   });
 });
 
