@@ -23,8 +23,14 @@ const CATEGORY_ORDER: KbCategory[] = [
 
 type Filter = NutritiveStage | "all";
 
-export function KnowledgeBrowser({ docs }: { docs: KnowledgeDoc[] }) {
-  const [section, setSection] = useState<KbSection>("fertilizer");
+export function KnowledgeBrowser({
+  docs,
+  initialSection = "fertilizer",
+}: {
+  docs: KnowledgeDoc[];
+  initialSection?: KbSection;
+}) {
+  const [section, setSection] = useState<KbSection>(initialSection);
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
 
