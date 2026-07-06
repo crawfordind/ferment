@@ -12,17 +12,25 @@ export function PhotoThumb({
   className,
   grayscale = false,
   alt = "",
+  label,
+  type,
 }: {
   photoId?: string | null;
   className?: string;
   grayscale?: boolean;
   alt?: string;
+  /** Initials to show on the tinted placeholder when there's no photo. */
+  label?: string;
+  /** Ferment type, to tint the placeholder. */
+  type?: string | null;
 }) {
   const src = usePhotoSrc(photoId);
   const [errored, setErrored] = useState(false);
 
   if (!photoId || !src || errored) {
-    return <PhotoPlaceholder className={className} grayscale={grayscale} />;
+    return (
+      <PhotoPlaceholder className={className} grayscale={grayscale} label={label} type={type} />
+    );
   }
 
   return (

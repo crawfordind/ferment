@@ -11,20 +11,25 @@ import { Widget } from "./widget";
 
 // Auto-advance interval for the tip carousel.
 const ROTATE_MS = 9000;
+// Keep the carousel short so the dot row stays meaningful — the most relevant
+// tips lead after personalisation.
+const MAX_TIPS = 4;
 
 export function FeaturedTipsWidget() {
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const batchesQuery = useBatches();
 
-  // Personalise the order to the shelves the user is actively fermenting.
+  // Personalise the order to the shelves the user is actively fermenting, then
+  // keep only the top few so the carousel stays short and scannable.
   const { tips, matchedIds } = useMemo(() => {
     const sections = new Set(
       (batchesQuery.data ?? [])
         .filter((b) => b.status === "active")
         .map((b) => b.category),
     );
-    return personalizeTips(FERMENT_TIPS, sections);
+    const personalized = personalizeTips(FERMENT_TIPS, sections);
+    return { tips: personalized.tips.slice(0, MAX_TIPS), matchedIds: personalized.matchedIds };
   }, [batchesQuery.data]);
 
   const count = tips.length;
