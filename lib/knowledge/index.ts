@@ -1,7 +1,7 @@
 import { KNOWLEDGE_DOCS } from "./generated";
-import type { KbCategory, KnowledgeDoc, NutritiveStage } from "./types";
+import type { KbCategory, KbSection, KnowledgeDoc, NutritiveStage } from "./types";
 
-export type { KnowledgeDoc, NutritiveStage, KbStep, KbIngredient, KbCategory, KbSource } from "./types";
+export type { KnowledgeDoc, NutritiveStage, KbStep, KbIngredient, KbCategory, KbSection, KbSource } from "./types";
 
 export const CATEGORY_META: Record<KbCategory, { label: string }> = {
   "microbial-culture": { label: "Microbial culture" },
@@ -15,12 +15,41 @@ export const CATEGORY_META: Record<KbCategory, { label: string }> = {
   biostimulant: { label: "Biostimulant" },
   concept: { label: "Concept" },
   application: { label: "Application" },
+  "vegetable-ferment": { label: "Vegetable ferment" },
+  "dairy-ferment": { label: "Dairy ferment" },
+  "legume-ferment": { label: "Legume ferment" },
+  "grain-ferment": { label: "Grain ferment" },
+  "cultured-beverage": { label: "Cultured beverage" },
 };
+
+/** Top-level shelves, in display order. Mirrors the New Batch category step. */
+export const SECTION_META: Record<KbSection, { label: string; order: number; blurb: string }> = {
+  fertilizer: {
+    label: "Fertilizers",
+    order: 1,
+    blurb: "Master Cho & KNF ferment recipes — grouped by when your plants need them.",
+  },
+  food: {
+    label: "Food",
+    order: 2,
+    blurb: "Kitchen ferments backed by food-science research — grouped by what you're culturing.",
+  },
+  beverage: {
+    label: "Beverage",
+    order: 3,
+    blurb: "Live cultured drinks — how the microbes work and how to keep them safe.",
+  },
+};
+
+export const SECTION_ORDER: KbSection[] = (Object.keys(SECTION_META) as KbSection[]).sort(
+  (a, b) => SECTION_META[a].order - SECTION_META[b].order,
+);
 
 export const SOURCE_LABELS: Record<string, string> = {
   KNF: "Master Cho · KNF",
   MM: "Mountain Microorganisms",
   SoilLandFood: "Soil Land Food",
+  Traditional: "Traditional · peer-reviewed",
 };
 
 const DIFFICULTY_LABELS = ["", "Easy", "Moderate", "Advanced"];

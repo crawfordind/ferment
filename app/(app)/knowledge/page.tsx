@@ -15,7 +15,7 @@ export default function KnowledgePage() {
       <header className="flex flex-col gap-1">
         <h1 className="text-xl font-bold text-ink">Knowledge Base</h1>
         <p className="text-sm text-secondary">
-          Master Cho &amp; KNF ferment recipes — grouped by when your plants need them.
+          Recipes and the science behind them — split into Fertilizers, Food, and Beverage.
         </p>
       </header>
       <KnowledgeBrowser docs={docs} />

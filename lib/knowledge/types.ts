@@ -11,7 +11,15 @@ export type NutritiveStage =
   | "all-stages" // backbone inputs used throughout (OHN, BRV, IMO…)
   | "soil"; // soil / compost conditioning
 
-export type KbSource = "KNF" | "MM" | "SoilLandFood";
+export type KbSource = "KNF" | "MM" | "SoilLandFood" | "Traditional";
+
+/**
+ * Top-level shelf a doc lives on. Mirrors the New Batch flow, which separates
+ * what you're making into Fertilizers, Food, and Beverage. The Knowledge Base
+ * groups by this first, then by nutritive stage (fertilizers) or the finer
+ * `KbCategory` (food & beverage) inside each shelf.
+ */
+export type KbSection = "fertilizer" | "food" | "beverage";
 
 export type KbCategory =
   | "microbial-culture"
@@ -24,7 +32,13 @@ export type KbCategory =
   | "pest-control"
   | "biostimulant"
   | "concept"
-  | "application";
+  | "application"
+  // Food & beverage
+  | "vegetable-ferment"
+  | "dairy-ferment"
+  | "legume-ferment"
+  | "grain-ferment"
+  | "cultured-beverage";
 
 /** One illustrated step in the StepStrip diagram. `icon` is a StepIcon key. */
 export type KbStep = { icon: string; text: string };
@@ -36,6 +50,7 @@ export type KnowledgeDoc = {
   title: string;
   abbr?: string;
   source: KbSource;
+  section: KbSection;
   category: KbCategory;
   stage: NutritiveStage[];
   /** Nutrients / functions this input supplies (e.g. "nitrogen", "microbes"). */
@@ -59,5 +74,5 @@ export type KnowledgeDoc = {
 
 export type KnowledgeIndexEntry = Pick<
   KnowledgeDoc,
-  "id" | "title" | "abbr" | "source" | "category" | "stage" | "supplies" | "difficulty" | "summary" | "tags"
+  "id" | "title" | "abbr" | "source" | "section" | "category" | "stage" | "supplies" | "difficulty" | "summary" | "tags"
 >;
