@@ -56,7 +56,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
       <header className="flex flex-col gap-3">
         <div className="flex items-start gap-3">
           <span className="flex size-12 shrink-0 items-center justify-center rounded-[var(--radius-card)] border-2 border-ink-border bg-subtle-fill">
-            <CategoryIcon category={doc.category} className="size-6 text-accent" />
+            <CategoryIcon category={doc.category} id={doc.id} className="size-6 text-accent" />
           </span>
           <div className="min-w-0 flex-1">
             <div className="flex flex-wrap items-baseline gap-x-2">
@@ -148,7 +148,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
                 href={`/knowledge/${rel.id}`}
                 className="inline-flex items-center gap-1.5 rounded-[var(--radius-chip)] border-2 border-border bg-white px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:bg-subtle-fill"
               >
-                <CategoryIcon category={rel.category} className="size-4 text-accent" />
+                <CategoryIcon category={rel.category} id={rel.id} className="size-4 text-accent" />
                 {rel.abbr ?? rel.title}
               </Link>
             ))}

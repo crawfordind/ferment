@@ -69,8 +69,13 @@ export function FermentsWidget() {
         <h3 className="px-1 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
           {previewLabel}
         </h3>
-        {preview.map(({ batch, attention: info }) => (
-          <BatchCard key={batch.id} batch={batch} hint={info.hint} />
+        {preview.map(({ batch, attention: info }, i) => (
+          <BatchCard
+            key={batch.id}
+            batch={batch}
+            hint={info.hint}
+            emphasis={i === 0 ? "focus" : "default"}
+          />
         ))}
       </div>
 

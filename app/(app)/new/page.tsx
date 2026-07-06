@@ -16,12 +16,12 @@ import type { FermentType } from "@/lib/schema";
 import { defaultUnitFor, preferredUnit, quantityUnitsFor } from "@/lib/units";
 import { cn } from "@/lib/utils";
 
-type Category = { key: string; label: string; available: boolean };
+type Category = { key: string; label: string; hint: string; available: boolean };
 
 const CATEGORIES: Category[] = [
-  { key: "fertilizer", label: "Fertilizers", available: true },
-  { key: "food", label: "Food", available: true },
-  { key: "beverage", label: "Beverage", available: false },
+  { key: "fertilizer", label: "Fertilizers", hint: "FPJ, FFJ, LABs, fish amino, IMO…", available: true },
+  { key: "food", label: "Food", hint: "Krauts, kimchi, yogurt, tempeh…", available: true },
+  { key: "beverage", label: "Beverage", hint: "Kombucha, kefir, wild sodas…", available: false },
 ];
 
 function ProgressBar({ step }: { step: number }) {
@@ -221,6 +221,7 @@ export default function NewBatchPage() {
             <OptionRow
               key={option.key}
               title={option.label}
+              subtitle={option.hint}
               selected={option.available && category === option.key}
               disabled={!option.available}
               badge={option.available ? undefined : "Coming soon"}
@@ -382,7 +383,7 @@ export default function NewBatchPage() {
         <div className="flex gap-2">
           <Button
             type="button"
-            variant="outline"
+            variant="ghost"
             size="lg"
             className="flex-1"
             onClick={() => {

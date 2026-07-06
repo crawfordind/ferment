@@ -82,71 +82,75 @@ export function KnowledgeBrowser({
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Section shelves — mirrors the New Batch category step */}
-      {sections.length > 1 ? (
-        <div
-          role="tablist"
-          aria-label="Knowledge sections"
-          className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-        >
-          {sections.map((s) => (
-            <button
-              key={s}
-              type="button"
-              role="tab"
-              aria-selected={section === s}
-              onClick={() => selectSection(s)}
-              className={cn(
-                "min-h-tap-min shrink-0 whitespace-nowrap rounded-[var(--radius-chip)] border-2 px-4 text-sm font-semibold transition-colors",
-                section === s
-                  ? "border-accent bg-subtle-fill text-ink"
-                  : "border-border bg-white text-secondary hover:bg-subtle-fill",
-              )}
-            >
-              {SECTION_META[s].label}
-            </button>
-          ))}
-        </div>
-      ) : null}
-
-      <p className="px-1 text-sm text-secondary">{SECTION_META[section].blurb}</p>
-
-      {/* Search */}
-      <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden />
-        <input
-          type="search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          placeholder="Search recipes, nutrients, ingredients…"
-          aria-label="Search the knowledge base"
-          className="min-h-tap-min w-full rounded-[var(--radius-button)] border-2 border-border bg-white pl-9 pr-9 text-sm text-ink focus:border-accent focus:outline-none"
-        />
-        {searching ? (
-          <button
-            type="button"
-            onClick={() => setQuery("")}
-            aria-label="Clear search"
-            className="absolute right-2 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-muted hover:bg-subtle-fill"
+      {/* Filter cluster — shelves, search and stage chips stay pinned under the
+          top of the screen so they're always reachable while scrolling. */}
+      <div className="sticky top-0 z-20 -mx-4 flex flex-col gap-3 border-b border-hairline bg-surface px-4 pb-3 pt-2">
+        {/* Section shelves — mirrors the New Batch category step */}
+        {sections.length > 1 ? (
+          <div
+            role="tablist"
+            aria-label="Knowledge sections"
+            className="flex gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           >
-            <X className="size-4" aria-hidden />
-          </button>
+            {sections.map((s) => (
+              <button
+                key={s}
+                type="button"
+                role="tab"
+                aria-selected={section === s}
+                onClick={() => selectSection(s)}
+                className={cn(
+                  "min-h-tap-min shrink-0 whitespace-nowrap rounded-[var(--radius-chip)] border-2 px-4 text-sm font-semibold transition-colors",
+                  section === s
+                    ? "border-accent bg-subtle-fill text-ink"
+                    : "border-border bg-white text-secondary hover:bg-subtle-fill",
+                )}
+              >
+                {SECTION_META[s].label}
+              </button>
+            ))}
+          </div>
+        ) : null}
+
+        {/* Search */}
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted" aria-hidden />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search recipes, nutrients, ingredients…"
+            aria-label="Search the knowledge base"
+            className="min-h-tap-min w-full rounded-[var(--radius-button)] border-2 border-border bg-white pl-9 pr-9 text-sm text-ink focus:border-accent focus:outline-none"
+          />
+          {searching ? (
+            <button
+              type="button"
+              onClick={() => setQuery("")}
+              aria-label="Clear search"
+              className="absolute right-2 top-1/2 flex size-7 -translate-y-1/2 items-center justify-center rounded-full text-muted hover:bg-subtle-fill"
+            >
+              <X className="size-4" aria-hidden />
+            </button>
+          ) : null}
+        </div>
+
+        {/* Stage filter chips — only meaningful for the fertilizer shelf */}
+        {stageBrowsing ? (
+          <div className="flex gap-2 overflow-x-auto pb-0.5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            <FilterChip active={filter === "all"} onClick={() => setFilter("all")}>
+              All
+            </FilterChip>
+            {STAGE_ORDER.map((s) => (
+              <FilterChip key={s} active={filter === s} onClick={() => setFilter(s)}>
+                {STAGE_META[s].short}
+              </FilterChip>
+            ))}
+          </div>
         ) : null}
       </div>
 
-      {/* Stage filter chips — only meaningful for the fertilizer shelf */}
-      {stageBrowsing ? (
-        <div className="-mx-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <FilterChip active={filter === "all"} onClick={() => setFilter("all")}>
-            All
-          </FilterChip>
-          {STAGE_ORDER.map((s) => (
-            <FilterChip key={s} active={filter === s} onClick={() => setFilter(s)}>
-              {STAGE_META[s].short}
-            </FilterChip>
-          ))}
-        </div>
-      ) : null}
+      <p className="px-1 text-sm text-secondary">{SECTION_META[section].blurb}</p>
 
       {/* Featured concept card (fertilizer shelf only) */}
       {featured && !searching && filter === "all" ? (

@@ -4,17 +4,17 @@ import type { KnowledgeDoc } from "@/lib/knowledge/types";
 import { CategoryIcon } from "./category-icon";
 import { StageBadge } from "./stage-badge";
 
-// Mirrors the batch-card visual language: ink-bordered card, category stripe,
+// Mirrors the batch-card visual language: hairline card, category stripe,
 // icon tile, title + meta. Tapping opens the recipe.
 export function RecipeCard({ doc }: { doc: KnowledgeDoc }) {
   return (
     <Link
       href={`/knowledge/${doc.id}`}
-      className="flex items-stretch overflow-hidden rounded-[var(--radius-card)] border-2 border-ink-border bg-white transition-colors hover:bg-subtle-fill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      className="flex items-stretch overflow-hidden rounded-[var(--radius-card)] border-2 border-hairline bg-white transition-colors hover:border-border hover:bg-subtle-fill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
       <span aria-hidden className="w-1.5 shrink-0 bg-accent" />
       <span className="m-2 flex size-[52px] shrink-0 items-center justify-center rounded-lg bg-subtle-fill">
-        <CategoryIcon category={doc.category} className="size-6 text-accent" />
+        <CategoryIcon category={doc.category} id={doc.id} className="size-6 text-accent" />
       </span>
       <div className="flex min-w-0 flex-1 flex-col justify-center gap-1 py-2 pr-2">
         <div className="flex items-baseline gap-1.5">
