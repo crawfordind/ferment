@@ -8,6 +8,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Bio-ferment",
     "abbr": "Biole",
     "source": "MM",
+    "section": "fertilizer",
     "category": "liquid-fertilizer",
     "stage": [
       "all-stages"
@@ -111,6 +112,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "id": "bio-repellent",
     "title": "Bio-repellent",
     "source": "MM",
+    "section": "fertilizer",
     "category": "pest-control",
     "stage": [
       "all-stages"
@@ -230,6 +232,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "id": "bio-stimulant-nettle",
     "title": "Bio-stimulant (Stinging Nettle)",
     "source": "MM",
+    "section": "fertilizer",
     "category": "biostimulant",
     "stage": [
       "vegetative"
@@ -319,6 +322,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "id": "biofertilizer",
     "title": "Biofertilizer",
     "source": "SoilLandFood",
+    "section": "fertilizer",
     "category": "liquid-fertilizer",
     "stage": [
       "all-stages",
@@ -437,6 +441,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "id": "bokashi",
     "title": "Bokashi",
     "source": "MM",
+    "section": "fertilizer",
     "category": "solid-fertilizer",
     "stage": [
       "soil"
@@ -554,6 +559,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Brown Rice Vinegar",
     "abbr": "BRV",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "microbial-culture",
     "stage": [
       "all-stages"
@@ -636,6 +642,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Fermented Fruit Juice",
     "abbr": "FFJ",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "fruit-ferment",
     "stage": [
       "cross-over",
@@ -725,6 +732,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Fermented Plant Juice",
     "abbr": "FPJ",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "plant-ferment",
     "stage": [
       "vegetative"
@@ -806,6 +814,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Fish Amino Acid",
     "abbr": "FAA",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "amino-acid",
     "stage": [
       "vegetative"
@@ -893,6 +902,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "id": "hydrolysate",
     "title": "Hydrolysate",
     "source": "SoilLandFood",
+    "section": "fertilizer",
     "category": "amino-acid",
     "stage": [
       "vegetative",
@@ -989,6 +999,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Indigenous Microorganisms",
     "abbr": "IMO",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "microbial-culture",
     "stage": [
       "soil",
@@ -1080,10 +1091,148 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "searchText": "indigenous microorganisms imo wild soil microbes trapped on rice, fed sugar, bulked with bran, then married to your own soil — the living engine that builds fertile ground. microbes soil-life decomposers microbes soil rice bran jaggery culture hard-cooked (leftover) rice jaggery / brown sugar rice bran or flour field / crop soil + red fine (anthill) soil what it is imo is a chain of four cultures that captures the wild microbes already thriving in your local soil and multiplies them into a soil building input. you catch them on rice ( imo 1 ), feed them sugar ( imo 2 ), bulk them up on rice bran ( imo 3 ), then blend them with your own earth ( imo 4 ). the microbes decompose organic matter into plant food and produce antibiotics, enzymes and lactic acid that suppress disease. on the nutritive cycle: imo is a soil input and the backbone of natural farming. you don't feed the plant — you nurture the soil, and the soil nurtures the plant. imo 4 conditions the ground; the earlier stages seed every compost and treatment. when to use it soil conditioning — spread imo 4 to build fertile, healthy, disease resistant ground. all stages — dilute nf inputs at 1:1000 to feed and maintain imo diversity year round. diversity matters — collect from all four field directions, plus mountain, valley and sun/shade sites, to include the tough microbes. materials wooden box (natural wood / bamboo / cedar), hard cooked leftover rice, plain porous paper jaggery — equal weight to imo 1 rice bran, paddy straw, and a shaded soil floor field soil, plus red fine soil from an anthill / termite mound; seawater how to make it 1. catch imo 1. fill the box with rice under 3 inches deep, paper it, and set it in a forest for 3–5 days (2–3 days above 30°c). move the microbe covered rice to a clay jar. 2. feed imo 2. mix 1:1 with jaggery, cover, rest 3–5 days . black mold means you waited too long. 3. bulk imo 3. dilute imo 2 1:1000 , mix into bran at 65–70% moisture, heap 30–40 cm , cover with straw. turn at 40–50°c ; after 5–7 days white spores form. 4. marry to soil (imo 4). blend imo 3 1:1 with soil (half crop, half fresh), heap under 20 cm , cover 2 days . signs it worked / troubleshooting ✅ good: white spore colonies and a pleasant, fragrant smell when finished. ⚠️ heap over 70°c = nutrients lost to air → turn it to cool it down. 🚫 black mold on rice = over fermented → discard and recollect fresh. how to store keep imo 3 in ventilated jute or cloth bags on a bed of straw, stacked 3 layers high, shaded and cool — drying to 20–30% moisture just means the microbes are dormant. re wet imo 4 to 65–70% with nf inputs just before use."
   },
   {
+    "id": "kimchi",
+    "title": "Kimchi",
+    "source": "Traditional",
+    "section": "food",
+    "category": "vegetable-ferment",
+    "stage": [],
+    "supplies": [
+      "live-cultures",
+      "lactic-acid",
+      "vitamins",
+      "fiber"
+    ],
+    "difficulty": 2,
+    "timeDays": [
+      3,
+      14
+    ],
+    "summary": "Korea's national ferment — brined napa cabbage and a spiced paste, cultured cold and slow by Leuconostoc and Lactobacillus into a fizzy, sour, umami staple.",
+    "ingredients": [
+      {
+        "item": "Napa cabbage",
+        "qty": "1",
+        "unit": "head"
+      },
+      {
+        "item": "Coarse non-iodised salt (for brining)",
+        "qty": "60",
+        "unit": "g"
+      },
+      {
+        "item": "Korean chilli flakes (gochugaru)",
+        "qty": "40",
+        "unit": "g"
+      },
+      {
+        "item": "Garlic, ginger, spring onion, fish sauce (or soy for vegan)",
+        "qty": "to taste"
+      }
+    ],
+    "steps": [],
+    "tags": [
+      "lacto-fermentation",
+      "napa-cabbage",
+      "gochugaru",
+      "probiotic",
+      "leuconostoc",
+      "weissella"
+    ],
+    "related": [
+      "sauerkraut",
+      "water-kefir"
+    ],
+    "bodyHtml": "<h2>What it is</h2>\n<p>Kimchi is a family of Korean fermented vegetables, most often <strong>napa cabbage</strong> salted, coated in a\nspiced paste of chilli, garlic, ginger and fish sauce, then left to ferment by the lactic-acid\nbacteria native to the vegetables. It ferments <strong>cold and slow</strong>, which is what gives good kimchi\nits clean, effervescent sourness.</p>\n<h2>The science</h2>\n<p>Kimchi fermentation is driven overwhelmingly by <strong>lactic-acid bacteria of the genera <em>Leuconostoc</em>,\n<em>Lactobacillus/Latilactobacillus</em> and <em>Weissella</em></strong>. <em>Leuconostoc mesenteroides</em> typically leads,\nproducing CO₂ (the characteristic fizz) and mannitol, before more acid-tolerant lactobacilli take\nover and deepen the sourness (Jung, Lee &amp; Jeon, 2014).</p>\n<p><strong>Temperature is the main control lever.</strong> Cold fermentation (around 4 °C) favours <em>Leuconostoc</em> and\nyields a milder, more complex, longer-lasting product, whereas warm fermentation acidifies fast and\ncan turn sharp. Salt (~2–3% after brining) and the anaerobic paste coating select for LAB over\nspoilage organisms (Patra et al., 2016).</p>\n<h2>Safety</h2>\n<p>As with all lacto-fermented vegetables, safety rests on <strong>acidification under brine</strong>. Keep the\ncabbage submerged in its own liquid and let the pH fall below 4.6. Skim any surface film; discard for\nfuzzy mould or putrid odour.</p>\n<h2>Signs it worked / troubleshooting</h2>\n<ul>\n<li>✅ <strong>Good:</strong> tangy, fizzy, savoury; bubbles when pressed.</li>\n<li>⚠️ <strong>Too sharp/sour</strong> = fermented too warm or too long → move to the fridge sooner next time.</li>\n<li>🚫 <strong>Mould or off smell</strong> = contamination → discard.</li>\n</ul>\n<h2>How to store</h2>\n<p>Kimchi is meant to keep fermenting slowly in the fridge, maturing over weeks to months. Press it back\nunder the brine after each use.</p>\n<h2>References</h2>\n<ul>\n<li>Jung JY, Lee SH, Jeon CO (2014). <em>Kimchi microflora: history, current status, and perspectives for industrial kimchi production.</em> Applied Microbiology and Biotechnology 98(6):2385–2393. doi:10.1007/s00253-014-5513-1</li>\n<li>Patra JK, Das G, Paramithiotis S, Shin HS (2016). <em>Kimchi and Other Widely Consumed Traditional Fermented Foods of Korea: A Review.</em> Frontiers in Microbiology 7:1493. doi:10.3389/fmicb.2016.01493</li>\n<li>Park KY, Jeong JK, Lee YE, Daily JW (2014). <em>Health benefits of kimchi (Korean fermented vegetables) as a probiotic food.</em> Journal of Medicinal Food 17(1):6–20. doi:10.1089/jmf.2013.3083</li>\n</ul>\n",
+    "searchText": "kimchi korea's national ferment — brined napa cabbage and a spiced paste, cultured cold and slow by leuconostoc and lactobacillus into a fizzy, sour, umami staple. live-cultures lactic-acid vitamins fiber lacto-fermentation napa-cabbage gochugaru probiotic leuconostoc weissella napa cabbage coarse non-iodised salt (for brining) korean chilli flakes (gochugaru) garlic, ginger, spring onion, fish sauce (or soy for vegan) what it is kimchi is a family of korean fermented vegetables, most often napa cabbage salted, coated in a spiced paste of chilli, garlic, ginger and fish sauce, then left to ferment by the lactic acid bacteria native to the vegetables. it ferments cold and slow , which is what gives good kimchi its clean, effervescent sourness. the science kimchi fermentation is driven overwhelmingly by lactic acid bacteria of the genera leuconostoc , lactobacillus/latilactobacillus and weissella . leuconostoc mesenteroides typically leads, producing co₂ (the characteristic fizz) and mannitol, before more acid tolerant lactobacilli take over and deepen the sourness (jung, lee & jeon, 2014). temperature is the main control lever. cold fermentation (around 4 °c) favours leuconostoc and yields a milder, more complex, longer lasting product, whereas warm fermentation acidifies fast and can turn sharp. salt (~2–3% after brining) and the anaerobic paste coating select for lab over spoilage organisms (patra et al., 2016). safety as with all lacto fermented vegetables, safety rests on acidification under brine . keep the cabbage submerged in its own liquid and let the ph fall below 4.6. skim any surface film; discard for fuzzy mould or putrid odour. signs it worked / troubleshooting ✅ good: tangy, fizzy, savoury; bubbles when pressed. ⚠️ too sharp/sour = fermented too warm or too long → move to the fridge sooner next time. 🚫 mould or off smell = contamination → discard. how to store kimchi is meant to keep fermenting slowly in the fridge, maturing over weeks to months. press it back under the brine after each use. references jung jy, lee sh, jeon co (2014). kimchi microflora: history, current status, and perspectives for industrial kimchi production. applied microbiology and biotechnology 98(6):2385–2393. doi:10.1007/s00253 014 5513 1 patra jk, das g, paramithiotis s, shin hs (2016). kimchi and other widely consumed traditional fermented foods of korea: a review. frontiers in microbiology 7:1493. doi:10.3389/fmicb.2016.01493 park ky, jeong jk, lee ye, daily jw (2014). health benefits of kimchi (korean fermented vegetables) as a probiotic food. journal of medicinal food 17(1):6–20. doi:10.1089/jmf.2013.3083"
+  },
+  {
+    "id": "kombucha",
+    "title": "Kombucha",
+    "source": "Traditional",
+    "section": "beverage",
+    "category": "cultured-beverage",
+    "stage": [],
+    "supplies": [
+      "live-cultures",
+      "organic-acids",
+      "antioxidants"
+    ],
+    "difficulty": 2,
+    "timeDays": [
+      7,
+      14
+    ],
+    "summary": "Sweet tea fermented by a floating mat of bacteria and yeast — the SCOBY — into a tart, lightly fizzy drink whose safety comes from its own acidity.",
+    "ingredients": [
+      {
+        "item": "Water",
+        "qty": "1",
+        "unit": "L"
+      },
+      {
+        "item": "Black or green tea",
+        "qty": "8",
+        "unit": "g"
+      },
+      {
+        "item": "White sugar",
+        "qty": "70",
+        "unit": "g"
+      },
+      {
+        "item": "SCOBY + mature starter kombucha",
+        "qty": "150",
+        "unit": "ml"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "temp",
+        "text": "Brew tea, dissolve the sugar, and cool to room temperature (hot liquid kills the culture)."
+      },
+      {
+        "icon": "mix",
+        "text": "Add the SCOBY and at least 10% mature starter liquid — the starter's acidity protects the batch early on."
+      },
+      {
+        "icon": "cover",
+        "text": "Cover with tight-woven cloth so it breathes but excludes insects."
+      },
+      {
+        "icon": "clock",
+        "text": "Ferment 7–14 days at 20–28 °C, out of direct sun."
+      },
+      {
+        "icon": "check",
+        "text": "Taste from day 7. Ready when tart with only faint sweetness."
+      },
+      {
+        "icon": "store",
+        "text": "Bottle (optionally with fruit for fizz), refrigerate, and reserve SCOBY + liquid for the next brew."
+      }
+    ],
+    "tags": [
+      "tea",
+      "scoby",
+      "acetic-acid-bacteria",
+      "yeast",
+      "symbiosis",
+      "kombucha"
+    ],
+    "related": [
+      "water-kefir",
+      "milk-kefir"
+    ],
+    "bodyHtml": "<h2>What it is</h2>\n<p>Kombucha is <strong>sweetened tea fermented by a symbiotic community of bacteria and yeast</strong> — the culture\nknown as a SCOBY (Symbiotic Culture Of Bacteria and Yeast), the rubbery pellicle that floats on top.\nOver one to two weeks it turns sweet tea into a tart, lightly effervescent, mildly acidic drink.</p>\n<h2>The science</h2>\n<p>The ferment is a two-organism partnership. <strong>Yeasts</strong> (e.g. <em>Zygosaccharomyces</em>, <em>Brettanomyces</em>)\ninvert the sucrose and ferment the sugars to ethanol and CO₂. <strong>Acetic-acid bacteria</strong> (chiefly\n<em>Komagataeibacter</em> / <em>Gluconacetobacter</em> and <em>Acetobacter</em>) then oxidise that ethanol to acetic and\ngluconic acids, which give kombucha its sourness and drive the pH down; the same bacteria weave the\ncellulose pellicle (Villarreal-Soto et al., 2018). The result is a shifting mix of organic acids,\ntrace ethanol and CO₂ (Jayabalan et al., 2014).</p>\n<h2>Safety</h2>\n<p>Kombucha&#39;s safety is built on <strong>acidity</strong>. Always pitch <strong>at least 10% mature, acidic starter\nliquid</strong> so the pH starts below ~4.2 and pathogens can&#39;t establish before the culture takes over.\nFerment in <strong>glass or food-grade plastic</strong>, never reactive metal (the acids leach it). Discard a\nbatch with fuzzy, coloured mould on the pellicle. Home kombucha contains a small amount of alcohol\n(typically under 1%).</p>\n<h2>Signs it worked / troubleshooting</h2>\n<ul>\n<li>✅ <strong>Good:</strong> a new pale pellicle forms, liquid clears and sours, faintly vinegary aroma.</li>\n<li>⚠️ <strong>Brown stringy strands</strong> = normal yeast, not mould.</li>\n<li>🚫 <strong>Dry, fuzzy blue/green/black spots on top</strong> = mould → discard the SCOBY and liquid, start fresh.</li>\n</ul>\n<h2>How to store</h2>\n<p>Bottled and refrigerated, kombucha keeps for weeks. Store spare SCOBYs in a jar of mature kombucha (a\n&quot;SCOBY hotel&quot;) between brews.</p>\n<h2>References</h2>\n<ul>\n<li>Villarreal-Soto SA, Beaufort S, Bouajila J, Souchard JP, Taillandier P (2018). <em>Understanding Kombucha Tea Fermentation: A Review.</em> Journal of Food Science 83(3):580–588. doi:10.1111/1750-3841.14068</li>\n<li>Jayabalan R, Malbaša RV, Lončar ES, Vitas JS, Sathishkumar M (2014). <em>A Review on Kombucha Tea — Microbiology, Composition, Fermentation, Beneficial Effects, Toxicity, and Tea Fungus.</em> Comprehensive Reviews in Food Science and Food Safety 13(4):538–550. doi:10.1111/1541-4337.12073</li>\n</ul>\n",
+    "searchText": "kombucha sweet tea fermented by a floating mat of bacteria and yeast — the scoby — into a tart, lightly fizzy drink whose safety comes from its own acidity. live-cultures organic-acids antioxidants tea scoby acetic-acid-bacteria yeast symbiosis kombucha water black or green tea white sugar scoby + mature starter kombucha what it is kombucha is sweetened tea fermented by a symbiotic community of bacteria and yeast — the culture known as a scoby (symbiotic culture of bacteria and yeast), the rubbery pellicle that floats on top. over one to two weeks it turns sweet tea into a tart, lightly effervescent, mildly acidic drink. the science the ferment is a two organism partnership. yeasts (e.g. zygosaccharomyces , brettanomyces ) invert the sucrose and ferment the sugars to ethanol and co₂. acetic acid bacteria (chiefly komagataeibacter / gluconacetobacter and acetobacter ) then oxidise that ethanol to acetic and gluconic acids, which give kombucha its sourness and drive the ph down; the same bacteria weave the cellulose pellicle (villarreal soto et al., 2018). the result is a shifting mix of organic acids, trace ethanol and co₂ (jayabalan et al., 2014). safety kombucha's safety is built on acidity . always pitch at least 10% mature, acidic starter liquid so the ph starts below ~4.2 and pathogens can't establish before the culture takes over. ferment in glass or food grade plastic , never reactive metal (the acids leach it). discard a batch with fuzzy, coloured mould on the pellicle. home kombucha contains a small amount of alcohol (typically under 1%). signs it worked / troubleshooting ✅ good: a new pale pellicle forms, liquid clears and sours, faintly vinegary aroma. ⚠️ brown stringy strands = normal yeast, not mould. 🚫 dry, fuzzy blue/green/black spots on top = mould → discard the scoby and liquid, start fresh. how to store bottled and refrigerated, kombucha keeps for weeks. store spare scobys in a jar of mature kombucha (a \"scoby hotel\") between brews. references villarreal soto sa, beaufort s, bouajila j, souchard jp, taillandier p (2018). understanding kombucha tea fermentation: a review. journal of food science 83(3):580–588. doi:10.1111/1750 3841.14068 jayabalan r, malbaša rv, lončar es, vitas js, sathishkumar m (2014). a review on kombucha tea — microbiology, composition, fermentation, beneficial effects, toxicity, and tea fungus. comprehensive reviews in food science and food safety 13(4):538–550. doi:10.1111/1541 4337.12073"
+  },
+  {
     "id": "lab-serum",
     "title": "LAB Serum",
     "abbr": "LABS",
     "source": "SoilLandFood",
+    "section": "fertilizer",
     "category": "microbial-culture",
     "stage": [
       "all-stages",
@@ -1177,6 +1326,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Lactic Acid Bacteria",
     "abbr": "LAB",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "microbial-culture",
     "stage": [
       "all-stages",
@@ -1265,6 +1415,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "id": "loess",
     "title": "Loess Powder",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "mineral-extract",
     "stage": [
       "soil"
@@ -1337,6 +1488,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "id": "nutritive-cycle",
     "title": "Master Cho's Nutritive Cycle",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "concept",
     "stage": [
       "all-stages"
@@ -1377,9 +1529,78 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "searchText": "master cho's nutritive cycle the heartbeat of natural farming — feed a plant the right nutrient at the right stage, and never more than it needs. carbon nitrogen phosphorus potassium concept nutritive-cycle growth-stages npk morning-sickness what it is the nutritive cycle is master cho's core idea: plants, like people, need different food at different ages . a baby can only eat baby food; a young plant can only use nutrients suited to its stage. give a crop the right material, in the right amount, at the right stage and it reaches its full potential without disease. feed it in excess — or feed the wrong thing at the wrong time — and you invite trouble. on the nutritive cycle: this is the concept the whole knowledge base hangs on. every input has a stage; match the input to the stage and the rest follows. the three stages vegetative growth (young → c to n). the plant builds roots and shoots. it consumes carbohydrates (c) and converts them to nitrogen (n) , its main growth need at this age. cross over — \"morning sickness\" (adult → p). as the plant begins flowering it craves sour nutrients , just as a pregnant woman craves sour food. these come as phosphoric (p) compounds. this is the changeover from growing to reproducing. reproductive growth (old → k). from flowering to ripening the plant stores carbohydrates in its fruit. potassium (k) is needed for proper color development and to fill the fruit. what to feed at each stage vegetative (c→n): fpj, faa, lab, imo — nitrogen and microbes to push roots and leaves. cross over (p, \"sour\"): ws pa, less ripe ffj, wca — phosphorus and calcium to flip the plant into flowering. reproductive (k, color): ws k, ripe ffj, wca, seawater — potassium and minerals to fill, sweeten, and color fruit. all stages (backbone): ohn, brv, imo, lab, yeast — immunity and soil life throughout. why it matters conventional farming leans on external conditions — weather, tilling, added chemicals — that change every year and can't be controlled. the nutritive cycle turns attention inward , to the plant's own growth physiology. understand what each stage actually needs, supply exactly that, and the crop takes full advantage of its own best moment. less input, less disease, better harvest."
   },
   {
+    "id": "milk-kefir",
+    "title": "Milk Kefir",
+    "source": "Traditional",
+    "section": "beverage",
+    "category": "cultured-beverage",
+    "stage": [],
+    "supplies": [
+      "live-cultures",
+      "protein",
+      "calcium",
+      "b-vitamins"
+    ],
+    "difficulty": 1,
+    "timeDays": [
+      1,
+      2
+    ],
+    "summary": "Cauliflower-like grains that culture milk at room temperature into a drinkable, tangy, effervescent ferment richer in microbial diversity than yogurt.",
+    "ingredients": [
+      {
+        "item": "Fresh milk",
+        "qty": "500",
+        "unit": "ml"
+      },
+      {
+        "item": "Milk kefir grains",
+        "qty": "1",
+        "unit": "tbsp"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "milk",
+        "text": "Add the grains to fresh milk in a clean jar, leaving headroom."
+      },
+      {
+        "icon": "cover",
+        "text": "Cover loosely and keep at 20–25 °C, out of direct sun."
+      },
+      {
+        "icon": "clock",
+        "text": "Culture 18–24 h until thickened and tangy. Longer is more sour and fizzy."
+      },
+      {
+        "icon": "strain",
+        "text": "Strain out the grains with a plastic sieve. Drop them straight into fresh milk."
+      },
+      {
+        "icon": "store",
+        "text": "Refrigerate the finished kefir. Grains left too long between feeds will starve."
+      }
+    ],
+    "tags": [
+      "dairy",
+      "kefir-grains",
+      "lactobacillus-kefiranofaciens",
+      "kefiran",
+      "yeast",
+      "probiotic"
+    ],
+    "related": [
+      "water-kefir",
+      "yogurt"
+    ],
+    "bodyHtml": "<h2>What it is</h2>\n<p>Milk kefir is a <strong>self-perpetuating</strong> cultured milk drink. Soft, cauliflower-like &quot;grains&quot; — a living\nmatrix of microbes — are dropped into milk and, in about a day at room temperature, ferment it into a\nthin, tangy, slightly effervescent drink. Unlike yogurt, kefir cultures <strong>mesophilic</strong> (at room\ntemperature) and carries a much broader microbial community.</p>\n<h2>The science</h2>\n<p>The grains are held together by <strong>kefiran</strong>, an exopolysaccharide secreted by\n<em>Lactobacillus kefiranofaciens</em>. Within that matrix live a diverse consortium of lactic-acid bacteria\n(<em>Lactobacillus</em>, <em>Lactococcus</em>, <em>Leuconostoc</em>), acetic-acid bacteria and yeasts, which together\nproduce lactic acid, CO₂ and trace ethanol (Prado et al., 2015). Because the community is more\ndiverse than yogurt&#39;s two-species pair, kefir yields a wider range of metabolites; a review in\n<em>Frontiers in Microbiology</em> surveys its microbiota and the associated health research\n(Bourrie, Willing &amp; Cotter, 2016).</p>\n<h2>Safety</h2>\n<p>Culture in glass and strain with plastic or nylon rather than reactive metal. Keep the grains fed —\nthey are a living culture and starve if left too long without fresh milk. Discard if the milk smells\nputrid rather than cleanly sour, or shows mould.</p>\n<h2>Signs it worked / troubleshooting</h2>\n<ul>\n<li>✅ <strong>Good:</strong> milk thickens, tastes tart and faintly yeasty, grains grow over time.</li>\n<li>⚠️ <strong>Separates into curds and whey quickly</strong> = over-fermented or too warm → shorten the time or use more milk per grain.</li>\n<li>🚫 <strong>Pink discoloration or mould</strong> = contamination → discard.</li>\n</ul>\n<h2>How to store</h2>\n<p>Finished kefir keeps a week refrigerated. To pause, rest the grains in fresh milk in the fridge; they\nslow but stay alive for a couple of weeks.</p>\n<h2>References</h2>\n<ul>\n<li>Bourrie BCT, Willing BP, Cotter PD (2016). <em>The Microbiota and Health Promoting Characteristics of the Fermented Beverage Kefir.</em> Frontiers in Microbiology 7:647. doi:10.3389/fmicb.2016.00647</li>\n<li>Prado MR, Blandón LM, Vandenberghe LPS, et al. (2015). <em>Milk kefir: composition, microbial cultures, biological activities, and related products.</em> Frontiers in Microbiology 6:1177. doi:10.3389/fmicb.2015.01177</li>\n</ul>\n",
+    "searchText": "milk kefir cauliflower-like grains that culture milk at room temperature into a drinkable, tangy, effervescent ferment richer in microbial diversity than yogurt. live-cultures protein calcium b-vitamins dairy kefir-grains lactobacillus-kefiranofaciens kefiran yeast probiotic fresh milk milk kefir grains what it is milk kefir is a self perpetuating cultured milk drink. soft, cauliflower like \"grains\" — a living matrix of microbes — are dropped into milk and, in about a day at room temperature, ferment it into a thin, tangy, slightly effervescent drink. unlike yogurt, kefir cultures mesophilic (at room temperature) and carries a much broader microbial community. the science the grains are held together by kefiran , an exopolysaccharide secreted by lactobacillus kefiranofaciens . within that matrix live a diverse consortium of lactic acid bacteria ( lactobacillus , lactococcus , leuconostoc ), acetic acid bacteria and yeasts, which together produce lactic acid, co₂ and trace ethanol (prado et al., 2015). because the community is more diverse than yogurt's two species pair, kefir yields a wider range of metabolites; a review in frontiers in microbiology surveys its microbiota and the associated health research (bourrie, willing & cotter, 2016). safety culture in glass and strain with plastic or nylon rather than reactive metal. keep the grains fed — they are a living culture and starve if left too long without fresh milk. discard if the milk smells putrid rather than cleanly sour, or shows mould. signs it worked / troubleshooting ✅ good: milk thickens, tastes tart and faintly yeasty, grains grow over time. ⚠️ separates into curds and whey quickly = over fermented or too warm → shorten the time or use more milk per grain. 🚫 pink discoloration or mould = contamination → discard. how to store finished kefir keeps a week refrigerated. to pause, rest the grains in fresh milk in the fridge; they slow but stay alive for a couple of weeks. references bourrie bct, willing bp, cotter pd (2016). the microbiota and health promoting characteristics of the fermented beverage kefir. frontiers in microbiology 7:647. doi:10.3389/fmicb.2016.00647 prado mr, blandón lm, vandenberghe lps, et al. (2015). milk kefir: composition, microbial cultures, biological activities, and related products. frontiers in microbiology 6:1177. doi:10.3389/fmicb.2015.01177"
+  },
+  {
     "id": "mineral-bioles",
     "title": "Mineral-enriched Bio-ferments",
     "source": "MM",
+    "section": "fertilizer",
     "category": "mineral-extract",
     "stage": [
       "cross-over",
@@ -1478,6 +1699,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Mountain Microorganisms",
     "abbr": "MM",
     "source": "MM",
+    "section": "fertilizer",
     "category": "microbial-culture",
     "stage": [
       "soil",
@@ -1574,6 +1796,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Oriental Herbal Nutrient",
     "abbr": "OHN",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "biostimulant",
     "stage": [
       "all-stages"
@@ -1669,10 +1892,87 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "searchText": "oriental herbal nutrient ohn fermented garlic, ginger and cinnamon — an aromatic tonic that warms plants, sterilizes, and drives vigorous growth at every stage. immunity warmth sterilization vigor garlic ginger cinnamon immunity herbal tonic garlic (whole bulb, unwashed) ginger (unwashed) cinnamon bark rice wine / beer jaggery / brown sugar what it is ohn is a fermented (never boiled) extract of energy rich herbs — classically garlic, ginger and cinnamon. it increases plant robustness, keeps plants warm, sterilizes, and revitalizes crops to activate their growth. because it is fermented rather than cooked, it preserves the vigor of the herbs. on the nutritive cycle: ohn is an all stages input — one of the true backbones of natural farming. it is used through the early, vegetative, cross over and reproductive stages, and goes into imo 3, imo 4, soil treatment and seed treatment solutions. when to use it throughout the cycle — basic dilution 1:500–1:1000 in water. weakened crops — ohn 1:1000 with fpj 1:500 and brv 1:500 to reinvigorate them. soft rot or anthracnose — add wca 1:1000 to that mixture. materials garlic 1 kg and ginger 1 kg (unwashed, crushed with skins and roots) cinnamon bark 250 g soaked in 750 ml rice wine or beer jaggery — equal weight to each herb jars, porous paper, rubber bands, liquor for storage how to make it 1. crush the raw herbs. do not wash; crush garlic and ginger coarsely in separate jars. 2. soak the cinnamon. cover the bark with rice wine/beer to ⅔ of the jar, rest 1–2 days . 3. sugar 1:1. add jaggery equal to each herb's weight; keep every jar only ⅔ full for good fermentation. 4. ferment and stir. cover, ferment 4–6 days , then stir clockwise each morning for two weeks . 5. filter and preserve. strain into a clean jar; top with liquor for long keeping (water if used within 45 days ). signs it worked / troubleshooting ✅ good: aromatic, warm herbal smell after two weeks of daily stirring. ⚠️ jar over ⅔ full = poor fermentation → make a smaller batch with more headroom. 🚫 foul rot smell = contaminated → discard and restart. how to store filter and keep the extract in a clean jar. top with liquor for long term storage; water is fine if you will use it within 45 days . mix the three herbs at 1:1:1:1000 only just before spraying."
   },
   {
+    "id": "sauerkraut",
+    "title": "Sauerkraut",
+    "source": "Traditional",
+    "section": "food",
+    "category": "vegetable-ferment",
+    "stage": [],
+    "supplies": [
+      "live-cultures",
+      "lactic-acid",
+      "vitamin-c",
+      "fiber"
+    ],
+    "difficulty": 1,
+    "timeDays": [
+      14,
+      28
+    ],
+    "summary": "Cabbage and salt, nothing else — a self-selecting lactic ferment where the vegetable's own bacteria acidify the brine and preserve it for months.",
+    "ingredients": [
+      {
+        "item": "Green or white cabbage, shredded",
+        "qty": "1",
+        "unit": "kg"
+      },
+      {
+        "item": "Non-iodised salt (2% of cabbage weight)",
+        "qty": "20",
+        "unit": "g"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "carrot",
+        "text": "Shred cabbage finely, discarding the tough outer leaves (keep one whole leaf aside)."
+      },
+      {
+        "icon": "weigh",
+        "text": "Weigh the shredded cabbage and add 2% of that weight in salt."
+      },
+      {
+        "icon": "hand",
+        "text": "Massage 5–10 minutes until the cabbage weeps enough brine to cover itself."
+      },
+      {
+        "icon": "pack",
+        "text": "Pack tightly into a jar so the brine rises above the cabbage. No dry cabbage should touch air."
+      },
+      {
+        "icon": "cover",
+        "text": "Lay the reserved leaf on top and weigh it down. Cover loosely so CO₂ can escape."
+      },
+      {
+        "icon": "clock",
+        "text": "Ferment 2–4 weeks at 18–22 °C, out of direct sun. Taste weekly."
+      },
+      {
+        "icon": "store",
+        "text": "When pleasantly sour, seal and refrigerate. Keeps several months cold."
+      }
+    ],
+    "tags": [
+      "lacto-fermentation",
+      "cabbage",
+      "brine",
+      "probiotic",
+      "leuconostoc",
+      "lactobacillus"
+    ],
+    "related": [
+      "kimchi",
+      "yogurt"
+    ],
+    "bodyHtml": "<h2>What it is</h2>\n<p>Sauerkraut is cabbage preserved by <strong>lactic-acid fermentation</strong>. Salt draws water out of the\nshredded leaves to form a brine, and the lactic-acid bacteria (LAB) that already live on the\ncabbage do the rest — converting sugars into lactic acid until the environment is too acidic for\nspoilage and pathogenic microbes to survive. No starter culture is needed; the process\n<em>self-selects</em> for the right microbes.</p>\n<h2>The science</h2>\n<p>Fermentation follows a well-documented <strong>microbial succession</strong>. Early on, the heterofermentative\nspecies <em>Leuconostoc mesenteroides</em> dominates, producing lactic acid, acetic acid and CO₂ and\ndropping the pH. As acidity rises it gives way to more acid-tolerant homofermentative species,\nchiefly <em>Lactiplantibacillus plantarum</em> (formerly <em>Lactobacillus plantarum</em>), which drive the pH\ndown to roughly <strong>3.4–3.6</strong> and set the finished flavour (Plengvidhya et al., 2007).</p>\n<p>Two conditions make this safe and reliable: an <strong>anaerobic</strong> environment (vegetables submerged\nunder brine) and a salt concentration around <strong>2% by weight</strong>, which favours LAB while suppressing\ncompetitors (Breidt et al., 2013).</p>\n<h2>Safety</h2>\n<p>The safety of fermented vegetables comes from <strong>rapid acidification</strong>, not heat. Keep everything\nsubmerged, hold near 18–22 °C, and the pH should fall below 4.6 within days. Discard a batch that\nsmells putrid, turns slimy, or grows fuzzy coloured mould (a flat white film of <em>kahm yeast</em> is\nharmless and can be skimmed). Use non-iodised salt — iodine and anti-caking agents can inhibit the\nculture.</p>\n<h2>Signs it worked / troubleshooting</h2>\n<ul>\n<li>✅ <strong>Good:</strong> cloudy brine, steady tang, clean sour-cabbage smell.</li>\n<li>⚠️ <strong>White film on the surface</strong> = kahm yeast → skim it, keep cabbage submerged.</li>\n<li>🚫 <strong>Fuzzy blue/green/black mould or rotten smell</strong> = contamination → discard.</li>\n</ul>\n<h2>How to store</h2>\n<p>Once it reaches a sourness you like, refrigerate. Cold storage nearly stops the ferment; sealed and\nsubmerged, sauerkraut keeps for <strong>several months</strong>.</p>\n<h2>References</h2>\n<ul>\n<li>Plengvidhya V, Breidt F, Lu Z, Fleming HP (2007). <em>DNA fingerprinting of lactic acid bacteria in sauerkraut fermentations.</em> Applied and Environmental Microbiology 73(23):7697–7702. doi:10.1128/AEM.01342-07</li>\n<li>Breidt F, McFeeters RF, Pérez-Díaz I, Lee CH (2013). <em>Fermented Vegetables.</em> In: Food Microbiology: Fundamentals and Frontiers, 4th ed. ASM Press, 841–855. doi:10.1128/9781555818463.ch33</li>\n<li>Touret T, Oliveira M, Semedo-Lemsaddek T (2018). <em>Putative probiotic lactic acid bacteria isolated from sauerkraut fermentations.</em> PLoS ONE 13(9):e0203501. doi:10.1371/journal.pone.0203501</li>\n</ul>\n",
+    "searchText": "sauerkraut cabbage and salt, nothing else — a self-selecting lactic ferment where the vegetable's own bacteria acidify the brine and preserve it for months. live-cultures lactic-acid vitamin-c fiber lacto-fermentation cabbage brine probiotic leuconostoc lactobacillus green or white cabbage, shredded non-iodised salt (2% of cabbage weight) what it is sauerkraut is cabbage preserved by lactic acid fermentation . salt draws water out of the shredded leaves to form a brine, and the lactic acid bacteria (lab) that already live on the cabbage do the rest — converting sugars into lactic acid until the environment is too acidic for spoilage and pathogenic microbes to survive. no starter culture is needed; the process self selects for the right microbes. the science fermentation follows a well documented microbial succession . early on, the heterofermentative species leuconostoc mesenteroides dominates, producing lactic acid, acetic acid and co₂ and dropping the ph. as acidity rises it gives way to more acid tolerant homofermentative species, chiefly lactiplantibacillus plantarum (formerly lactobacillus plantarum ), which drive the ph down to roughly 3.4–3.6 and set the finished flavour (plengvidhya et al., 2007). two conditions make this safe and reliable: an anaerobic environment (vegetables submerged under brine) and a salt concentration around 2% by weight , which favours lab while suppressing competitors (breidt et al., 2013). safety the safety of fermented vegetables comes from rapid acidification , not heat. keep everything submerged, hold near 18–22 °c, and the ph should fall below 4.6 within days. discard a batch that smells putrid, turns slimy, or grows fuzzy coloured mould (a flat white film of kahm yeast is harmless and can be skimmed). use non iodised salt — iodine and anti caking agents can inhibit the culture. signs it worked / troubleshooting ✅ good: cloudy brine, steady tang, clean sour cabbage smell. ⚠️ white film on the surface = kahm yeast → skim it, keep cabbage submerged. 🚫 fuzzy blue/green/black mould or rotten smell = contamination → discard. how to store once it reaches a sourness you like, refrigerate. cold storage nearly stops the ferment; sealed and submerged, sauerkraut keeps for several months . references plengvidhya v, breidt f, lu z, fleming hp (2007). dna fingerprinting of lactic acid bacteria in sauerkraut fermentations. applied and environmental microbiology 73(23):7697–7702. doi:10.1128/aem.01342 07 breidt f, mcfeeters rf, pérez díaz i, lee ch (2013). fermented vegetables. in: food microbiology: fundamentals and frontiers, 4th ed. asm press, 841–855. doi:10.1128/9781555818463.ch33 touret t, oliveira m, semedo lemsaddek t (2018). putative probiotic lactic acid bacteria isolated from sauerkraut fermentations. plos one 13(9):e0203501. doi:10.1371/journal.pone.0203501"
+  },
+  {
     "id": "seawater",
     "title": "Seawater & Fermented Seawater",
     "abbr": "SW",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "mineral-extract",
     "stage": [
       "reproductive",
@@ -1751,6 +2051,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Seed/Seedling (SES) & Soil (SOS) Treatment",
     "abbr": "SES / SOS",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "application",
     "stage": [
       "soil"
@@ -1845,9 +2146,79 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "searchText": "seed/seedling (ses) & soil (sos) treatment ses / sos two natural farming baths — one to wake a seed's natural vitality, one to condition an acre of soil before planting. microbes nutrients seed seedling soil application treatment imo fpj brv ohn water faa (if seedlings small/weak) ws-ca (if seedlings overgrown/soft) what it is these are two application recipes — you mix inputs, you don't ferment. ses is a brief seed and seedling soak that restores the natural vitality of seeds (market seed is often chemically treated and weak). sos is a soil treatment solution that conditions an acre of ground before planting, feeding the soil's microbial life instead of tilling it hard. on the nutritive cycle: both are soil stage applications. they set the foundation — vital seed and living, balanced soil — so every later stage of the cycle has a strong start. when to use it ses — soak seeds briefly before broadcast; a short treatment restores vitality without leaching nutrients the way long soaking does. sos — apply 7 days before seeding or transplanting ( 14 days if the field has repeated cultivation disorder); common practice is three applications, before/after broadcast and again in mid and late growth. materials ses (per 1000 ml water): fpj 2 ml , brv 2 ml , ohn 1 ml . additions — faa 1 ml if seedlings are small and weak; ws ca 1 ml if seedlings are overgrown and soft. sos (one acre / 0.4 ha): imo 2 500 ml , fpj 500 ml , ohn 500 ml , brv 500 ml , lab 300 ml , wcp 300 ml , faa 300 ml , charcoal 50 kg , soil 500 kg , seawater 3 l , water 200 l , farmyard manure 1000 kg . how to make it 1. mix the ses base. stir fpj 2 ml + brv 2 ml + ohn 1 ml into 1000 ml of water. 2. adjust for the seedlings. add faa 1 ml if they are small and weak, or ws ca 1 ml if they are overgrown and soft. 3. treat the seed. soak seeds briefly, then broadcast. 4. build the sos. combine all the sos inputs at their listed amounts for one acre. 5. let it propagate. set the sos mixture aside 3–5 hours so microorganisms multiply, then apply to the field. signs it worked / troubleshooting ✅ good: strong, even seedling emergence; sos soil turns warm with a soft surface and balanced microbial life. ⚠️ seedlings still weak = wrong ses addition → use faa for small/weak, ws ca for overgrown/soft. 🚫 sos applied too late = poor foundation → treat 7 days ahead (14 for problem fields). how to store these are mixed fresh and applied — the sos after just 3–5 hours of propagation. mix only what you'll use; don't store diluted batches."
   },
   {
+    "id": "sourdough-starter",
+    "title": "Sourdough Starter",
+    "abbr": "Levain",
+    "source": "Traditional",
+    "section": "food",
+    "category": "grain-ferment",
+    "stage": [],
+    "supplies": [
+      "wild-yeast",
+      "lactic-acid",
+      "leavening",
+      "flavor"
+    ],
+    "difficulty": 2,
+    "timeDays": [
+      5,
+      10
+    ],
+    "summary": "A stable culture of wild yeast and lactic bacteria kept alive on flour and water — the leavening and the sour in every loaf of real sourdough.",
+    "ingredients": [
+      {
+        "item": "Wholemeal or rye flour (to start)",
+        "qty": "50",
+        "unit": "g/day"
+      },
+      {
+        "item": "Water, non-chlorinated",
+        "qty": "50",
+        "unit": "g/day"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "mix",
+        "text": "Day 1: mix 50 g wholemeal flour with 50 g water in a jar. Cover loosely."
+      },
+      {
+        "icon": "temp",
+        "text": "Keep at 22–26 °C. Warmth speeds establishment."
+      },
+      {
+        "icon": "clock",
+        "text": "Days 2–5: each day discard most of it and feed with fresh 50 g flour + 50 g water."
+      },
+      {
+        "icon": "check",
+        "text": "Watch for it to double between feeds and smell tangy-yeasty, not just sour."
+      },
+      {
+        "icon": "store",
+        "text": "Once it reliably doubles in 4–8 h it's mature. Refrigerate and feed weekly, or keep out and feed daily."
+      }
+    ],
+    "tags": [
+      "flour",
+      "wild-yeast",
+      "fructilactobacillus",
+      "saccharomyces",
+      "levain",
+      "bread"
+    ],
+    "related": [
+      "yogurt",
+      "kombucha"
+    ],
+    "bodyHtml": "<h2>What it is</h2>\n<p>A sourdough starter (levain) is a living culture of <strong>wild yeast and lactic-acid bacteria</strong> carried\nin a paste of flour and water. Refreshing it with fresh flour keeps the microbes fed; a spoonful\nleavens bread and gives it the characteristic sour tang, entirely without commercial baker&#39;s yeast.</p>\n<h2>The science</h2>\n<p>Mature sourdough is a remarkably <strong>stable, self-selecting consortium</strong>. It is dominated by\nlactic-acid bacteria — classically <em>Fructilactobacillus sanfranciscensis</em> — together with sourdough\nyeasts such as <em>Kazachstania humilis</em> or <em>Saccharomyces cerevisiae</em>, typically at a ratio around\n<strong>100:1 LAB to yeast</strong> (De Vuyst et al., 2014). The yeast provides most of the CO₂ that raises the\ndough; the bacteria produce lactic and acetic acid for flavour and keeping-quality.</p>\n<p>Acidification also switches on cereal and microbial enzymes that break down starch, protein and\nphytate, which improves texture, flavour and mineral availability in the finished bread (Gänzle,\n2014). The balance of the two acids — and so the taste — shifts with temperature and hydration\n(De Vuyst &amp; Neysens, 2005).</p>\n<h2>Signs it worked / troubleshooting</h2>\n<ul>\n<li>✅ <strong>Good:</strong> reliably doubles in 4–8 h, domed and bubbly, pleasant yeasty-sour smell.</li>\n<li>⚠️ <strong>Grey liquid on top (&quot;hooch&quot;)</strong> = hungry starter → pour off and feed more often.</li>\n<li>🚫 <strong>Pink/orange streaks or fuzzy mould</strong> = contamination → discard and start over.</li>\n</ul>\n<h2>How to store</h2>\n<p>Keep it on the counter and feed daily, or refrigerate a mature starter and feed weekly. It can be\ndried to a powder for long-term backup and revived later.</p>\n<h2>References</h2>\n<ul>\n<li>De Vuyst L, Van Kerrebroeck S, Harth H, Huys G, Daniel HM, Weckx S (2014). <em>Microbial ecology of sourdough fermentations: diverse or uniform?</em> Food Microbiology 37:11–29. doi:10.1016/j.fm.2013.06.002</li>\n<li>Gänzle MG (2014). <em>Enzymatic and bacterial conversions during sourdough fermentation.</em> Food Microbiology 37:2–10. doi:10.1016/j.fm.2013.04.007</li>\n<li>De Vuyst L, Neysens P (2005). <em>The sourdough microflora: biodiversity and metabolic interactions.</em> Trends in Food Science &amp; Technology 16(1–3):43–56. doi:10.1016/j.tifs.2004.02.012</li>\n</ul>\n",
+    "searchText": "sourdough starter levain a stable culture of wild yeast and lactic bacteria kept alive on flour and water — the leavening and the sour in every loaf of real sourdough. wild-yeast lactic-acid leavening flavor flour wild-yeast fructilactobacillus saccharomyces levain bread wholemeal or rye flour (to start) water, non-chlorinated what it is a sourdough starter (levain) is a living culture of wild yeast and lactic acid bacteria carried in a paste of flour and water. refreshing it with fresh flour keeps the microbes fed; a spoonful leavens bread and gives it the characteristic sour tang, entirely without commercial baker's yeast. the science mature sourdough is a remarkably stable, self selecting consortium . it is dominated by lactic acid bacteria — classically fructilactobacillus sanfranciscensis — together with sourdough yeasts such as kazachstania humilis or saccharomyces cerevisiae , typically at a ratio around 100:1 lab to yeast (de vuyst et al., 2014). the yeast provides most of the co₂ that raises the dough; the bacteria produce lactic and acetic acid for flavour and keeping quality. acidification also switches on cereal and microbial enzymes that break down starch, protein and phytate, which improves texture, flavour and mineral availability in the finished bread (gänzle, 2014). the balance of the two acids — and so the taste — shifts with temperature and hydration (de vuyst & neysens, 2005). signs it worked / troubleshooting ✅ good: reliably doubles in 4–8 h, domed and bubbly, pleasant yeasty sour smell. ⚠️ grey liquid on top (\"hooch\") = hungry starter → pour off and feed more often. 🚫 pink/orange streaks or fuzzy mould = contamination → discard and start over. how to store keep it on the counter and feed daily, or refrigerate a mature starter and feed weekly. it can be dried to a powder for long term backup and revived later. references de vuyst l, van kerrebroeck s, harth h, huys g, daniel hm, weckx s (2014). microbial ecology of sourdough fermentations: diverse or uniform? food microbiology 37:11–29. doi:10.1016/j.fm.2013.06.002 gänzle mg (2014). enzymatic and bacterial conversions during sourdough fermentation. food microbiology 37:2–10. doi:10.1016/j.fm.2013.04.007 de vuyst l, neysens p (2005). the sourdough microflora: biodiversity and metabolic interactions. trends in food science & technology 16(1–3):43–56. doi:10.1016/j.tifs.2004.02.012"
+  },
+  {
     "id": "spice-compost",
     "title": "SPICE Compost Inoculant",
     "source": "SoilLandFood",
+    "section": "fertilizer",
     "category": "microbial-culture",
     "stage": [
       "soil"
@@ -1957,10 +2328,168 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "searchText": "spice compost inoculant a hessian teabag of green leaf, blood-and-bone and bran brewed in molasses, seawater and lab serum — the microbe crew that runs a no-turn compost pile. microbes nitrogen minerals compost inoculant spice hessian-teabag lab-serum molasses seawater clean non-chlorinated water fresh green leafy plant material blood & bone meal bran (rice or any cereal) molasses seawater (or equivalent) lab serum / em basalt dust (optional) what it is spice (static pile inoculated compost extension) inoculant is a low oxygen brew that seeds the right microbe community into a no turn compost pile . you steep a hessian \"teabag\" of green leaf, blood and bone and bran in water charged with molasses, seawater and lab serum , jiggle it daily for five days, then pour the liquid onto compostable material as you build the pile. on the nutritive cycle: spice is a soil stage input. it doesn't feed a crop directly — it steers decomposition, so your compost breaks down into stable, biologically alive humus. when to use it building a no turn pile — apply as you lay down feedstock, before the cover goes on. application rate — 1 pint per 5 cubic yards of compostable material. no seawater? — make your own: 1 cup sea salt to 7 quarts clean water (keep the ratio if scaling). materials base 60 gallon wheeled kart batch (scales to a 260 gal ibc): water — 100 quarts fresh green leafy plants (grass, weeds, herbs, fresh seaweed) — 15–20 quarts blood & bone meal — 6 pounds bran — 2 pounds molasses — 7–10 quarts seawater — 3 quarts lab serum / em — 60–70 quarts optional: basalt dust ~7 quarts , seaweed meal hessian sack + string, bin or ibc with a lid how to make it 1. half fill the bin with water. 2. load the teabag — green leaf, blood & bone, bran (plus basalt/seaweed if available); tie it shut and secure it inside the bin. 3. charge the water — mix in molasses, seawater and lab serum, then add the rest of the water. 4. activate 5 days — lid loose; each day open up and jiggle the sack at least once. 5. finish — pull the sack, bin its contents, keep the liquid. ready to use. signs it worked / troubleshooting ✅ good: active, sweet molasses smell after five days of daily jiggling. ⚠️ gray film (yeasts) on top after a few weeks = normal, not a problem. 🚫 foul rot smell = putrefied → discard and restart. how to store shaded, cool place with the lid loosely on. use within 1–3 months ."
   },
   {
+    "id": "tempeh",
+    "title": "Tempeh",
+    "source": "Traditional",
+    "section": "food",
+    "category": "legume-ferment",
+    "stage": [],
+    "supplies": [
+      "protein",
+      "live-cultures",
+      "b-vitamins",
+      "fiber"
+    ],
+    "difficulty": 3,
+    "timeDays": [
+      1,
+      2
+    ],
+    "summary": "Indonesian soybean cake bound into a firm slab by a living mould — a mould ferment, not a bacterial one, and a genuinely complete plant protein.",
+    "ingredients": [
+      {
+        "item": "Dry soybeans (dehulled)",
+        "qty": "300",
+        "unit": "g"
+      },
+      {
+        "item": "Vinegar (to acidify the soak)",
+        "qty": "1",
+        "unit": "tbsp"
+      },
+      {
+        "item": "Tempeh starter (Rhizopus oligosporus spores)",
+        "qty": "1",
+        "unit": "tsp"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "water",
+        "text": "Soak dehulled beans overnight with a splash of vinegar to acidify (pH < 5)."
+      },
+      {
+        "icon": "milk",
+        "text": "Cook until just tender, then drain and dry the beans thoroughly — surface moisture ruins the ferment."
+      },
+      {
+        "icon": "mix",
+        "text": "Cool to body temperature and mix in the Rhizopus starter evenly."
+      },
+      {
+        "icon": "pack",
+        "text": "Press into a perforated bag or box, ~2 cm thick, so the mould can breathe."
+      },
+      {
+        "icon": "temp",
+        "text": "Incubate at 30–32 °C for 24–48 h."
+      },
+      {
+        "icon": "check",
+        "text": "Done when white mycelium fully binds the beans into a firm cake. Refrigerate or cook."
+      }
+    ],
+    "tags": [
+      "soybean",
+      "rhizopus-oligosporus",
+      "mould-ferment",
+      "protein",
+      "indonesia"
+    ],
+    "related": [
+      "yogurt",
+      "sauerkraut"
+    ],
+    "bodyHtml": "<h2>What it is</h2>\n<p>Tempeh is a <strong>mould-fermented</strong> soybean cake from Indonesia. Unlike the bacterial ferments on this\nshelf, tempeh is made by a filamentous fungus, <em><strong>Rhizopus oligosporus</strong></em> (and related <em>Rhizopus</em>\nspecies), whose white mycelium grows through cooked beans and knits them into a sliceable slab with a\nnutty, mushroom-like flavour.</p>\n<h2>The science</h2>\n<p>The mould does more than bind the beans. During the 24–48 h ferment <em>Rhizopus</em> secretes enzymes that\n<strong>partially digest proteins, lipids and phytate</strong>, improving digestibility and freeing minerals; it\nalso raises levels of some B-vitamins and produces antioxidant isoflavone aglycones (Nout &amp; Kiers,\n2005). A comprehensive review documents tempeh&#39;s protein quality, safety controls and health effects\n(Ahnan-Winarno et al., 2021).</p>\n<h2>Safety</h2>\n<p>Two controls matter. <strong>Acidify the soak</strong> (vinegar or a lactic pre-ferment to pH below ~5) so\nbacteria like <em>Bacillus</em> can&#39;t outcompete the mould, and <strong>incubate warm and aerated</strong> at\n30–32 °C. Some grey-black patches of sporulation around the edges are normal and harmless. Discard if\nthe cake smells of ammonia (over-fermented) or shows fuzzy coloured (non-<em>Rhizopus</em>) mould.</p>\n<h2>Signs it worked / troubleshooting</h2>\n<ul>\n<li>✅ <strong>Good:</strong> solid white cake, sweet mushroomy smell, holds together when sliced.</li>\n<li>⚠️ <strong>Patchy binding</strong> = beans too wet, too cool, or packed too thick → dry beans better, hold 31 °C, thin the slab.</li>\n<li>🚫 <strong>Ammonia reek or slimy</strong> = over-fermented or contaminated → discard.</li>\n</ul>\n<h2>How to store</h2>\n<p>Refrigerate up to a week, or freeze. Always <strong>cook tempeh before eating</strong> — steam, fry or bake.</p>\n<h2>References</h2>\n<ul>\n<li>Nout MJR, Kiers JL (2005). <em>Tempe fermentation, innovation and functionality: update into the third millennium.</em> Journal of Applied Microbiology 98(4):789–805. doi:10.1111/j.1365-2672.2004.02471.x</li>\n<li>Ahnan-Winarno AD, Cordeiro L, Winarno FG, Gibbons J, Xiao H (2021). <em>Tempeh: A semicentennial review on its health benefits, fermentation, safety, processing, sustainability, and affordability.</em> Comprehensive Reviews in Food Science and Food Safety 20(2):1717–1767. doi:10.1111/1541-4337.12710</li>\n</ul>\n",
+    "searchText": "tempeh indonesian soybean cake bound into a firm slab by a living mould — a mould ferment, not a bacterial one, and a genuinely complete plant protein. protein live-cultures b-vitamins fiber soybean rhizopus-oligosporus mould-ferment protein indonesia dry soybeans (dehulled) vinegar (to acidify the soak) tempeh starter (rhizopus oligosporus spores) what it is tempeh is a mould fermented soybean cake from indonesia. unlike the bacterial ferments on this shelf, tempeh is made by a filamentous fungus, rhizopus oligosporus (and related rhizopus species), whose white mycelium grows through cooked beans and knits them into a sliceable slab with a nutty, mushroom like flavour. the science the mould does more than bind the beans. during the 24–48 h ferment rhizopus secretes enzymes that partially digest proteins, lipids and phytate , improving digestibility and freeing minerals; it also raises levels of some b vitamins and produces antioxidant isoflavone aglycones (nout & kiers, 2005). a comprehensive review documents tempeh's protein quality, safety controls and health effects (ahnan winarno et al., 2021). safety two controls matter. acidify the soak (vinegar or a lactic pre ferment to ph below ~5) so bacteria like bacillus can't outcompete the mould, and incubate warm and aerated at 30–32 °c. some grey black patches of sporulation around the edges are normal and harmless. discard if the cake smells of ammonia (over fermented) or shows fuzzy coloured (non rhizopus ) mould. signs it worked / troubleshooting ✅ good: solid white cake, sweet mushroomy smell, holds together when sliced. ⚠️ patchy binding = beans too wet, too cool, or packed too thick → dry beans better, hold 31 °c, thin the slab. 🚫 ammonia reek or slimy = over fermented or contaminated → discard. how to store refrigerate up to a week, or freeze. always cook tempeh before eating — steam, fry or bake. references nout mjr, kiers jl (2005). tempe fermentation, innovation and functionality: update into the third millennium. journal of applied microbiology 98(4):789–805. doi:10.1111/j.1365 2672.2004.02471.x ahnan winarno ad, cordeiro l, winarno fg, gibbons j, xiao h (2021). tempeh: a semicentennial review on its health benefits, fermentation, safety, processing, sustainability, and affordability. comprehensive reviews in food science and food safety 20(2):1717–1767. doi:10.1111/1541 4337.12710"
+  },
+  {
+    "id": "water-kefir",
+    "title": "Water Kefir",
+    "abbr": "Tibicos",
+    "source": "Traditional",
+    "section": "beverage",
+    "category": "cultured-beverage",
+    "stage": [],
+    "supplies": [
+      "live-cultures",
+      "organic-acids",
+      "light-fizz"
+    ],
+    "difficulty": 1,
+    "timeDays": [
+      1,
+      3
+    ],
+    "summary": "Translucent grains that ferment sugar water into a fast, dairy-free, lightly fizzy soda — the quickest live drink on this shelf.",
+    "ingredients": [
+      {
+        "item": "Water, non-chlorinated",
+        "qty": "1",
+        "unit": "L"
+      },
+      {
+        "item": "Sugar",
+        "qty": "60",
+        "unit": "g"
+      },
+      {
+        "item": "Water kefir grains",
+        "qty": "40",
+        "unit": "g"
+      },
+      {
+        "item": "A few pieces dried fruit + a slice of lemon",
+        "qty": "optional"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "sugar",
+        "text": "Dissolve the sugar in water and cool to room temperature."
+      },
+      {
+        "icon": "mix",
+        "text": "Add the grains and, if you like, dried fruit and lemon for minerals and flavour."
+      },
+      {
+        "icon": "cover",
+        "text": "Cover loosely and keep at 20–26 °C."
+      },
+      {
+        "icon": "clock",
+        "text": "Ferment 24–48 h — shorter for a sweeter, milder drink."
+      },
+      {
+        "icon": "strain",
+        "text": "Strain out the grains (never with reactive metal). Reuse them immediately in fresh sugar water."
+      },
+      {
+        "icon": "store",
+        "text": "Drink now, or bottle 1–2 days for fizz, then refrigerate."
+      }
+    ],
+    "tags": [
+      "sugar-water",
+      "tibicos",
+      "lactobacillus",
+      "yeast",
+      "dairy-free",
+      "soda"
+    ],
+    "related": [
+      "kombucha",
+      "milk-kefir"
+    ],
+    "bodyHtml": "<h2>What it is</h2>\n<p>Water kefir (also <em>tibicos</em>) is a <strong>dairy-free</strong> fermented drink made by feeding translucent, gel-like\n&quot;grains&quot; a simple sugar-water solution. In a day or two the grains turn it into a lightly sweet, tart,\ngently sparkling beverage — the fastest ferment in this section.</p>\n<h2>The science</h2>\n<p>The grains are a <strong>self-reproducing symbiotic community</strong> held in a dextran polysaccharide matrix.\nA detailed community study found them dominated by lactic-acid bacteria (notably\n<em>Liquorilactobacillus hordei</em> and <em>L. nagelii</em>), <em>Leuconostoc</em> and <em>Bifidobacterium</em>, together with\nyeasts such as <em>Saccharomyces cerevisiae</em> and <em>Dekkera bruxellensis</em> (Laureys &amp; De Vuyst, 2014). The\nbacteria produce lactic acid and build the grain matrix; the yeasts contribute CO₂, ethanol traces\nand aromatics. A later review summarises composition and production practice (Lynch et al., 2021).</p>\n<p>Minerals matter: the culture needs them, which is why a little <strong>dried fruit or a pinch of\nunrefined sugar</strong> keeps the grains healthy over successive batches.</p>\n<h2>Safety</h2>\n<p>Ferment in glass and strain with plastic or nylon — the organic acids corrode reactive metals. A\nshort, cool ferment keeps alcohol low. If bottling for fizz, &quot;burp&quot; the bottles or use pressure-rated\nones, as a sealed second ferment can build significant pressure.</p>\n<h2>Signs it worked / troubleshooting</h2>\n<ul>\n<li>✅ <strong>Good:</strong> grains grow and multiply, liquid turns tart and slightly fizzy.</li>\n<li>⚠️ <strong>Grains shrinking or not fizzing</strong> = mineral-starved → add dried fruit, use unrefined sugar, avoid distilled water.</li>\n<li>🚫 <strong>Mould or rotten smell</strong> = contamination → discard.</li>\n</ul>\n<h2>How to store</h2>\n<p>Between batches, grains can rest in fresh sugar water in the fridge for a week or two. The finished\ndrink keeps refrigerated for several days.</p>\n<h2>References</h2>\n<ul>\n<li>Laureys D, De Vuyst L (2014). <em>Microbial species diversity, community dynamics, and metabolite kinetics of water kefir fermentation.</em> Applied and Environmental Microbiology 80(8):2564–2572. doi:10.1128/AEM.03978-13</li>\n<li>Lynch KM, Wilkinson S, Daenen L, Arendt EK (2021). <em>An update on water kefir: Microbiology, composition and production.</em> International Journal of Food Microbiology 345:109128. doi:10.1016/j.ijfoodmicro.2021.109128</li>\n</ul>\n",
+    "searchText": "water kefir tibicos translucent grains that ferment sugar water into a fast, dairy-free, lightly fizzy soda — the quickest live drink on this shelf. live-cultures organic-acids light-fizz sugar-water tibicos lactobacillus yeast dairy-free soda water, non-chlorinated sugar water kefir grains a few pieces dried fruit + a slice of lemon what it is water kefir (also tibicos ) is a dairy free fermented drink made by feeding translucent, gel like \"grains\" a simple sugar water solution. in a day or two the grains turn it into a lightly sweet, tart, gently sparkling beverage — the fastest ferment in this section. the science the grains are a self reproducing symbiotic community held in a dextran polysaccharide matrix. a detailed community study found them dominated by lactic acid bacteria (notably liquorilactobacillus hordei and l. nagelii ), leuconostoc and bifidobacterium , together with yeasts such as saccharomyces cerevisiae and dekkera bruxellensis (laureys & de vuyst, 2014). the bacteria produce lactic acid and build the grain matrix; the yeasts contribute co₂, ethanol traces and aromatics. a later review summarises composition and production practice (lynch et al., 2021). minerals matter: the culture needs them, which is why a little dried fruit or a pinch of unrefined sugar keeps the grains healthy over successive batches. safety ferment in glass and strain with plastic or nylon — the organic acids corrode reactive metals. a short, cool ferment keeps alcohol low. if bottling for fizz, \"burp\" the bottles or use pressure rated ones, as a sealed second ferment can build significant pressure. signs it worked / troubleshooting ✅ good: grains grow and multiply, liquid turns tart and slightly fizzy. ⚠️ grains shrinking or not fizzing = mineral starved → add dried fruit, use unrefined sugar, avoid distilled water. 🚫 mould or rotten smell = contamination → discard. how to store between batches, grains can rest in fresh sugar water in the fridge for a week or two. the finished drink keeps refrigerated for several days. references laureys d, de vuyst l (2014). microbial species diversity, community dynamics, and metabolite kinetics of water kefir fermentation. applied and environmental microbiology 80(8):2564–2572. doi:10.1128/aem.03978 13 lynch km, wilkinson s, daenen l, arendt ek (2021). an update on water kefir: microbiology, composition and production. international journal of food microbiology 345:109128. doi:10.1016/j.ijfoodmicro.2021.109128"
+  },
+  {
     "id": "wca",
     "title": "Water-Soluble Calcium",
     "abbr": "WCA",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "mineral-extract",
     "stage": [
       "cross-over",
@@ -2041,6 +2570,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Water-Soluble Calcium Phosphate",
     "abbr": "WCP",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "mineral-extract",
     "stage": [
       "cross-over"
@@ -2120,6 +2650,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Water-Soluble Phosphoric Acid",
     "abbr": "WS-PA",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "mineral-extract",
     "stage": [
       "cross-over"
@@ -2196,6 +2727,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "title": "Water-Soluble Potassium",
     "abbr": "WS-K",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "mineral-extract",
     "stage": [
       "reproductive"
@@ -2272,6 +2804,7 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     "id": "yeast",
     "title": "Yeast Culture",
     "source": "KNF",
+    "section": "fertilizer",
     "category": "microbial-culture",
     "stage": [
       "all-stages"
@@ -2345,5 +2878,69 @@ export const KNOWLEDGE_DOCS: KnowledgeDoc[] = [
     ],
     "bodyHtml": "<h2>What it is</h2>\n<p>Yeast is the microbe in charge of the last step of fermentation, breaking sugars into alcohol and\ncarbon dioxide. It resynthesizes decomposed organic matter into amino acids, hormones and\nvitamins, and produces minerals, nucleic acids and fatty acids that plants and animals cannot make\nthemselves. Wild yeast clings to fruit skins — grapes especially — so ripe fruit is the culture\nmedium.</p>\n<blockquote>\n<p><strong>On the Nutritive Cycle:</strong> Yeast is an <em>all-stages</em> backbone. It enhances metabolism and can be\nreached for whenever a crop or animal needs to rebuild vigor — a repair tonic more than a\nstage-specific feed.</p>\n</blockquote>\n<h2>When to use it</h2>\n<ul>\n<li><strong>Weak plants</strong> — spray to restore vigor.</li>\n<li><strong>Disease</strong> — when viral or bacterial disease appears.</li>\n<li><strong>Storm damage</strong> — when strong wind has heavily damaged branches or stems.</li>\n<li><strong>Low light</strong> — during rainy or high-humidity seasons when photosynthesis is low.</li>\n<li><strong>Livestock</strong> — when animals lose appetite or vigor.</li>\n</ul>\n<p>Dilute <strong>1:1000</strong> and spray on leaves together with other Natural Farming materials.</p>\n<h2>Materials</h2>\n<ul>\n<li>Ripe <strong>grapes or strawberries</strong>, unwashed (yeast-rich skins)</li>\n<li>A clean container with a loose lid, kept apart from other cultures</li>\n<li>Sterilized tools</li>\n</ul>\n<h2>How to make it</h2>\n<ol>\n<li><strong>Pick yeast-rich fruit.</strong> Grapes or strawberries; do not wash — use as they are.</li>\n<li><strong>Sterilize tools</strong> before starting to keep out unwanted microbes.</li>\n<li><strong>Isolate the jar.</strong> Keep it separate so stray microbes and odors can&#39;t get in; cover loosely, never seal.</li>\n<li><strong>Hold conditions.</strong> Keep <strong>23–25°C</strong> and <strong>65–70%</strong> humidity.</li>\n<li><strong>Shake daily</strong> 1–2 times to protect against fungi during cultivation.</li>\n</ol>\n<h2>Signs it worked / troubleshooting</h2>\n<ul>\n<li>✅ <strong>Good:</strong> a lively ferment with a clean, fruity-alcoholic smell.</li>\n<li>⚠️ <strong>Fungus forming</strong> = not shaken enough → shake 1–2 times daily.</li>\n<li>🚫 <strong>Off, contaminated smell</strong> = stray microbes got in → discard and restart with sterilized tools.</li>\n</ul>\n<h2>How to store</h2>\n<p>Refrigerate the cultivated yeast at <strong>1–15°C</strong>. It keeps a maximum of one month, but it is best to\nuse it all within a <strong>week</strong>.</p>\n",
     "searchText": "yeast culture wild yeast cultured off fruit skins — the finisher of fermentation that rebuilds vitamins, hormones and vigor in weak or storm-hit plants. enzymes vitamins hormones metabolism yeast grape fermentation vitamins hormones tonic grapes or strawberries (unwashed, yeast-rich skins) what it is yeast is the microbe in charge of the last step of fermentation, breaking sugars into alcohol and carbon dioxide. it resynthesizes decomposed organic matter into amino acids, hormones and vitamins, and produces minerals, nucleic acids and fatty acids that plants and animals cannot make themselves. wild yeast clings to fruit skins — grapes especially — so ripe fruit is the culture medium. on the nutritive cycle: yeast is an all stages backbone. it enhances metabolism and can be reached for whenever a crop or animal needs to rebuild vigor — a repair tonic more than a stage specific feed. when to use it weak plants — spray to restore vigor. disease — when viral or bacterial disease appears. storm damage — when strong wind has heavily damaged branches or stems. low light — during rainy or high humidity seasons when photosynthesis is low. livestock — when animals lose appetite or vigor. dilute 1:1000 and spray on leaves together with other natural farming materials. materials ripe grapes or strawberries , unwashed (yeast rich skins) a clean container with a loose lid, kept apart from other cultures sterilized tools how to make it 1. pick yeast rich fruit. grapes or strawberries; do not wash — use as they are. 2. sterilize tools before starting to keep out unwanted microbes. 3. isolate the jar. keep it separate so stray microbes and odors can't get in; cover loosely, never seal. 4. hold conditions. keep 23–25°c and 65–70% humidity. 5. shake daily 1–2 times to protect against fungi during cultivation. signs it worked / troubleshooting ✅ good: a lively ferment with a clean, fruity alcoholic smell. ⚠️ fungus forming = not shaken enough → shake 1–2 times daily. 🚫 off, contaminated smell = stray microbes got in → discard and restart with sterilized tools. how to store refrigerate the cultivated yeast at 1–15°c . it keeps a maximum of one month, but it is best to use it all within a week ."
+  },
+  {
+    "id": "yogurt",
+    "title": "Yogurt",
+    "source": "Traditional",
+    "section": "food",
+    "category": "dairy-ferment",
+    "stage": [],
+    "supplies": [
+      "live-cultures",
+      "protein",
+      "calcium",
+      "lactic-acid"
+    ],
+    "difficulty": 1,
+    "timeDays": null,
+    "summary": "Milk set thick by two bacteria working in partnership at blood heat — the most reliable home ferment there is, done in hours, not days.",
+    "ingredients": [
+      {
+        "item": "Whole milk",
+        "qty": "1",
+        "unit": "L"
+      },
+      {
+        "item": "Live plain yogurt (as starter)",
+        "qty": "2",
+        "unit": "tbsp"
+      }
+    ],
+    "steps": [
+      {
+        "icon": "milk",
+        "text": "Heat milk to 82 °C to denature whey proteins (this sets a thicker gel), then cool to 43 °C."
+      },
+      {
+        "icon": "mix",
+        "text": "Whisk in 2 tbsp live yogurt as your starter culture."
+      },
+      {
+        "icon": "temp",
+        "text": "Hold at 42–45 °C — an oven with the light on, a flask, or a yogurt maker."
+      },
+      {
+        "icon": "clock",
+        "text": "Incubate 4–8 hours undisturbed until set and tangy."
+      },
+      {
+        "icon": "store",
+        "text": "Refrigerate to stop the ferment. Save 2 tbsp to start the next batch."
+      }
+    ],
+    "tags": [
+      "dairy",
+      "streptococcus-thermophilus",
+      "lactobacillus-bulgaricus",
+      "protocooperation",
+      "probiotic"
+    ],
+    "related": [
+      "milk-kefir",
+      "sauerkraut"
+    ],
+    "bodyHtml": "<h2>What it is</h2>\n<p>Yogurt is milk fermented to a soft gel by a defined pair of thermophilic (heat-loving) bacteria.\nCodex Alimentarius defines yogurt specifically as milk cultured with <strong>Streptococcus thermophilus</strong>\nand <strong>Lactobacillus delbrueckii subsp. bulgaricus</strong> (FAO/WHO CXS 243-2003). They convert lactose to\nlactic acid, dropping the pH to about <strong>4.6</strong>, where milk proteins coagulate into the familiar set.</p>\n<h2>The science</h2>\n<p>The two species grow far better together than alone — a textbook case of <strong>protocooperation</strong>.\n<em>S. thermophilus</em> grows first, consuming oxygen and producing formic acid and CO₂ that stimulate\n<em>L. bulgaricus</em>; in return, <em>L. bulgaricus</em> breaks milk proteins into peptides and amino acids that\nfeed <em>S. thermophilus</em> (Sieuwerts et al., 2008). This mutual feeding is why a small spoon of live\nyogurt reliably seeds a whole litre.</p>\n<p>Heating the milk to ~82 °C before culturing denatures whey proteins so they bind into the casein\ngel, giving a thicker, less weepy set — a step supported by decades of dairy-science practice.</p>\n<h2>Health</h2>\n<p>A systematic review of the evidence links yogurt and cultured milks to improved lactose digestion\nand modest benefits for cardiometabolic and gut health, though the authors note more controlled\ntrials are needed (Savaiano &amp; Hutkins, 2021).</p>\n<h2>Signs it worked / troubleshooting</h2>\n<ul>\n<li>✅ <strong>Good:</strong> set within 4–8 h, clean tang, glossy surface.</li>\n<li>⚠️ <strong>Thin or runny</strong> = incubation too cool, or old/weak starter → hold nearer 44 °C, use fresh live culture.</li>\n<li>🚫 <strong>Yeasty, bitter, or gassy</strong> = contamination → discard and re-start from a fresh commercial culture.</li>\n</ul>\n<h2>How to store</h2>\n<p>Refrigerate promptly; it keeps 1–2 weeks. Re-culturing from your own batch works for several\ngenerations before the strain balance drifts and you should re-seed from fresh culture.</p>\n<h2>References</h2>\n<ul>\n<li>Sieuwerts S, de Bok FAM, Hugenholtz J, van Hylckama Vlieg JET (2008). <em>Unraveling microbial interactions in food fermentations: from classical to genomics approaches.</em> Applied and Environmental Microbiology 74(16):4997–5007. doi:10.1128/AEM.00113-08</li>\n<li>Savaiano DA, Hutkins RW (2021). <em>Yogurt, cultured fermented milk, and health: a systematic review.</em> Nutrition Reviews 79(5):599–614. doi:10.1093/nutrit/nuaa013</li>\n<li>FAO/WHO Codex Alimentarius (2003, rev. 2018). <em>Standard for Fermented Milks (CXS 243-2003).</em></li>\n</ul>\n",
+    "searchText": "yogurt milk set thick by two bacteria working in partnership at blood heat — the most reliable home ferment there is, done in hours, not days. live-cultures protein calcium lactic-acid dairy streptococcus-thermophilus lactobacillus-bulgaricus protocooperation probiotic whole milk live plain yogurt (as starter) what it is yogurt is milk fermented to a soft gel by a defined pair of thermophilic (heat loving) bacteria. codex alimentarius defines yogurt specifically as milk cultured with streptococcus thermophilus and lactobacillus delbrueckii subsp. bulgaricus (fao/who cxs 243 2003). they convert lactose to lactic acid, dropping the ph to about 4.6 , where milk proteins coagulate into the familiar set. the science the two species grow far better together than alone — a textbook case of protocooperation . s. thermophilus grows first, consuming oxygen and producing formic acid and co₂ that stimulate l. bulgaricus ; in return, l. bulgaricus breaks milk proteins into peptides and amino acids that feed s. thermophilus (sieuwerts et al., 2008). this mutual feeding is why a small spoon of live yogurt reliably seeds a whole litre. heating the milk to ~82 °c before culturing denatures whey proteins so they bind into the casein gel, giving a thicker, less weepy set — a step supported by decades of dairy science practice. health a systematic review of the evidence links yogurt and cultured milks to improved lactose digestion and modest benefits for cardiometabolic and gut health, though the authors note more controlled trials are needed (savaiano & hutkins, 2021). signs it worked / troubleshooting ✅ good: set within 4–8 h, clean tang, glossy surface. ⚠️ thin or runny = incubation too cool, or old/weak starter → hold nearer 44 °c, use fresh live culture. 🚫 yeasty, bitter, or gassy = contamination → discard and re start from a fresh commercial culture. how to store refrigerate promptly; it keeps 1–2 weeks. re culturing from your own batch works for several generations before the strain balance drifts and you should re seed from fresh culture. references sieuwerts s, de bok fam, hugenholtz j, van hylckama vlieg jet (2008). unraveling microbial interactions in food fermentations: from classical to genomics approaches. applied and environmental microbiology 74(16):4997–5007. doi:10.1128/aem.00113 08 savaiano da, hutkins rw (2021). yogurt, cultured fermented milk, and health: a systematic review. nutrition reviews 79(5):599–614. doi:10.1093/nutrit/nuaa013 fao/who codex alimentarius (2003, rev. 2018). standard for fermented milks (cxs 243 2003)."
   }
 ];
