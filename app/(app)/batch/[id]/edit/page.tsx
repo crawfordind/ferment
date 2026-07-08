@@ -94,7 +94,7 @@ export default function EditBatchPage() {
             id="batch-name"
             value={name}
             onChange={(event) => setName(event.target.value)}
-            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
           />
         </div>
 
@@ -106,7 +106,7 @@ export default function EditBatchPage() {
             id="batch-code"
             value={code}
             onChange={(event) => setCode(event.target.value)}
-            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-subtle-fill px-3 py-2 font-semibold uppercase tracking-wide text-ink focus:border-accent focus:bg-white focus:outline-none"
+            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-subtle-fill px-3 py-2 font-semibold uppercase tracking-wide text-ink focus:border-accent focus:bg-card focus:outline-none"
           />
         </div>
 
@@ -119,7 +119,7 @@ export default function EditBatchPage() {
               value={sizeValue}
               onChange={(event) => setSizeValue(event.target.value)}
               aria-label="Batch size amount"
-              className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+              className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
             />
             <div className="flex flex-1 flex-wrap gap-1.5">
               {unitOptions(system, sizeUnit).map((unit) => (
@@ -132,7 +132,7 @@ export default function EditBatchPage() {
                     "min-h-tap-min grow basis-14 rounded-[var(--radius-chip)] border-2 text-sm font-semibold transition-colors",
                     sizeUnit === unit
                       ? "border-accent bg-subtle-fill text-ink"
-                      : "border-border bg-white text-secondary hover:bg-subtle-fill",
+                      : "border-border bg-card text-secondary hover:bg-subtle-fill",
                   )}
                 >
                   {unit}
@@ -156,7 +156,7 @@ export default function EditBatchPage() {
               value={yieldValue}
               onChange={(event) => setYieldValue(event.target.value)}
               aria-label="Yield amount"
-              className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+              className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
             />
             <div className="flex flex-1 flex-wrap gap-1.5">
               {unitOptions(system, yieldUnit).map((unit) => (
@@ -169,7 +169,7 @@ export default function EditBatchPage() {
                     "min-h-tap-min grow basis-14 rounded-[var(--radius-chip)] border-2 text-sm font-semibold transition-colors",
                     yieldUnit === unit
                       ? "border-accent bg-subtle-fill text-ink"
-                      : "border-border bg-white text-secondary hover:bg-subtle-fill",
+                      : "border-border bg-card text-secondary hover:bg-subtle-fill",
                   )}
                 >
                   {unit}
@@ -189,7 +189,7 @@ export default function EditBatchPage() {
             placeholder="Optional"
             value={costAmount}
             onChange={(event) => setCostAmount(event.target.value)}
-            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
           />
           <p className="text-xs text-muted">
             Total ingredient cost. Shown as cost per unit of yield.
@@ -205,7 +205,7 @@ export default function EditBatchPage() {
             value={lotId}
             onChange={(event) => setLotId(event.target.value)}
             placeholder="Auto-assigned on finish"
-            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 font-medium uppercase tracking-wide text-ink focus:border-accent focus:outline-none"
+            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 font-medium uppercase tracking-wide text-ink focus:border-accent focus:outline-none"
           />
         </div>
       </section>

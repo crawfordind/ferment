@@ -95,7 +95,7 @@ export function DilutionCalculator({
             onChange={(event) => setWaterText(event.target.value)}
             placeholder="e.g. 15"
             aria-label="Water volume"
-            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
           />
         </label>
         <label className="flex flex-col gap-1">
@@ -104,7 +104,7 @@ export function DilutionCalculator({
             value={waterUnit}
             onChange={(event) => setWaterUnit(event.target.value)}
             aria-label="Water unit"
-            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
           >
             {units.map((unit) => (
               <option key={unit} value={unit}>

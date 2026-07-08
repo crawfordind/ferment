@@ -49,7 +49,7 @@ export function RecipeEditor({
             onChange={(event) => update(index, { name: event.target.value })}
             placeholder="Ingredient"
             aria-label={`Ingredient ${index + 1} name`}
-            className="min-h-tap-min min-w-0 flex-1 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            className="min-h-tap-min min-w-0 flex-1 rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
           />
           <input
             inputMode="decimal"
@@ -64,13 +64,13 @@ export function RecipeEditor({
             }}
             placeholder="Qty"
             aria-label={`Ingredient ${index + 1} quantity`}
-            className="min-h-tap-min w-16 rounded-[var(--radius-card)] border-2 border-border bg-white px-2 py-2 text-ink focus:border-accent focus:outline-none"
+            className="min-h-tap-min w-16 rounded-[var(--radius-card)] border-2 border-border bg-card px-2 py-2 text-ink focus:border-accent focus:outline-none"
           />
           <select
             value={row.unit}
             onChange={(event) => update(index, { unit: event.target.value })}
             aria-label={`Ingredient ${index + 1} unit`}
-            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-2 py-2 text-ink focus:border-accent focus:outline-none"
+            className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-card px-2 py-2 text-ink focus:border-accent focus:outline-none"
           >
             {unitOptions(system, row.unit).map((unit) => (
               <option key={unit} value={unit}>
@@ -92,7 +92,7 @@ export function RecipeEditor({
       <button
         type="button"
         onClick={add}
-        className="flex min-h-tap-min items-center justify-center gap-2 rounded-[var(--radius-card)] border-2 border-dashed border-border bg-subtle-fill text-sm font-medium text-secondary hover:bg-white"
+        className="flex min-h-tap-min items-center justify-center gap-2 rounded-[var(--radius-card)] border-2 border-dashed border-border bg-subtle-fill text-sm font-medium text-secondary hover:bg-card"
       >
         <Plus className="size-4" aria-hidden />
         Add ingredient

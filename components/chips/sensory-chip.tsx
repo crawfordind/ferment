@@ -24,12 +24,12 @@ export function SensoryChip({
         // Neutral chip
         !caution &&
           !selected &&
-          "border-border bg-white text-ink hover:bg-subtle-fill",
+          "border-border bg-card text-ink hover:bg-subtle-fill",
         !caution && selected && "border-accent bg-subtle-fill text-ink",
         // Caution chip (amber)
         caution &&
           !selected &&
-          "border-caution-outline bg-white text-caution-text hover:bg-subtle-fill",
+          "border-caution-outline bg-card text-caution-text hover:bg-subtle-fill",
         caution &&
           selected &&
           "border-caution-selected-border bg-caution-selected-fill text-caution-selected-text",

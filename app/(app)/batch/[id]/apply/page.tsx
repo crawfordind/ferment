@@ -77,7 +77,7 @@ export default function RecordApplicationPage() {
           value={target}
           onChange={(event) => setTarget(event.target.value)}
           placeholder="e.g. Tomato bed, seedling trays"
-          className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+          className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
         />
       </section>
 
@@ -105,7 +105,7 @@ export default function RecordApplicationPage() {
           onChange={(event) => setNote(event.target.value)}
           rows={3}
           placeholder="Optional — method, weather, crop stage"
-          className="rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+          className="rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
         />
       </section>
 

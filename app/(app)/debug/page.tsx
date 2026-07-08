@@ -45,7 +45,7 @@ export default function DebugPage() {
         {(batchesQuery.data ?? []).map((batch) => (
           <li
             key={batch.id}
-            className="border-ink/10 rounded-card border bg-white px-4 py-3"
+            className="border-ink/10 rounded-card border bg-card px-4 py-3"
           >
             <p className="font-semibold text-ink">{batch.name}</p>
             <p className="text-sm text-secondary">
