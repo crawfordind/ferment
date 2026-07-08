@@ -10,7 +10,7 @@ export function RecipeCard({ doc }: { doc: KnowledgeDoc }) {
   return (
     <Link
       href={`/knowledge/${doc.id}`}
-      className="flex items-stretch overflow-hidden rounded-[var(--radius-card)] border-2 border-hairline bg-white transition-colors hover:border-border hover:bg-subtle-fill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      className="flex items-stretch overflow-hidden rounded-[var(--radius-card)] border-2 border-hairline bg-card transition-colors hover:border-border hover:bg-subtle-fill focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
       <span aria-hidden className="w-1.5 shrink-0 bg-accent" />
       <span className="m-2 flex size-[52px] shrink-0 items-center justify-center rounded-lg bg-subtle-fill">

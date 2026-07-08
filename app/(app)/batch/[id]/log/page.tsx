@@ -3,12 +3,16 @@
 import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Camera, Plus } from "lucide-react";
+import { Camera, Check, Plus } from "lucide-react";
 
+import { haptic } from "@/lib/haptics";
 import { PhotoThumb } from "@/components/batch/photo-thumb";
 import { TroubleshootingNote } from "@/components/batch/troubleshooting-note";
 import { SensoryChip } from "@/components/chips/sensory-chip";
-import { VoiceRecorder, type VoiceResult } from "@/components/voice/voice-recorder";
+import {
+  VoiceRecorder,
+  type VoiceResult,
+} from "@/components/voice/voice-recorder";
 import { Button } from "@/components/ui/button";
 import { presignPhotoApi } from "@/lib/api/client";
 import { useBatch } from "@/hooks/use-batch";
@@ -81,6 +85,7 @@ export default function QuickLogPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const [saved, setSaved] = useState(false);
   const [showMore, setShowMore] = useState(false);
   const [note, setNote] = useState("");
   const [ph, setPh] = useState("");
@@ -114,6 +119,7 @@ export default function QuickLogPage() {
   const moreByGroup = getChipsByGroup(more);
 
   function toggleChip(key: string) {
+    haptic(); // a light tick on every chip select
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(key)) {
@@ -169,7 +175,12 @@ export default function QuickLogPage() {
       brix: parseReading(brix),
       tempC: toCelsius(parseReading(temp), temperatureUnit),
     });
-    router.replace(`/batch/${batchId}`);
+
+    // A satisfying confirmation: a double-tap of haptic + a check that pops,
+    // then hand back to the batch once it's registered.
+    haptic([12, 40, 12]);
+    setSaved(true);
+    window.setTimeout(() => router.replace(`/batch/${batchId}`), 850);
   }
 
   return (
@@ -246,17 +257,17 @@ export default function QuickLogPage() {
 
         {more.length > 0 ? (
           <div className="flex flex-col gap-4">
-            {showMore ? (
-              GROUP_ORDER.map((group) => (
-                <ChipGroupBlock
-                  key={`more-${group}`}
-                  group={group}
-                  chips={moreByGroup[group]}
-                  selected={selected}
-                  onToggle={toggleChip}
-                />
-              ))
-            ) : null}
+            {showMore
+              ? GROUP_ORDER.map((group) => (
+                  <ChipGroupBlock
+                    key={`more-${group}`}
+                    group={group}
+                    chips={moreByGroup[group]}
+                    selected={selected}
+                    onToggle={toggleChip}
+                  />
+                ))
+              : null}
             <button
               type="button"
               onClick={() => setShowMore((value) => !value)}
@@ -295,7 +306,9 @@ export default function QuickLogPage() {
             <label key={field.label} className="flex flex-col gap-1">
               <span className="text-xs font-medium text-secondary">
                 {field.label}
-                <span className="ml-1 font-normal text-muted">{field.hint}</span>
+                <span className="ml-1 font-normal text-muted">
+                  {field.hint}
+                </span>
               </span>
               <input
                 inputMode="decimal"
@@ -303,7 +316,7 @@ export default function QuickLogPage() {
                 onChange={(event) => field.setValue(event.target.value)}
                 placeholder="—"
                 aria-label={`${field.label} reading`}
-                className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+                className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
               />
             </label>
           ))}
@@ -332,7 +345,7 @@ export default function QuickLogPage() {
           onChange={(event) => setNote(event.target.value)}
           rows={3}
           placeholder="Optional"
-          className="rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+          className="rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
         />
       </section>
 
@@ -343,13 +356,27 @@ export default function QuickLogPage() {
             type="button"
             size="lg"
             className="pointer-events-auto w-full shadow-lg"
-            disabled={createObservation.isPending}
+            disabled={createObservation.isPending || saved}
             onClick={handleSave}
           >
             {createObservation.isPending ? "Saving…" : "Save"}
           </Button>
         </div>
       </div>
+
+      {/* Save confirmation — a brief, satisfying pop before we hand back. */}
+      {saved ? (
+        <div
+          className="confirm-overlay fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-surface/80 backdrop-blur-sm"
+          role="status"
+          aria-live="assertive"
+        >
+          <span className="confirm-badge flex size-20 items-center justify-center rounded-full bg-accent text-white shadow-lg">
+            <Check className="size-10" aria-hidden strokeWidth={3} />
+          </span>
+          <p className="text-base font-bold text-ink">Check-in logged</p>
+        </div>
+      ) : null}
     </main>
   );
 }

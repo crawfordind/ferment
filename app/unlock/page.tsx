@@ -75,7 +75,7 @@ function UnlockForm() {
                 if (status === "error") setStatus("idle");
               }}
               aria-invalid={status === "error"}
-              className="min-h-tap-primary rounded-[var(--radius-card)] border-2 border-border bg-white px-4 py-2 text-ink focus:border-accent focus:outline-none"
+              className="min-h-tap-primary rounded-[var(--radius-card)] border-2 border-border bg-card px-4 py-2 text-ink focus:border-accent focus:outline-none"
             />
           </div>
 

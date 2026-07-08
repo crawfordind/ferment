@@ -54,7 +54,7 @@ export function ObservationRow({
       : null;
 
   return (
-    <li className="flex gap-3 rounded-[var(--radius-card)] border border-hairline bg-white p-3">
+    <li className="flex gap-3 rounded-[var(--radius-card)] border border-hairline bg-card p-3">
       <div className="size-14 shrink-0">
         {photos.length > 0 ? (
           <PhotoThumb photoId={photos[0].id} className="size-14 rounded-lg" />

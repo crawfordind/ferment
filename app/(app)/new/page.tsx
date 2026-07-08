@@ -65,8 +65,8 @@ function OptionRow({
         "flex min-h-tap-primary w-full items-center gap-3 rounded-[var(--radius-card)] border-2 px-4 py-3 text-left transition-colors",
         selected
           ? "border-accent bg-subtle-fill"
-          : "border-border bg-white hover:bg-subtle-fill",
-        disabled && "cursor-not-allowed opacity-60 hover:bg-white",
+          : "border-border bg-card hover:bg-subtle-fill",
+        disabled && "cursor-not-allowed opacity-60 hover:bg-card",
       )}
     >
       <span
@@ -270,7 +270,7 @@ export default function NewBatchPage() {
               id="batch-name"
               value={name}
               onChange={(event) => setName(event.target.value)}
-              className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+              className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
             />
           </div>
 
@@ -285,7 +285,7 @@ export default function NewBatchPage() {
               id="batch-code"
               value={code}
               onChange={(event) => setCode(event.target.value)}
-              className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-subtle-fill px-3 py-2 font-semibold uppercase tracking-wide text-ink focus:border-accent focus:bg-white focus:outline-none"
+              className="min-h-tap-min rounded-[var(--radius-card)] border-2 border-border bg-subtle-fill px-3 py-2 font-semibold uppercase tracking-wide text-ink focus:border-accent focus:bg-card focus:outline-none"
             />
             <p className="text-xs text-muted">Auto-filled. Edit if you like.</p>
           </div>
@@ -299,7 +299,7 @@ export default function NewBatchPage() {
                 value={sizeValue}
                 onChange={(event) => setSizeValue(event.target.value)}
                 aria-label="Batch size amount"
-                className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+                className="min-h-tap-min w-28 rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
               />
               <div className="flex flex-1 flex-wrap gap-1.5">
                 {quantityUnitsFor(system).map((unit) => (
@@ -312,7 +312,7 @@ export default function NewBatchPage() {
                       "min-h-tap-min grow basis-14 rounded-[var(--radius-chip)] border-2 text-sm font-semibold transition-colors",
                       sizeUnit === unit
                         ? "border-accent bg-subtle-fill text-ink"
-                        : "border-border bg-white text-secondary hover:bg-subtle-fill",
+                        : "border-border bg-card text-secondary hover:bg-subtle-fill",
                     )}
                   >
                     {unit}

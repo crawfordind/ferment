@@ -96,7 +96,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
 
       {/* Dilution calculator — turn the ratio into an actual dose to apply. */}
       {doc.dilution ? (
-        <section className="flex flex-col gap-3 rounded-[var(--radius-card)] border-2 border-hairline bg-white p-4">
+        <section className="flex flex-col gap-3 rounded-[var(--radius-card)] border-2 border-hairline bg-card p-4">
           <h2 className="text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
             Dilution calculator
           </h2>
@@ -108,7 +108,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
       {doc.ingredients.length > 0 ? (
         <section className="flex flex-col gap-2">
           <h2 className="text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">Ingredients</h2>
-          <ul className="flex flex-col gap-1.5 rounded-[var(--radius-card)] border-2 border-hairline bg-white p-4">
+          <ul className="flex flex-col gap-1.5 rounded-[var(--radius-card)] border-2 border-hairline bg-card p-4">
             {doc.ingredients.map((ing, i) => (
               <li key={i} className="flex items-baseline justify-between gap-3 text-sm">
                 <span className="text-ink">{ing.item}</span>
@@ -128,7 +128,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
       {doc.steps.length > 0 ? (
         <section className="flex flex-col gap-3">
           <h2 className="text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">How to make it</h2>
-          <div className="rounded-[var(--radius-card)] border-2 border-hairline bg-white p-4">
+          <div className="rounded-[var(--radius-card)] border-2 border-hairline bg-card p-4">
             <StepStrip steps={doc.steps} />
           </div>
         </section>
@@ -146,7 +146,7 @@ export default async function RecipePage({ params }: { params: Promise<{ id: str
               <Link
                 key={rel.id}
                 href={`/knowledge/${rel.id}`}
-                className="inline-flex items-center gap-1.5 rounded-[var(--radius-chip)] border-2 border-border bg-white px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:bg-subtle-fill"
+                className="inline-flex items-center gap-1.5 rounded-[var(--radius-chip)] border-2 border-border bg-card px-3 py-1.5 text-sm font-medium text-ink transition-colors hover:bg-subtle-fill"
               >
                 <CategoryIcon category={rel.category} id={rel.id} className="size-4 text-accent" />
                 {rel.abbr ?? rel.title}

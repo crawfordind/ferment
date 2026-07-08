@@ -1,5 +1,12 @@
 import Link from "next/link";
-import { BookOpen, CupSoda, GraduationCap, Leaf, Utensils, type LucideIcon } from "lucide-react";
+import {
+  BookOpen,
+  CupSoda,
+  GraduationCap,
+  Leaf,
+  Utensils,
+  type LucideIcon,
+} from "lucide-react";
 
 import { getAllDocs, SECTION_META, SECTION_ORDER } from "@/lib/knowledge";
 import type { KbSection } from "@/lib/knowledge/types";
@@ -24,7 +31,12 @@ export function LearningWidget() {
   })).filter((s) => s.count > 0);
 
   return (
-    <Widget title="Learn" icon={BookOpen} action={{ href: "/knowledge", label: "Browse" }}>
+    <Widget
+      title="Learn"
+      icon={BookOpen}
+      action={{ href: "/knowledge", label: "Browse" }}
+      tone="ambient"
+    >
       {featured ? (
         <Link
           href={`/knowledge/${featured.id}`}
@@ -32,8 +44,12 @@ export function LearningWidget() {
         >
           <GraduationCap className="size-5 shrink-0 text-accent" aria-hidden />
           <div className="min-w-0">
-            <p className="text-sm font-bold text-ink">Start here — {featured.title}</p>
-            <p className="line-clamp-1 text-xs text-secondary">{featured.summary}</p>
+            <p className="text-sm font-bold text-ink">
+              Start here — {featured.title}
+            </p>
+            <p className="line-clamp-1 text-xs text-secondary">
+              {featured.summary}
+            </p>
           </div>
         </Link>
       ) : null}

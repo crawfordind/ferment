@@ -29,7 +29,10 @@ export function FeaturedTipsWidget() {
         .map((b) => b.category),
     );
     const personalized = personalizeTips(FERMENT_TIPS, sections);
-    return { tips: personalized.tips.slice(0, MAX_TIPS), matchedIds: personalized.matchedIds };
+    return {
+      tips: personalized.tips.slice(0, MAX_TIPS),
+      matchedIds: personalized.matchedIds,
+    };
   }, [batchesQuery.data]);
 
   const count = tips.length;
@@ -51,7 +54,7 @@ export function FeaturedTipsWidget() {
   const go = (delta: number) => setIndex((i) => (i + delta + count) % count);
 
   return (
-    <Widget title="Featured tips" icon={Lightbulb}>
+    <Widget title="Featured tips" icon={Lightbulb} tone="ambient">
       <div
         className="flex flex-col gap-3"
         onMouseEnter={() => setPaused(true)}
@@ -97,7 +100,11 @@ export function FeaturedTipsWidget() {
             <ChevronLeft className="size-4" aria-hidden />
           </button>
 
-          <div className="flex items-center gap-1.5" role="tablist" aria-label="Choose tip">
+          <div
+            className="flex items-center gap-1.5"
+            role="tablist"
+            aria-label="Choose tip"
+          >
             {tips.map((t, i) => (
               <button
                 key={t.id}
@@ -108,7 +115,9 @@ export function FeaturedTipsWidget() {
                 onClick={() => setIndex(i)}
                 className={cn(
                   "h-1.5 rounded-full transition-all",
-                  i === safeIndex ? "w-4 bg-accent" : "w-1.5 bg-border hover:bg-secondary",
+                  i === safeIndex
+                    ? "w-4 bg-accent"
+                    : "w-1.5 bg-border hover:bg-secondary",
                 )}
               />
             ))}

@@ -18,14 +18,19 @@ export function fermentTint(type?: string | null): {
   color: string;
 } {
   const base = (type && TYPE_BASE[type]) || "var(--accent)";
+  // Mix against theme tokens (not literal white/ink) so the tint and its text
+  // adapt to light and dark mode.
   return {
-    background: `color-mix(in srgb, ${base} 16%, white)`,
-    color: `color-mix(in srgb, ${base} 72%, #2b2b2b)`,
+    background: `color-mix(in srgb, ${base} 16%, var(--surface))`,
+    color: `color-mix(in srgb, ${base} 72%, var(--ink))`,
   };
 }
 
 /** 1–2 letter monogram from a batch name, falling back to its code. */
-export function batchInitials(name?: string | null, code?: string | null): string {
+export function batchInitials(
+  name?: string | null,
+  code?: string | null,
+): string {
   const source = (name ?? "").trim() || (code ?? "").trim();
   if (!source) return "•";
   const words = source.split(/\s+/).filter(Boolean);

@@ -5,6 +5,7 @@
   --secondary: #7a7468;
   --muted: #9a9486;
   --surface: #fdfcf9;
+  --card: #ffffff;
   --subtle-fill: #f6f3ec;
   --hairline: #ece7dd;
   --border: #c9c4ba;
@@ -24,6 +25,42 @@
   --radius-button: 26px;
   --tap-min: 44px;
   --tap-primary: 56px;
+  /* Shared elevation + motion spec — depth and timing come from tokens so every
+     surface reads from the same system. */
+  --shadow-sm:
+    0 1px 2px rgba(43, 43, 43, 0.06), 0 1px 3px rgba(43, 43, 43, 0.05);
+  --shadow-md:
+    0 2px 6px rgba(43, 43, 43, 0.08), 0 6px 16px rgba(43, 43, 43, 0.06);
+  --shadow-lg: 0 8px 24px rgba(43, 43, 43, 0.12);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Real dark mode: an earthy, low-glare palette. Set by the theme provider on
+   <html class="dark"> (or the pre-paint script), so it applies before first
+   paint with no flash. */
+.dark {
+  --ink: #ecebe3;
+  --secondary: #b2ae9f;
+  --muted: #8c897c;
+  --surface: #191a13;
+  --card: #21231a;
+  --subtle-fill: #262820;
+  --hairline: #34362b;
+  --border: #4a4d3d;
+  --ink-border: #ecebe3;
+  --accent: #7c9d52;
+  --status-on-track: #7c9d52;
+  --status-watch: #d3b954;
+  --status-needs-action: #cf8c56;
+  --status-needs-action-text: #e6ac7c;
+  --caution-outline: #cf9a52;
+  --caution-text: #e0b070;
+  --caution-selected-fill: #2f2b1c;
+  --caution-selected-border: #b9903f;
+  --caution-selected-text: #e6c98a;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 2px 6px rgba(0, 0, 0, 0.45), 0 6px 16px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 @theme inline {
@@ -31,6 +68,7 @@
   --color-secondary: var(--secondary);
   --color-muted: var(--muted);
   --color-surface: var(--surface);
+  --color-card: var(--card);
   --color-subtle-fill: var(--subtle-fill);
   --color-hairline: var(--hairline);
   --color-border: var(--border);
@@ -55,6 +93,75 @@
 
 body {
   font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+/* Hidden scrollbars — the chrome browser scrollbar reads as "unfinished" on a
+   mobile-first app. Scrolling still works; only the visible track is hidden. */
+html {
+  scrollbar-width: none;
+}
+html::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth theme + color transitions so flipping light↔dark eases rather than
+   snaps. Scoped to the page backdrop (not every element — transitioning `*` is a
+   performance foot-gun); individual surfaces re-tint instantly, which reads fine. */
+@media (prefers-reduced-motion: no-preference) {
+  body {
+    transition:
+      background-color 0.25s var(--ease-out),
+      color 0.25s var(--ease-out);
+  }
+  a[href],
+  button {
+    transition:
+      background-color 0.18s var(--ease-out),
+      border-color 0.18s var(--ease-out),
+      color 0.18s var(--ease-out),
+      transform 0.12s var(--ease-out),
+      box-shadow 0.18s var(--ease-out);
+  }
+  a[href]:active,
+  button:not(:disabled):active {
+    transform: scale(0.98);
+  }
+}
+
+/* Save/log confirmation — a brief, satisfying pop. */
+@keyframes confirm-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  55% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes confirm-fade {
+  0%,
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.confirm-overlay {
+  animation: confirm-fade 0.9s var(--ease-out) forwards;
+}
+.confirm-badge {
+  animation: confirm-pop 0.4s var(--ease-out) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .confirm-overlay,
+  .confirm-badge {
+    animation: none;
+  }
 }
 
 /* Knowledge-base article prose. Styles the HTML compiled from content/knowledge/*.md. */

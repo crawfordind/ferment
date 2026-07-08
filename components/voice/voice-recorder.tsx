@@ -201,7 +201,7 @@ export function VoiceRecorder({
         >
           <span
             aria-hidden
-            className="size-3 animate-pulse rounded-full bg-white"
+            className="size-3 animate-pulse rounded-full bg-card"
           />
           <span aria-live="polite">Recording {formatTime(seconds)}</span>
           <Square className="size-4 fill-white" aria-hidden />
@@ -228,7 +228,7 @@ export function VoiceRecorder({
                 : "Transcript saved offline — will fill in on reconnect"
             }
             aria-label="Voice transcript"
-            className="rounded-[var(--radius-card)] border-2 border-border bg-white px-3 py-2 text-ink focus:border-accent focus:outline-none"
+            className="rounded-[var(--radius-card)] border-2 border-border bg-card px-3 py-2 text-ink focus:border-accent focus:outline-none"
           />
           <button
             type="button"

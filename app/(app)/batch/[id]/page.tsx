@@ -8,19 +8,21 @@ import { MoreHorizontal } from "lucide-react";
 import { CreationRow } from "@/components/batch/creation-row";
 import { DilutionCalculator } from "@/components/batch/dilution-calculator";
 import { ObservationRow } from "@/components/batch/observation-row";
+import { TimelinePhotoStrip } from "@/components/batch/timeline-photo-strip";
 import { TroubleshootingNote } from "@/components/batch/troubleshooting-note";
 import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
 import { formatTemperature } from "@/lib/temperature";
 import { PhotoThumb } from "@/components/batch/photo-thumb";
-import { StageBanner } from "@/components/batch/stage-banner";
+import { WhatToExpect } from "@/components/batch/what-to-expect";
 import { StatusIndicator } from "@/components/batch/status-indicator";
-import { DayChip } from "@/components/batch/day-chip";
+import { ProgressBar } from "@/components/batch/progress-bar";
 import { Button } from "@/components/ui/button";
 import { useBatch, useUpdateBatch } from "@/hooks/use-batch";
 import { useObservations } from "@/hooks/use-observations";
 import { useBatchPhotos } from "@/hooks/use-photos";
 import type { LocalPhoto } from "@/offline/dexie";
 import { computeDayInProcess } from "@/lib/day";
+import { computeBatchProgress, formatProgressLabel } from "@/lib/progress";
 import { costPerUnit, formatCostPerUnit } from "@/lib/economics";
 import { computeRatio, computeSaltPercent, parseInputs } from "@/lib/inputs";
 import { getDocByFermentType } from "@/lib/knowledge";
@@ -63,7 +65,7 @@ function OverflowMenu({ batchId }: { batchId: string }) {
           />
           <div
             role="menu"
-            className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-[var(--radius-card)] border border-border bg-white shadow-md"
+            className="absolute right-0 z-20 mt-1 w-44 overflow-hidden rounded-[var(--radius-card)] border border-border bg-card shadow-md"
           >
             {status === "active" ? (
               <>
@@ -164,8 +166,19 @@ export default function BatchDetailPage() {
   const batch = batchQuery.data;
   const template = getSeedTemplate(batch.type);
   const day = computeDayInProcess(batch.startedAt);
+  const progress = computeBatchProgress(batch, template);
   const observations = observationsQuery.data ?? [];
   const finished = batch.status !== "active";
+
+  // Day-in-process of the most recent check-in, for the "vs. what you logged"
+  // line on the What-to-expect card.
+  const lastObservedAt = observations.reduce(
+    (max, o) => Math.max(max, o.observedAt),
+    0,
+  );
+  const lastLoggedDay = lastObservedAt
+    ? computeDayInProcess(batch.startedAt, lastObservedAt)
+    : null;
 
   // Group every synced photo by its observation; photos with no observation are
   // the creation/cover shots and get their own timeline entry.
@@ -215,7 +228,7 @@ export default function BatchDetailPage() {
   return (
     <main className="flex flex-1 flex-col gap-4 px-4 py-6">
       {/* Header */}
-      <header className="overflow-hidden rounded-[var(--radius-card)] border-2 border-ink-border bg-white">
+      <header className="overflow-hidden rounded-[var(--radius-card)] border-2 border-ink-border bg-card shadow-[var(--shadow-md)]">
         <div className="relative">
           <PhotoThumb
             photoId={batch.thumbnailPhotoId}
@@ -226,34 +239,53 @@ export default function BatchDetailPage() {
             <OverflowMenu batchId={batchId} />
           </div>
         </div>
-        <div className="flex items-start justify-between gap-3 p-4">
-          <div className="min-w-0">
-            <h1 className="truncate text-lg font-bold text-ink">
-              {batch.name}
-            </h1>
-            <p className="text-[11px] font-medium uppercase tracking-wide text-muted">
-              {batch.code}
-              {batch.sizeValue
-                ? ` · ${formatQuantity(batch.sizeValue, batch.sizeUnit ?? "", system)}`.trimEnd()
-                : ""}
-            </p>
-            {finished ? (
-              <p className="mt-1 text-xs font-semibold text-secondary">
-                {batch.status === "finished" ? "Finished" : "Archived"} · Day{" "}
-                {day}
+        <div className="flex flex-col gap-2 p-4">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h1 className="truncate text-lg font-bold text-ink">
+                {batch.name}
+              </h1>
+              <p className="text-[11px] font-medium uppercase tracking-wide text-muted">
+                {batch.code}
+                {batch.sizeValue
+                  ? ` · ${formatQuantity(batch.sizeValue, batch.sizeUnit ?? "", system)}`.trimEnd()
+                  : ""}
               </p>
-            ) : null}
+            </div>
+            <StatusIndicator
+              health={batch.health}
+              className="shrink-0 pt-0.5"
+            />
           </div>
-          <div className="flex shrink-0 flex-col items-end gap-1.5">
-            <DayChip day={day} />
-            <StatusIndicator health={batch.health} />
-          </div>
+
+          {finished ? (
+            <p className="text-xs font-semibold text-secondary">
+              {batch.status === "finished" ? "Finished" : "Archived"} · Day{" "}
+              {day}
+            </p>
+          ) : (
+            <div className="flex flex-col gap-1.5">
+              {progress.percent != null ? (
+                <ProgressBar
+                  percent={progress.percent}
+                  phase={progress.phase}
+                />
+              ) : null}
+              <p className="text-xs font-semibold text-secondary">
+                {formatProgressLabel(progress)}
+              </p>
+            </div>
+          )}
         </div>
       </header>
 
-      {/* Stage banner */}
+      {/* What to expect today — stage guidance brought onto the batch itself */}
       {template && !finished ? (
-        <StageBanner stage={currentStage(batch, template)} />
+        <WhatToExpect
+          stage={currentStage(batch, template)}
+          currentDay={day}
+          lastLoggedDay={lastLoggedDay}
+        />
       ) : null}
 
       {/* "Is this normal?" — guidance from the latest sensory reading. */}
@@ -263,7 +295,7 @@ export default function BatchDetailPage() {
 
       {/* Recipe */}
       {recipe.length > 0 ? (
-        <section className="rounded-[var(--radius-card)] border border-hairline bg-white p-4">
+        <section className="rounded-[var(--radius-card)] border border-hairline bg-card p-4">
           <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
             Recipe
           </h2>
@@ -294,7 +326,7 @@ export default function BatchDetailPage() {
 
       {/* Latest measurements */}
       {latestReading ? (
-        <section className="rounded-[var(--radius-card)] border border-hairline bg-white p-4">
+        <section className="rounded-[var(--radius-card)] border border-hairline bg-card p-4">
           <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
             Latest measurements · Day{" "}
             {computeDayInProcess(batch.startedAt, latestReading.observedAt)}
@@ -325,7 +357,7 @@ export default function BatchDetailPage() {
 
       {/* Yield, cost & lot (finished batches) */}
       {finished && (batch.yieldValue != null || cost || batch.lotId) ? (
-        <section className="rounded-[var(--radius-card)] border border-hairline bg-white p-4">
+        <section className="rounded-[var(--radius-card)] border border-hairline bg-card p-4">
           <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
             Batch record
           </h2>
@@ -334,7 +366,11 @@ export default function BatchDetailPage() {
               <div className="flex justify-between gap-3">
                 <dt className="text-secondary">Yield</dt>
                 <dd className="text-ink">
-                  {formatQuantity(batch.yieldValue, batch.yieldUnit ?? "", system)}
+                  {formatQuantity(
+                    batch.yieldValue,
+                    batch.yieldUnit ?? "",
+                    system,
+                  )}
                 </dd>
               </div>
             ) : null}
@@ -358,7 +394,7 @@ export default function BatchDetailPage() {
 
       {/* Use it — dilution helper + record an application (finished batches). */}
       {finished ? (
-        <section className="flex flex-col gap-4 rounded-[var(--radius-card)] border border-hairline bg-white p-4">
+        <section className="flex flex-col gap-4 rounded-[var(--radius-card)] border border-hairline bg-card p-4">
           <h2 className="text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
             Use it
           </h2>
@@ -381,14 +417,24 @@ export default function BatchDetailPage() {
         <h2 className="px-1 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
           Timeline
         </h2>
+
+        {/* Visual history filmstrip — plus an add tile so a fresh batch always
+            has a next step. */}
+        <TimelinePhotoStrip
+          photos={photos}
+          startedAt={batch.startedAt}
+          logHref={`/batch/${batchId}/log`}
+          canAdd={!finished}
+        />
+
         {observationsQuery.isLoading && observations.length === 0 ? (
           <div className="h-20 animate-pulse rounded-[var(--radius-card)] bg-subtle-fill" />
         ) : observations.length === 0 && creationPhotos.length === 0 ? (
-          <div className="rounded-[var(--radius-card)] border border-dashed border-border px-4 py-10 text-center">
-            <p className="text-sm text-secondary">
-              No logs yet. Tap Log to add your first.
-            </p>
-          </div>
+          <p className="px-1 text-sm text-secondary">
+            {finished
+              ? "No check-ins were logged for this batch."
+              : "No check-ins yet — log one to start the record."}
+          </p>
         ) : (
           <ul className="flex flex-col gap-3">
             {observations.map((observation) => (
@@ -400,7 +446,10 @@ export default function BatchDetailPage() {
               />
             ))}
             {creationPhotos.length > 0 ? (
-              <CreationRow photos={creationPhotos} startedAt={batch.startedAt} />
+              <CreationRow
+                photos={creationPhotos}
+                startedAt={batch.startedAt}
+              />
             ) : null}
           </ul>
         )}
