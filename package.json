@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "next dev --turbopack",
-    "prebuild": "tsx scripts/build-knowledge.ts",
+    "prebuild": "tsx scripts/build-knowledge.ts && tsx scripts/build-blog.ts",
     "build": "next build",
     "start": "next start",
     "typecheck": "tsc --noEmit",
@@ -22,7 +22,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:seed": "tsx scripts/seed.ts",
-    "knowledge:build": "tsx scripts/build-knowledge.ts"
+    "knowledge:build": "tsx scripts/build-knowledge.ts",
+    "blog:build": "tsx scripts/build-blog.ts"
   },
   "dependencies": {
     "@libsql/client": "^0.17.4",
