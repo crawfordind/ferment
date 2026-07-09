@@ -12,6 +12,8 @@ type NavItem = {
   icon: LucideIcon;
   /** The primary create action — rendered as a filled accent chip. */
   primary?: boolean;
+  /** Extra path prefixes that also light this tab (e.g. Learn spans two libraries). */
+  also?: string[];
 };
 
 // New sits dead-center as the create CTA, flanked evenly on both sides.
@@ -19,7 +21,8 @@ const NAV_ITEMS: NavItem[] = [
   { href: "/", label: "Home", icon: Home },
   { href: "/batches", label: "Ferments", icon: Sprout },
   { href: "/new", label: "New", icon: Plus, primary: true },
-  { href: "/knowledge", label: "Learn", icon: BookOpen },
+  // "Learn" is a hub over the Knowledge Base and the Blog — keep it lit across both.
+  { href: "/knowledge", label: "Learn", icon: BookOpen, also: ["/blog"] },
   { href: "/settings", label: "Settings", icon: Settings },
 ];
 
@@ -32,8 +35,11 @@ export function BottomNav() {
       aria-label="Main navigation"
     >
       <ul className="mx-auto grid max-w-lg grid-cols-5">
-        {NAV_ITEMS.map(({ href, label, icon: Icon, primary }) => {
-          const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
+        {NAV_ITEMS.map(({ href, label, icon: Icon, primary, also }) => {
+          const isActive =
+            href === "/"
+              ? pathname === "/"
+              : pathname.startsWith(href) || (also?.some((p) => pathname.startsWith(p)) ?? false);
 
           return (
             <li key={href} className="flex">

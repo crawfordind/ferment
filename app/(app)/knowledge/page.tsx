@@ -1,6 +1,7 @@
 import { getAllDocs } from "@/lib/knowledge";
 import type { KbSection } from "@/lib/knowledge/types";
 import { KnowledgeBrowser } from "@/components/knowledge/knowledge-browser";
+import { LearnTabs } from "@/components/blog/learn-tabs";
 
 export const metadata = {
   title: "Knowledge Base · Ferment",
@@ -23,6 +24,7 @@ export default async function KnowledgePage({
 
   return (
     <main className="flex flex-1 flex-col gap-5 px-4 py-6">
+      <LearnTabs />
       <header className="flex flex-col gap-1">
         <h1 className="text-xl font-bold text-ink">Knowledge Base</h1>
         <p className="text-sm text-secondary">
