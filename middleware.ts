@@ -2,8 +2,20 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 
-/** Paths reachable without a session: the login screen and its auth API. */
-const PUBLIC_PATHS = ["/login", "/api/auth"];
+/**
+ * Paths reachable without a session: the login screen + auth API, the public
+ * editorial content (blog + knowledge base, which touch no user data), and the
+ * crawler files. Everything else — the dashboard and all batch data — stays
+ * gated.
+ */
+const PUBLIC_PATHS = [
+  "/login",
+  "/api/auth",
+  "/blog",
+  "/knowledge",
+  "/sitemap.xml",
+  "/robots.txt",
+];
 
 function isPublic(pathname: string): boolean {
   return PUBLIC_PATHS.some(
