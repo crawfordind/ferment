@@ -12,9 +12,24 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const post = getPost(slug);
+  if (!post) {
+    return { title: "Article" };
+  }
+  const canonical = `/blog/${post.slug}`;
   return {
-    title: post ? `${post.title} · Ferment` : "Article · Ferment",
-    description: post?.excerpt,
+    title: post.title,
+    description: post.excerpt,
+    alternates: { canonical },
+    openGraph: {
+      type: "article",
+      url: canonical,
+      title: post.title,
+      description: post.excerpt,
+      publishedTime: post.date,
+      modifiedTime: post.updated ?? post.date,
+      authors: [post.author],
+      tags: post.tags,
+    },
   };
 }
 

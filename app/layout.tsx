@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { ServiceWorkerRegister } from "@/components/providers/service-worker-register";
+import { SITE_URL } from "@/lib/site";
 
 const plusJakarta = Plus_Jakarta_Sans({
   variable: "--font-sans",
@@ -10,11 +11,26 @@ const plusJakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Ferment Tracker",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "MyFerment — Field logbook for fermentation",
+    template: "%s · MyFerment",
+  },
   description: "Mobile-first field logbook for fertilizer ferments",
+  applicationName: "MyFerment",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    type: "website",
+    siteName: "MyFerment",
+    url: SITE_URL,
+    title: "MyFerment — Field logbook for fermentation",
+    description: "Mobile-first field logbook for fertilizer ferments",
+  },
   appleWebApp: {
     capable: true,
-    title: "Ferment",
+    title: "MyFerment",
     statusBarStyle: "default",
   },
   icons: {

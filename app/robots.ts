@@ -1,8 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const SITE_URL = (process.env.APP_BASE_URL || "https://www.myferment.com")
-  .trim()
-  .replace(/\/+$/, "");
+import { SITE_URL } from "@/lib/site";
 
 /**
  * Allow crawling of the public content; keep the API and the gated app areas

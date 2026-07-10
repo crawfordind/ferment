@@ -16,7 +16,21 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const doc = getDoc(id);
-  return { title: doc ? `${doc.title} · Ferment` : "Recipe · Ferment" };
+  if (!doc) {
+    return { title: "Recipe" };
+  }
+  const canonical = `/knowledge/${doc.id}`;
+  return {
+    title: doc.title,
+    description: doc.summary,
+    alternates: { canonical },
+    openGraph: {
+      type: "article",
+      url: canonical,
+      title: doc.title,
+      description: doc.summary,
+    },
+  };
 }
 
 function MetaItem({ icon: Icon, label, value }: { icon: typeof Clock; label: string; value: string }) {
