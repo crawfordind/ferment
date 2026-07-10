@@ -17,21 +17,23 @@ const envSchema = z.object({
     .min(1)
     .default("mistralai/voxtral-mini-transcribe"),
   APP_SECRET: z.string().min(16, "APP_SECRET must be at least 16 characters"),
-  // Canonical origin used to build magic-link URLs, e.g. https://myferment.com
-  APP_BASE_URL: z.string().url("APP_BASE_URL must be a valid URL"),
+  // Canonical origin used to build magic-link URLs, e.g. https://myferment.com.
+  // `.trim()` guards against a stray space/newline pasted into the env value.
+  APP_BASE_URL: z.string().trim().url("APP_BASE_URL must be a valid URL"),
   // Comma-separated list of emails allowed to request a login link.
   AUTH_ALLOWLIST: z.string().min(1, "AUTH_ALLOWLIST is required"),
-  // SMTP (mxroute)
-  SMTP_HOST: z.string().min(1, "SMTP_HOST is required"),
+  // SMTP (mxroute). Host/user/from are trimmed so a trailing space in the env
+  // value can't break DNS resolution or the auth handshake.
+  SMTP_HOST: z.string().trim().min(1, "SMTP_HOST is required"),
   SMTP_PORT: z.coerce.number().int().positive().default(587),
   SMTP_SECURE: z
     .enum(["true", "false"])
     .default("false")
     .transform((value) => value === "true"),
-  SMTP_USER: z.string().min(1, "SMTP_USER is required"),
+  SMTP_USER: z.string().trim().min(1, "SMTP_USER is required"),
   SMTP_PASSWORD: z.string().min(1, "SMTP_PASSWORD is required"),
   // From header, e.g. "MyFerment <login@myferment.com>"
-  SMTP_FROM: z.string().min(1, "SMTP_FROM is required"),
+  SMTP_FROM: z.string().trim().min(1, "SMTP_FROM is required"),
 });
 
 export type Env = z.infer<typeof envSchema>;
