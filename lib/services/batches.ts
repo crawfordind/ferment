@@ -5,9 +5,10 @@ import { ApiError } from "@/lib/api/http";
 import type { Database } from "@/lib/db";
 import { batches } from "@/lib/schema";
 
-function toBatchRow(input: BatchUpsertInput) {
+function toBatchRow(input: BatchUpsertInput, userId: string) {
   return {
     id: input.id,
+    userId,
     code: input.code,
     name: input.name,
     category: input.category,
@@ -33,8 +34,24 @@ function toBatchRow(input: BatchUpsertInput) {
   };
 }
 
-export async function upsertBatch(db: Database, input: BatchUpsertInput) {
-  const row = toBatchRow(input);
+export async function upsertBatch(
+  db: Database,
+  userId: string,
+  input: BatchUpsertInput,
+) {
+  // Guard against writing over a batch id owned by someone else. Without this,
+  // the onConflict update would silently reassign another user's batch.
+  const [existing] = await db
+    .select({ userId: batches.userId })
+    .from(batches)
+    .where(eq(batches.id, input.id))
+    .limit(1);
+
+  if (existing && existing.userId !== userId) {
+    throw new ApiError("Batch not found", 404);
+  }
+
+  const row = toBatchRow(input, userId);
 
   await db
     .insert(batches)
@@ -42,6 +59,7 @@ export async function upsertBatch(db: Database, input: BatchUpsertInput) {
     .onConflictDoUpdate({
       target: batches.id,
       set: {
+        userId,
         code: row.code,
         name: row.name,
         category: row.category,
@@ -69,7 +87,7 @@ export async function upsertBatch(db: Database, input: BatchUpsertInput) {
   const [batch] = await db
     .select()
     .from(batches)
-    .where(eq(batches.id, input.id))
+    .where(and(eq(batches.id, input.id), eq(batches.userId, userId)))
     .limit(1);
 
   return batch;
@@ -77,9 +95,10 @@ export async function upsertBatch(db: Database, input: BatchUpsertInput) {
 
 export async function listBatches(
   db: Database,
+  userId: string,
   options?: { status?: string; excludeArchived?: boolean },
 ) {
-  const conditions = [];
+  const conditions = [eq(batches.userId, userId)];
 
   if (options?.status) {
     conditions.push(eq(batches.status, options.status));
@@ -87,24 +106,18 @@ export async function listBatches(
     conditions.push(ne(batches.status, "archived"));
   }
 
-  const query = db.select().from(batches).orderBy(desc(batches.updatedAt));
-
-  if (conditions.length === 1) {
-    return query.where(conditions[0]);
-  }
-
-  if (conditions.length > 1) {
-    return query.where(and(...conditions));
-  }
-
-  return query;
+  return db
+    .select()
+    .from(batches)
+    .where(and(...conditions))
+    .orderBy(desc(batches.updatedAt));
 }
 
-export async function getBatchById(db: Database, id: string) {
+export async function getBatchById(db: Database, id: string, userId: string) {
   const [batch] = await db
     .select()
     .from(batches)
-    .where(eq(batches.id, id))
+    .where(and(eq(batches.id, id), eq(batches.userId, userId)))
     .limit(1);
 
   if (!batch) {
@@ -116,10 +129,11 @@ export async function getBatchById(db: Database, id: string) {
 
 export async function patchBatch(
   db: Database,
+  userId: string,
   id: string,
   input: BatchPatchInput,
 ) {
-  const existing = await getBatchById(db, id);
+  const existing = await getBatchById(db, id, userId);
   const merged = {
     ...existing,
     ...input,
@@ -127,14 +141,18 @@ export async function patchBatch(
     createdAt: existing.createdAt,
   };
 
-  return upsertBatch(db, merged as BatchUpsertInput);
+  return upsertBatch(db, userId, merged as BatchUpsertInput);
 }
 
-export async function listBatchCodes(db: Database, type: string) {
+export async function listBatchCodes(
+  db: Database,
+  userId: string,
+  type: string,
+) {
   const rows = await db
     .select({ code: batches.code })
     .from(batches)
-    .where(eq(batches.type, type));
+    .where(and(eq(batches.userId, userId), eq(batches.type, type)));
 
   return rows.map((row) => row.code);
 }

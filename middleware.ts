@@ -2,8 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 
-/** Paths reachable without a session: the unlock screen and its API. */
-const PUBLIC_PATHS = ["/unlock", "/api/unlock"];
+/** Paths reachable without a session: the login screen and its auth API. */
+const PUBLIC_PATHS = ["/login", "/api/auth"];
 
 function isPublic(pathname: string): boolean {
   return PUBLIC_PATHS.some(
@@ -30,13 +30,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const unlockUrl = request.nextUrl.clone();
-  unlockUrl.pathname = "/unlock";
-  unlockUrl.search = "";
+  const loginUrl = request.nextUrl.clone();
+  loginUrl.pathname = "/login";
+  loginUrl.search = "";
   if (pathname !== "/") {
-    unlockUrl.searchParams.set("from", pathname);
+    loginUrl.searchParams.set("from", pathname);
   }
-  return NextResponse.redirect(unlockUrl);
+  return NextResponse.redirect(loginUrl);
 }
 
 export const config = {

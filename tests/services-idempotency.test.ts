@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { BatchUpsertInput } from "@/lib/api/schemas";
+import { SEED_USER_ID } from "@/lib/auth-constants";
 import { upsertBatch } from "@/lib/services/batches";
 import { upsertObservation } from "@/lib/services/observations";
 import { createTestDb } from "@/tests/helpers/test-db";
@@ -28,8 +29,8 @@ describe("service idempotency", () => {
   it("upserting the same batch twice is a no-op", async () => {
     const db = await createTestDb();
 
-    const first = await upsertBatch(db, baseBatch);
-    const second = await upsertBatch(db, baseBatch);
+    const first = await upsertBatch(db, SEED_USER_ID, baseBatch);
+    const second = await upsertBatch(db, SEED_USER_ID, baseBatch);
 
     expect(second).toEqual(first);
     expect(second.updatedAt).toBe(first.updatedAt);
@@ -37,7 +38,7 @@ describe("service idempotency", () => {
 
   it("upserting the same observation twice replaces chips identically", async () => {
     const db = await createTestDb();
-    await upsertBatch(db, baseBatch);
+    await upsertBatch(db, SEED_USER_ID, baseBatch);
 
     const observationInput = {
       id: "obs-test-1",
@@ -52,8 +53,8 @@ describe("service idempotency", () => {
       updatedAt: 2,
     };
 
-    const first = await upsertObservation(db, observationInput);
-    const second = await upsertObservation(db, observationInput);
+    const first = await upsertObservation(db, SEED_USER_ID, observationInput);
+    const second = await upsertObservation(db, SEED_USER_ID, observationInput);
 
     expect(second.chipKeys).toEqual(first.chipKeys);
     expect(second.dayInProcess).toBe(2);

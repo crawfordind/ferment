@@ -12,8 +12,13 @@ const validEnv = {
   R2_PUBLIC_BASE_URL: "https://example.com",
   TRANSCRIPTION_API_KEY: "transcription-key",
   TRANSCRIPTION_PROVIDER: "openai",
-  APP_PASSCODE: "passcode",
   APP_SECRET: "secret-at-least-16-chars",
+  APP_BASE_URL: "https://myferment.com",
+  AUTH_ALLOWLIST: "owner@example.com",
+  SMTP_HOST: "smtp.example.com",
+  SMTP_USER: "login@example.com",
+  SMTP_PASSWORD: "smtp-password",
+  SMTP_FROM: "MyFerment <login@example.com>",
 };
 
 describe("validateEnv", () => {

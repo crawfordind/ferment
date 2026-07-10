@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { BatchUpsertInput, PhotoUpsertInput } from "@/lib/api/schemas";
+import { SEED_USER_ID } from "@/lib/auth-constants";
 import { upsertBatch } from "@/lib/services/batches";
 import { upsertObservation } from "@/lib/services/observations";
 import { listPhotosForBatch, upsertPhoto } from "@/lib/services/photos";
@@ -43,8 +44,8 @@ function photo(overrides: Partial<PhotoUpsertInput>): PhotoUpsertInput {
 describe("listPhotosForBatch", () => {
   it("returns the cover photo and every observation's photos, oldest first", async () => {
     const db = await createTestDb();
-    await upsertBatch(db, baseBatch);
-    await upsertObservation(db, {
+    await upsertBatch(db, SEED_USER_ID, baseBatch);
+    await upsertObservation(db, SEED_USER_ID, {
       id: "obs-1",
       batchId: baseBatch.id,
       observedAt: Date.UTC(2026, 0, 2),
@@ -60,14 +61,16 @@ describe("listPhotosForBatch", () => {
     // Insert out of creation order to prove the query sorts.
     await upsertPhoto(
       db,
+      SEED_USER_ID,
       photo({ id: "p-obs", observationId: "obs-1", createdAt: 20 }),
     );
     await upsertPhoto(
       db,
+      SEED_USER_ID,
       photo({ id: "p-cover", observationId: null, createdAt: 10 }),
     );
 
-    const photos = await listPhotosForBatch(db, baseBatch.id);
+    const photos = await listPhotosForBatch(db, SEED_USER_ID, baseBatch.id);
 
     expect(photos.map((p) => p.id)).toEqual(["p-cover", "p-obs"]);
     expect(photos[0].observationId).toBeNull();
@@ -76,6 +79,8 @@ describe("listPhotosForBatch", () => {
 
   it("throws when the batch does not exist", async () => {
     const db = await createTestDb();
-    await expect(listPhotosForBatch(db, "missing")).rejects.toThrow();
+    await expect(
+      listPhotosForBatch(db, SEED_USER_ID, "missing"),
+    ).rejects.toThrow();
   });
 });

@@ -1,6 +1,7 @@
 import { getDb } from "@/lib/db";
 import { handleApiError, jsonOk } from "@/lib/api/http";
 import { batchPatchSchema } from "@/lib/api/schemas";
+import { requireUserId } from "@/lib/session";
 import { getBatchById, patchBatch } from "@/lib/services/batches";
 
 type RouteContext = {
@@ -9,9 +10,10 @@ type RouteContext = {
 
 export async function GET(_request: Request, context: RouteContext) {
   try {
+    const userId = await requireUserId();
     const { id } = await context.params;
     const db = getDb();
-    const batch = await getBatchById(db, id);
+    const batch = await getBatchById(db, id, userId);
 
     return jsonOk({ batch });
   } catch (error) {
@@ -21,10 +23,11 @@ export async function GET(_request: Request, context: RouteContext) {
 
 export async function PATCH(request: Request, context: RouteContext) {
   try {
+    const userId = await requireUserId();
     const { id } = await context.params;
     const body = batchPatchSchema.parse(await request.json());
     const db = getDb();
-    const batch = await patchBatch(db, id, body);
+    const batch = await patchBatch(db, userId, id, body);
 
     return jsonOk({ batch });
   } catch (error) {

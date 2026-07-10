@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
+import { EMAIL_COOKIE } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
 import {
@@ -22,19 +23,32 @@ const THEME_OPTIONS: { value: ThemeChoice; label: string }[] = [
   { value: "system", label: "System" },
 ];
 
+function readCookie(name: string): string | null {
+  if (typeof document === "undefined") return null;
+  const match = document.cookie
+    .split("; ")
+    .find((entry) => entry.startsWith(`${name}=`));
+  return match ? decodeURIComponent(match.slice(name.length + 1)) : null;
+}
+
 export default function SettingsPage() {
-  const [locking, setLocking] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
+  const [email, setEmail] = useState<string | null>(null);
   const { system, setSystem } = useMeasurementSystem();
   const { choice: themeChoice, setChoice: setThemeChoice } = useTheme();
 
-  async function handleLock() {
-    setLocking(true);
+  useEffect(() => {
+    setEmail(readCookie(EMAIL_COOKIE));
+  }, []);
+
+  async function handleSignOut() {
+    setSigningOut(true);
     try {
-      await fetch("/api/unlock", { method: "DELETE" });
+      await fetch("/api/auth/logout", { method: "POST" });
     } catch {
       // Even if the request fails, sending the user to the gate is safe.
     }
-    window.location.assign("/unlock");
+    window.location.assign("/login");
   }
 
   return (
@@ -116,19 +130,28 @@ export default function SettingsPage() {
         </div>
       </section>
 
-      <div className="mt-8 border-t border-hairline pt-6">
-        <Button
-          variant="outline"
-          size="lg"
-          onClick={handleLock}
-          disabled={locking}
-        >
-          {locking ? "Locking…" : "Lock app"}
-        </Button>
-        <p className="mt-2 text-xs text-muted">
-          Signs out of this device and returns to the passcode screen.
-        </p>
-      </div>
+      <section className="mt-8 border-t border-hairline pt-6">
+        <h2 className="text-sm font-semibold text-ink">Account</h2>
+        {email ? (
+          <p className="mt-1 text-xs text-muted">
+            Signed in as <span className="font-medium text-ink">{email}</span>.
+          </p>
+        ) : (
+          <p className="mt-1 text-xs text-muted">
+            Signs out of this device and returns to the sign-in screen.
+          </p>
+        )}
+        <div className="mt-4">
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={handleSignOut}
+            disabled={signingOut}
+          >
+            {signingOut ? "Signing out…" : "Sign out"}
+          </Button>
+        </div>
+      </section>
     </main>
   );
 }

@@ -5,8 +5,12 @@ import type { Database } from "@/lib/db";
 import { getBatchById } from "@/lib/services/batches";
 import { batches, photos } from "@/lib/schema";
 
-export async function upsertPhoto(db: Database, input: PhotoUpsertInput) {
-  await getBatchById(db, input.batchId);
+export async function upsertPhoto(
+  db: Database,
+  userId: string,
+  input: PhotoUpsertInput,
+) {
+  await getBatchById(db, input.batchId, userId);
 
   await db
     .insert(photos)
@@ -55,8 +59,12 @@ export async function upsertPhoto(db: Database, input: PhotoUpsertInput) {
  * read-back so a photo captured on one device shows up on the others — the local
  * cache only ever holds what that device itself captured.
  */
-export async function listPhotosForBatch(db: Database, batchId: string) {
-  await getBatchById(db, batchId);
+export async function listPhotosForBatch(
+  db: Database,
+  userId: string,
+  batchId: string,
+) {
+  await getBatchById(db, batchId, userId);
 
   return db
     .select()

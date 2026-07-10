@@ -29,9 +29,10 @@ async function attachChips(
 
 export async function upsertObservation(
   db: Database,
+  userId: string,
   input: ObservationUpsertInput,
 ) {
-  const batch = await getBatchById(db, input.batchId);
+  const batch = await getBatchById(db, input.batchId, userId);
   const dayInProcess = computeDayInProcess(batch.startedAt, input.observedAt);
 
   await db
@@ -89,8 +90,12 @@ export async function upsertObservation(
   };
 }
 
-export async function listObservationsForBatch(db: Database, batchId: string) {
-  await getBatchById(db, batchId);
+export async function listObservationsForBatch(
+  db: Database,
+  userId: string,
+  batchId: string,
+) {
+  await getBatchById(db, batchId, userId);
 
   const rows = await db
     .select()

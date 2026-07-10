@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import type { BatchUpsertInput } from "@/lib/api/schemas";
+import { SEED_USER_ID } from "@/lib/auth-constants";
 import { getBatchById, patchBatch, upsertBatch } from "@/lib/services/batches";
 import {
   listObservationsForBatch,
@@ -45,15 +46,15 @@ describe("e2e: create → log → status → finish", () => {
       createdAt: startedAt,
       updatedAt: startedAt,
     };
-    await upsertBatch(db, batchInput);
+    await upsertBatch(db, SEED_USER_ID, batchInput);
 
-    const created = await getBatchById(db, batchInput.id);
+    const created = await getBatchById(db, batchInput.id, SEED_USER_ID);
     expect(created.status).toBe("active");
     expect(created.health).toBe("on_track");
 
     // 2. Log an observation with a spoilage warning chip and a note.
     const observedAt = startedAt + DAY; // day 1, still in the Soak stage
-    const observation = await upsertObservation(db, {
+    const observation = await upsertObservation(db, SEED_USER_ID, {
       id: "e2e-obs-1",
       batchId: batchInput.id,
       observedAt,
@@ -77,14 +78,20 @@ describe("e2e: create → log → status → finish", () => {
     );
     expect(health).toBe("needs_action");
 
-    await patchBatch(db, batchInput.id, {
+    await patchBatch(db, SEED_USER_ID, batchInput.id, {
       health,
       updatedAt: observedAt,
     });
-    expect((await getBatchById(db, batchInput.id)).health).toBe("needs_action");
+    expect(
+      (await getBatchById(db, batchInput.id, SEED_USER_ID)).health,
+    ).toBe("needs_action");
 
     // 4. The timeline reads the observation back.
-    const timeline = await listObservationsForBatch(db, batchInput.id);
+    const timeline = await listObservationsForBatch(
+      db,
+      SEED_USER_ID,
+      batchInput.id,
+    );
     expect(timeline).toHaveLength(1);
     expect(timeline[0].id).toBe("e2e-obs-1");
     expect(timeline[0].note).toBe("white fuzzy patches forming on top");
@@ -92,13 +99,13 @@ describe("e2e: create → log → status → finish", () => {
 
     // 5. Finish the batch.
     const finishedAt = startedAt + 7 * DAY;
-    await patchBatch(db, batchInput.id, {
+    await patchBatch(db, SEED_USER_ID, batchInput.id, {
       status: "finished",
       finishedAt,
       updatedAt: finishedAt,
     });
 
-    const finished = await getBatchById(db, batchInput.id);
+    const finished = await getBatchById(db, batchInput.id, SEED_USER_ID);
     expect(finished.status).toBe("finished");
     expect(finished.finishedAt).toBe(finishedAt);
     // Health persists through the lifecycle change.

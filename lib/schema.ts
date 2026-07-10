@@ -8,6 +8,27 @@ import {
   unique,
 } from "drizzle-orm/sqlite-core";
 
+export const users = sqliteTable("users", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  name: text("name"),
+  createdAt: integer("created_at").notNull(),
+  lastLoginAt: integer("last_login_at"),
+});
+
+/**
+ * One row per issued magic link. Only the SHA-256 `tokenHash` is stored, never
+ * the raw token. `consumedAt` makes a link single-use.
+ */
+export const loginTokens = sqliteTable("login_tokens", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull(),
+  tokenHash: text("token_hash").notNull().unique(),
+  expiresAt: integer("expires_at").notNull(),
+  consumedAt: integer("consumed_at"),
+  createdAt: integer("created_at").notNull(),
+});
+
 export const templates = sqliteTable(
   "templates",
   {
@@ -35,6 +56,13 @@ export const templateStages = sqliteTable("template_stages", {
 
 export const batches = sqliteTable("batches", {
   id: text("id").primaryKey(),
+  /**
+   * Owner. Nullable at the column level so it could be added to the existing
+   * table without a rebuild (migration 0003 backfills every prior row to the
+   * seed user); the service layer always sets it and scopes every read/write by
+   * it, so it is effectively non-null in practice.
+   */
+  userId: text("user_id").references(() => users.id),
   code: text("code").notNull().unique(),
   name: text("name").notNull(),
   category: text("category").notNull(),
@@ -123,7 +151,15 @@ export const templateStagesRelations = relations(templateStages, ({ one }) => ({
   }),
 }));
 
+export const usersRelations = relations(users, ({ many }) => ({
+  batches: many(batches),
+}));
+
 export const batchesRelations = relations(batches, ({ one, many }) => ({
+  owner: one(users, {
+    fields: [batches.userId],
+    references: [users.id],
+  }),
   template: one(templates, {
     fields: [batches.templateId],
     references: [templates.id],
@@ -172,6 +208,8 @@ export type FermentType =
   | "food"
   | "custom";
 
+export type User = typeof users.$inferSelect;
+export type LoginToken = typeof loginTokens.$inferSelect;
 export type Template = typeof templates.$inferSelect;
 export type TemplateStage = typeof templateStages.$inferSelect;
 export type Batch = typeof batches.$inferSelect;

@@ -1,6 +1,7 @@
 import { getDb } from "@/lib/db";
 import { ApiError, handleApiError, jsonOk } from "@/lib/api/http";
 import { observationUpsertSchema } from "@/lib/api/schemas";
+import { requireUserId } from "@/lib/session";
 import {
   listObservationsForBatch,
   upsertObservation,
@@ -12,9 +13,10 @@ type RouteContext = {
 
 export async function GET(_request: Request, context: RouteContext) {
   try {
+    const userId = await requireUserId();
     const { id } = await context.params;
     const db = getDb();
-    const observations = await listObservationsForBatch(db, id);
+    const observations = await listObservationsForBatch(db, userId, id);
 
     return jsonOk({ observations });
   } catch (error) {
@@ -24,6 +26,7 @@ export async function GET(_request: Request, context: RouteContext) {
 
 export async function POST(request: Request, context: RouteContext) {
   try {
+    const userId = await requireUserId();
     const { id: batchId } = await context.params;
     const body = observationUpsertSchema.parse(await request.json());
 
@@ -32,7 +35,7 @@ export async function POST(request: Request, context: RouteContext) {
     }
 
     const db = getDb();
-    const observation = await upsertObservation(db, body);
+    const observation = await upsertObservation(db, userId, body);
 
     return jsonOk({ observation }, 201);
   } catch (error) {
