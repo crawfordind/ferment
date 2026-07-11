@@ -19,6 +19,7 @@ export function TimelinePhotoStrip({
   startedAt,
   logHref,
   canAdd,
+  onPhotoClick,
 }: {
   photos: LocalPhoto[];
   startedAt: number;
@@ -26,6 +27,8 @@ export function TimelinePhotoStrip({
   logHref: string;
   /** Active batches can still add photos; finished ones show history only. */
   canAdd: boolean;
+  /** Expand a photo into its observation (or creation) detail card. */
+  onPhotoClick?: (photo: LocalPhoto) => void;
 }) {
   const ordered = [...photos].sort((a, b) => a.takenAt - b.takenAt);
 
@@ -35,17 +38,35 @@ export function TimelinePhotoStrip({
   return (
     <div className="flex flex-col gap-1.5">
       <div className="flex gap-2 overflow-x-auto pb-1 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {ordered.map((photo) => (
-          <figure
-            key={photo.id}
-            className="flex shrink-0 flex-col items-center gap-1"
-          >
+        {ordered.map((photo) => {
+          const day = computeDayInProcess(startedAt, photo.takenAt);
+          const thumb = (
             <PhotoThumb photoId={photo.id} className="size-16 rounded-lg" />
-            <figcaption className="text-[10px] font-medium text-muted">
-              Day {computeDayInProcess(startedAt, photo.takenAt)}
-            </figcaption>
-          </figure>
-        ))}
+          );
+
+          return (
+            <figure
+              key={photo.id}
+              className="flex shrink-0 flex-col items-center gap-1"
+            >
+              {onPhotoClick ? (
+                <button
+                  type="button"
+                  onClick={() => onPhotoClick(photo)}
+                  aria-label={`Open Day ${day} check-in`}
+                  className="overflow-hidden rounded-lg transition-transform focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent active:scale-[0.97]"
+                >
+                  {thumb}
+                </button>
+              ) : (
+                thumb
+              )}
+              <figcaption className="text-[10px] font-medium text-muted">
+                Day {day}
+              </figcaption>
+            </figure>
+          );
+        })}
 
         {canAdd ? (
           <Link

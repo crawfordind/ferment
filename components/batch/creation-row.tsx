@@ -14,39 +14,63 @@ import { PhotoPlaceholder } from "./photo-placeholder";
 export function CreationRow({
   photos,
   startedAt,
+  onOpen,
 }: {
   photos: LocalPhoto[];
   startedAt: number;
+  onOpen?: () => void;
 }) {
   const day = computeDayInProcess(startedAt, photos[0]?.takenAt ?? startedAt);
+  const interactive = Boolean(onOpen);
 
   return (
-    <li className="flex gap-3 rounded-[var(--radius-card)] border border-hairline bg-card p-3">
-      <div className="size-14 shrink-0">
-        {photos.length > 0 ? (
-          <PhotoThumb photoId={photos[0].id} className="size-14 rounded-lg" />
-        ) : (
-          <PhotoPlaceholder className="size-14 rounded-lg" />
-        )}
-      </div>
-
-      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-        <div className="flex items-baseline justify-between gap-2">
-          <span className="text-sm font-semibold text-ink">Day {day}</span>
-          <span className="text-xs text-muted">Batch created</span>
+    <li>
+      <div
+        role={interactive ? "button" : undefined}
+        tabIndex={interactive ? 0 : undefined}
+        onClick={onOpen}
+        onKeyDown={
+          interactive
+            ? (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onOpen?.();
+                }
+              }
+            : undefined
+        }
+        className={
+          interactive
+            ? "flex w-full cursor-pointer gap-3 rounded-[var(--radius-card)] border border-hairline bg-card p-3 text-left transition-colors hover:border-border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+            : "flex gap-3 rounded-[var(--radius-card)] border border-hairline bg-card p-3"
+        }
+      >
+        <div className="size-14 shrink-0 overflow-hidden rounded-lg">
+          {photos.length > 0 ? (
+            <PhotoThumb photoId={photos[0].id} className="size-14 rounded-lg" />
+          ) : (
+            <PhotoPlaceholder className="size-14 rounded-lg" />
+          )}
         </div>
 
-        {photos.length > 1 ? (
-          <div className="flex flex-wrap gap-1.5 pt-0.5">
-            {photos.slice(1).map((photo) => (
-              <PhotoThumb
-                key={photo.id}
-                photoId={photo.id}
-                className="size-12 rounded-md"
-              />
-            ))}
+        <div className="flex min-w-0 flex-1 flex-col gap-1.5">
+          <div className="flex items-baseline justify-between gap-2">
+            <span className="text-sm font-semibold text-ink">Day {day}</span>
+            <span className="text-xs text-muted">Batch created</span>
           </div>
-        ) : null}
+
+          {photos.length > 1 ? (
+            <div className="flex flex-wrap gap-1.5 pt-0.5">
+              {photos.slice(1).map((photo) => (
+                <PhotoThumb
+                  key={photo.id}
+                  photoId={photo.id}
+                  className="size-12 rounded-md"
+                />
+              ))}
+            </div>
+          ) : null}
+        </div>
       </div>
     </li>
   );

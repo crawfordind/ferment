@@ -157,9 +157,37 @@ html::-webkit-scrollbar {
 .confirm-badge {
   animation: confirm-pop 0.4s var(--ease-out) both;
 }
+
+/* Observation detail sheet — rises from the bottom on mobile. */
+@keyframes sheet-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes sheet-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.observation-sheet-backdrop {
+  animation: sheet-fade 0.2s var(--ease-out) both;
+}
+.observation-sheet-panel {
+  animation: sheet-rise 0.28s var(--ease-out) both;
+}
 @media (prefers-reduced-motion: reduce) {
   .confirm-overlay,
-  .confirm-badge {
+  .confirm-badge,
+  .observation-sheet-backdrop,
+  .observation-sheet-panel {
     animation: none;
   }
 }

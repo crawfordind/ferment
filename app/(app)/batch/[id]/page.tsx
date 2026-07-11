@@ -1,19 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
 
+import { BatchPulseCard } from "@/components/batch/batch-pulse";
 import { CreationRow } from "@/components/batch/creation-row";
 import { DilutionCalculator } from "@/components/batch/dilution-calculator";
+import { MeasurementTrends } from "@/components/batch/measurement-trends";
+import {
+  ObservationDetailSheet,
+  type ObservationDetailTarget,
+} from "@/components/batch/observation-detail";
 import { ObservationRow } from "@/components/batch/observation-row";
 import { TimelinePhotoStrip } from "@/components/batch/timeline-photo-strip";
 import { TroubleshootingNote } from "@/components/batch/troubleshooting-note";
 import { useMeasurementSystem } from "@/components/providers/measurement-system-provider";
-import { formatTemperature } from "@/lib/temperature";
 import { PhotoThumb } from "@/components/batch/photo-thumb";
-import { WhatToExpect } from "@/components/batch/what-to-expect";
 import { StatusIndicator } from "@/components/batch/status-indicator";
 import { ProgressBar } from "@/components/batch/progress-bar";
 import { Button } from "@/components/ui/button";
@@ -21,6 +25,7 @@ import { useBatch, useUpdateBatch } from "@/hooks/use-batch";
 import { useObservations } from "@/hooks/use-observations";
 import { useBatchPhotos } from "@/hooks/use-photos";
 import type { LocalPhoto } from "@/offline/dexie";
+import { computeBatchPulse } from "@/lib/batch-pulse";
 import { computeDayInProcess } from "@/lib/day";
 import { computeBatchProgress, formatProgressLabel } from "@/lib/progress";
 import { costPerUnit, formatCostPerUnit } from "@/lib/economics";
@@ -29,7 +34,6 @@ import { getDocByFermentType } from "@/lib/knowledge";
 import { generateLotId } from "@/lib/lots";
 import { getSeedTemplate } from "@/lib/seed-data";
 import { convertQuantity, formatQuantity } from "@/lib/units";
-import { currentStage } from "@/lib/stages";
 
 function OverflowMenu({ batchId }: { batchId: string }) {
   const [open, setOpen] = useState(false);
@@ -141,7 +145,9 @@ export default function BatchDetailPage() {
   const batchQuery = useBatch(batchId);
   const observationsQuery = useObservations(batchId);
   const photosQuery = useBatchPhotos(batchId);
-  const { system, temperatureUnit } = useMeasurementSystem();
+  const { system } = useMeasurementSystem();
+  const [detail, setDetail] = useState<ObservationDetailTarget | null>(null);
+  const closeDetail = useCallback(() => setDetail(null), []);
 
   if (batchQuery.isLoading) {
     return (
@@ -170,16 +176,6 @@ export default function BatchDetailPage() {
   const observations = observationsQuery.data ?? [];
   const finished = batch.status !== "active";
 
-  // Day-in-process of the most recent check-in, for the "vs. what you logged"
-  // line on the What-to-expect card.
-  const lastObservedAt = observations.reduce(
-    (max, o) => Math.max(max, o.observedAt),
-    0,
-  );
-  const lastLoggedDay = lastObservedAt
-    ? computeDayInProcess(batch.startedAt, lastObservedAt)
-    : null;
-
   // Group every synced photo by its observation; photos with no observation are
   // the creation/cover shots and get their own timeline entry.
   const photos = photosQuery.data ?? [];
@@ -195,16 +191,29 @@ export default function BatchDetailPage() {
     }
   }
 
+  const openPhotoDetail = (photo: LocalPhoto) => {
+    if (photo.observationId) {
+      const observation = observations.find((o) => o.id === photo.observationId);
+      if (observation) {
+        setDetail({
+          kind: "observation",
+          observation,
+          photos: photosByObservation.get(observation.id) ?? [photo],
+        });
+        return;
+      }
+    }
+    setDetail({
+      kind: "creation",
+      photos: creationPhotos.length > 0 ? creationPhotos : [photo],
+      startedAt: batch.startedAt,
+    });
+  };
+
   const recipe = parseInputs(batch.inputs);
   const ratio = computeRatio(recipe);
   const saltPercent = computeSaltPercent(recipe);
-  const latestReading =
-    observations.find(
-      (observation) =>
-        observation.ph != null ||
-        observation.brix != null ||
-        observation.tempC != null,
-    ) ?? null;
+  const pulse = computeBatchPulse(batch, observations, template ?? null);
   // Show every stored amount in the user's selected system (a batch made in kg
   // reads as lb for an imperial user); cost-per-unit follows the same converted
   // yield so its unit matches what's displayed.
@@ -279,14 +288,8 @@ export default function BatchDetailPage() {
         </div>
       </header>
 
-      {/* What to expect today — stage guidance brought onto the batch itself */}
-      {template && !finished ? (
-        <WhatToExpect
-          stage={currentStage(batch, template)}
-          currentDay={day}
-          lastLoggedDay={lastLoggedDay}
-        />
-      ) : null}
+      {/* Factual snapshot — check-in cadence, measured change, next milestone */}
+      {!finished ? <BatchPulseCard pulse={pulse} /> : null}
 
       {/* "Is this normal?" — guidance from the latest sensory reading. */}
       {!finished && latestChips.length > 0 ? (
@@ -324,36 +327,11 @@ export default function BatchDetailPage() {
         </section>
       ) : null}
 
-      {/* Latest measurements */}
-      {latestReading ? (
-        <section className="rounded-[var(--radius-card)] border border-hairline bg-card p-4">
-          <h2 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.4px] text-muted">
-            Latest measurements · Day{" "}
-            {computeDayInProcess(batch.startedAt, latestReading.observedAt)}
-          </h2>
-          <div className="flex flex-wrap gap-x-6 gap-y-1 text-sm">
-            {latestReading.ph != null ? (
-              <span className="text-ink">
-                pH <span className="font-semibold">{latestReading.ph}</span>
-              </span>
-            ) : null}
-            {latestReading.brix != null ? (
-              <span className="text-ink">
-                Brix{" "}
-                <span className="font-semibold">{latestReading.brix}°Bx</span>
-              </span>
-            ) : null}
-            {latestReading.tempC != null ? (
-              <span className="text-ink">
-                Temp{" "}
-                <span className="font-semibold">
-                  {formatTemperature(latestReading.tempC, temperatureUnit)}
-                </span>
-              </span>
-            ) : null}
-          </div>
-        </section>
-      ) : null}
+      {/* Measurement history + trend chart */}
+      <MeasurementTrends
+        observations={observations}
+        startedAt={batch.startedAt}
+      />
 
       {/* Yield, cost & lot (finished batches) */}
       {finished && (batch.yieldValue != null || cost || batch.lotId) ? (
@@ -425,6 +403,7 @@ export default function BatchDetailPage() {
           startedAt={batch.startedAt}
           logHref={`/batch/${batchId}/log`}
           canAdd={!finished}
+          onPhotoClick={openPhotoDetail}
         />
 
         {observationsQuery.isLoading && observations.length === 0 ? (
@@ -443,12 +422,26 @@ export default function BatchDetailPage() {
                 observation={observation}
                 startedAt={batch.startedAt}
                 photos={photosByObservation.get(observation.id) ?? []}
+                onOpen={() =>
+                  setDetail({
+                    kind: "observation",
+                    observation,
+                    photos: photosByObservation.get(observation.id) ?? [],
+                  })
+                }
               />
             ))}
             {creationPhotos.length > 0 ? (
               <CreationRow
                 photos={creationPhotos}
                 startedAt={batch.startedAt}
+                onOpen={() =>
+                  setDetail({
+                    kind: "creation",
+                    photos: creationPhotos,
+                    startedAt: batch.startedAt,
+                  })
+                }
               />
             ) : null}
           </ul>
@@ -469,6 +462,12 @@ export default function BatchDetailPage() {
           </div>
         </div>
       ) : null}
+
+      <ObservationDetailSheet
+        target={detail}
+        startedAt={batch.startedAt}
+        onClose={closeDetail}
+      />
     </main>
   );
 }
