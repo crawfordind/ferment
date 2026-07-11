@@ -10,7 +10,7 @@ difficulty: 2
 time_days: [7, 14]
 summary: "Sweet tea fermented by a floating mat of bacteria and yeast — the SCOBY — into a tart, lightly fizzy drink whose safety comes from its own acidity."
 tags: [tea, scoby, acetic-acid-bacteria, yeast, symbiosis, kombucha]
-related: [water-kefir, milk-kefir]
+related: [jun, water-kefir, milk-kefir]
 ingredients:
   - { item: "Water", qty: "1", unit: "L" }
   - { item: "Black or green tea", qty: "8", unit: "g" }

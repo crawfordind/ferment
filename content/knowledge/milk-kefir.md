@@ -10,7 +10,7 @@ difficulty: 1
 time_days: [1, 2]
 summary: "Cauliflower-like grains that culture milk at room temperature into a drinkable, tangy, effervescent ferment richer in microbial diversity than yogurt."
 tags: [dairy, kefir-grains, lactobacillus-kefiranofaciens, kefiran, yeast, probiotic]
-related: [water-kefir, yogurt]
+related: [water-kefir, yogurt, creme-fraiche]
 ingredients:
   - { item: "Fresh milk", qty: "500", unit: "ml" }
   - { item: "Milk kefir grains", qty: "1", unit: "tbsp" }

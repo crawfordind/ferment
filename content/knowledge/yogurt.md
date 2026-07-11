@@ -10,7 +10,7 @@ difficulty: 1
 time_days: null
 summary: "Milk set thick by two bacteria working in partnership at blood heat — the most reliable home ferment there is, done in hours, not days."
 tags: [dairy, streptococcus-thermophilus, lactobacillus-bulgaricus, protocooperation, probiotic]
-related: [milk-kefir, sauerkraut]
+related: [creme-fraiche, milk-kefir, sauerkraut]
 ingredients:
   - { item: "Whole milk", qty: "1", unit: "L" }
   - { item: "Live plain yogurt (as starter)", qty: "2", unit: "tbsp" }

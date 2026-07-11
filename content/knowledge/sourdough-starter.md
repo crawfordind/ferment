@@ -11,7 +11,7 @@ difficulty: 2
 time_days: [5, 10]
 summary: "A stable culture of wild yeast and lactic bacteria kept alive on flour and water — the leavening and the sour in every loaf of real sourdough."
 tags: [flour, wild-yeast, fructilactobacillus, saccharomyces, levain, bread]
-related: [yogurt, kombucha]
+related: [injera, yogurt, kombucha]
 ingredients:
   - { item: "Wholemeal or rye flour (to start)", qty: "50", unit: "g/day" }
   - { item: "Water, non-chlorinated", qty: "50", unit: "g/day" }

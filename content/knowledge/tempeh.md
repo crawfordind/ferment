@@ -10,7 +10,7 @@ difficulty: 3
 time_days: [1, 2]
 summary: "Indonesian soybean cake bound into a firm slab by a living mould — a mould ferment, not a bacterial one, and a genuinely complete plant protein."
 tags: [soybean, rhizopus-oligosporus, mould-ferment, protein, indonesia]
-related: [yogurt, sauerkraut]
+related: [natto, miso, yogurt]
 ingredients:
   - { item: "Dry soybeans (dehulled)", qty: "300", unit: "g" }
   - { item: "Vinegar (to acidify the soak)", qty: "1", unit: "tbsp" }

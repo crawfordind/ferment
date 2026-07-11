@@ -90,9 +90,23 @@ const RECIPE_ICONS: Record<string, LucideIcon> = {
   kombucha: CupSoda,
   "water-kefir": GlassWater,
   "milk-kefir": Milk,
+  jun: CupSoda,
+  "ginger-bug": Sparkles,
+  tepache: Apple,
+  "beet-kvass": Droplet,
+  amazake: Wheat,
   // Vegetable ferments
   kimchi: Salad,
   sauerkraut: LeafyGreen,
+  "dill-pickles": Carrot,
+  // Legume / dairy / grain food ferments
+  miso: Bean,
+  natto: Sprout,
+  "creme-fraiche": Milk,
+  injera: Wheat,
+  yogurt: Milk,
+  tempeh: Bean,
+  "sourdough-starter": Wheat,
 };
 
 export function CategoryIcon({

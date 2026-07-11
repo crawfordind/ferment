@@ -10,7 +10,7 @@ difficulty: 2
 time_days: [3, 14]
 summary: "Korea's national ferment — brined napa cabbage and a spiced paste, cultured cold and slow by Leuconostoc and Lactobacillus into a fizzy, sour, umami staple."
 tags: [lacto-fermentation, napa-cabbage, gochugaru, probiotic, leuconostoc, weissella]
-related: [sauerkraut, water-kefir]
+related: [sauerkraut, dill-pickles, water-kefir]
 ingredients:
   - { item: "Napa cabbage", qty: "1", unit: "head" }
   - { item: "Coarse non-iodised salt (for brining)", qty: "60", unit: "g" }

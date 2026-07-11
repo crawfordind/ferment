@@ -11,7 +11,7 @@ difficulty: 1
 time_days: [1, 3]
 summary: "Translucent grains that ferment sugar water into a fast, dairy-free, lightly fizzy soda — the quickest live drink on this shelf."
 tags: [sugar-water, tibicos, lactobacillus, yeast, dairy-free, soda]
-related: [kombucha, milk-kefir]
+related: [kombucha, ginger-bug, milk-kefir]
 ingredients:
   - { item: "Water, non-chlorinated", qty: "1", unit: "L" }
   - { item: "Sugar", qty: "60", unit: "g" }

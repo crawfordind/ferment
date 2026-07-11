@@ -10,7 +10,7 @@ difficulty: 1
 time_days: [14, 28]
 summary: "Cabbage and salt, nothing else — a self-selecting lactic ferment where the vegetable's own bacteria acidify the brine and preserve it for months."
 tags: [lacto-fermentation, cabbage, brine, probiotic, leuconostoc, lactobacillus]
-related: [kimchi, yogurt]
+related: [kimchi, dill-pickles, yogurt]
 ingredients:
   - { item: "Green or white cabbage, shredded", qty: "1", unit: "kg" }
   - { item: "Non-iodised salt (2% of cabbage weight)", qty: "20", unit: "g" }
