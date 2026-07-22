@@ -1,6 +1,8 @@
 {
   "name": "ferment-tracker",
   "version": "0.1.0",
+  "license": "MIT",
+  "author": "Daniel Crawford",
   "private": true,
   "packageManager": "pnpm@10.11.0",
   "engines": {

@@ -40,3 +40,13 @@ Open [http://localhost:3000](http://localhost:3000).
 
 - [Build plan](docs/ferment-tracker-build-plan.md)
 - [Design handoff](docs/design/design_handoff_ferment_tracker_v1/README.md)
+
+## Contributing
+
+Contributions, bug reports, and ideas are welcome — please open an issue or a
+pull request. If you're planning a larger change, open an issue first so we can
+discuss the approach.
+
+## License
+
+Released under the [MIT License](LICENSE). © 2026 Daniel Crawford.
