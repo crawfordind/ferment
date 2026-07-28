@@ -3,12 +3,13 @@ import { NextResponse, type NextRequest } from "next/server";
 import { SESSION_COOKIE, verifySessionToken } from "@/lib/auth";
 
 /**
- * Paths reachable without a session: the login screen + auth API, the public
- * editorial content (blog + knowledge base, which touch no user data), and the
- * crawler files. Everything else — the dashboard and all batch data — stays
- * gated.
+ * Paths reachable without a session: the marketing landing page, the login
+ * screen + auth API, the public editorial content (blog + knowledge base, which
+ * touch no user data), and the crawler files. Everything else — the dashboard
+ * and all batch data — stays gated.
  */
 const PUBLIC_PATHS = [
+  "/welcome",
   "/login",
   "/api/auth",
   "/blog",
@@ -42,13 +43,17 @@ export async function middleware(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const loginUrl = request.nextUrl.clone();
-  loginUrl.pathname = "/login";
-  loginUrl.search = "";
-  if (pathname !== "/") {
-    loginUrl.searchParams.set("from", pathname);
+  // The front door shows the public marketing page to logged-out visitors,
+  // rather than dropping them straight onto the sign-in form.
+  const target = request.nextUrl.clone();
+  target.search = "";
+  if (pathname === "/") {
+    target.pathname = "/welcome";
+  } else {
+    target.pathname = "/login";
+    target.searchParams.set("from", pathname);
   }
-  return NextResponse.redirect(loginUrl);
+  return NextResponse.redirect(target);
 }
 
 export const config = {
