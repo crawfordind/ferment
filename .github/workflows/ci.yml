@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
 
+# Placeholder values so `next build` (which validates env at config load via
+# lib/env.ts) can run in CI. Must stay in sync with the schema in lib/env.ts —
+# only vars without a schema default are required here.
 env:
   TURSO_DATABASE_URL: libsql://ci-placeholder.turso.io
   TURSO_AUTH_TOKEN: ci-placeholder-token
@@ -16,8 +19,13 @@ env:
   R2_PUBLIC_BASE_URL: https://ci-placeholder.example.com
   TRANSCRIPTION_API_KEY: ci-placeholder-transcription-key
   TRANSCRIPTION_PROVIDER: openai
-  APP_PASSCODE: ci-placeholder-passcode
   APP_SECRET: ci-placeholder-secret-32chars-min
+  APP_BASE_URL: https://ci-placeholder.example.com
+  AUTH_ALLOWLIST: ci@example.com
+  SMTP_HOST: smtp.ci-placeholder.example.com
+  SMTP_USER: ci-placeholder-user
+  SMTP_PASSWORD: ci-placeholder-password
+  SMTP_FROM: CI <ci@ci-placeholder.example.com>
 
 jobs:
   build:
