@@ -125,6 +125,29 @@ export const observationChips = sqliteTable(
   ],
 );
 
+/**
+ * Quote-request submissions from the public farm site (`/request`). One row per
+ * inquiry, across every service line (contract growing, bloom bar, wedding,
+ * design). The service-specific answers live in `payload` as a JSON-encoded
+ * object so the single "one form engine, one submission table" design from the
+ * PRD holds without a column per service. `status` drives Daniel's inbox
+ * triage; `source` captures the "how did you hear about us" answer.
+ */
+export const inquiries = sqliteTable("inquiries", {
+  id: text("id").primaryKey(),
+  serviceType: text("service_type").notNull(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  phone: text("phone"),
+  source: text("source"),
+  notes: text("notes"),
+  /** Branch-specific answers as a JSON-encoded object (see lib/request). */
+  payload: text("payload"),
+  status: text("status").notNull().default("new"),
+  createdAt: integer("created_at").notNull(),
+  updatedAt: integer("updated_at").notNull(),
+});
+
 export const photos = sqliteTable("photos", {
   id: text("id").primaryKey(),
   batchId: text("batch_id")
@@ -216,3 +239,13 @@ export type Batch = typeof batches.$inferSelect;
 export type Observation = typeof observations.$inferSelect;
 export type ObservationChip = typeof observationChips.$inferSelect;
 export type Photo = typeof photos.$inferSelect;
+export type Inquiry = typeof inquiries.$inferSelect;
+export type NewInquiry = typeof inquiries.$inferInsert;
+
+/** Public farm service lines. Drives the `/request` branching + inbox subjects. */
+export type ServiceType =
+  | "contract-growing"
+  | "bloom-bar"
+  | "wedding"
+  | "design";
+export type InquiryStatus = "new" | "in_progress" | "quoted" | "closed";

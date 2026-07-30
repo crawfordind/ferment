@@ -34,6 +34,9 @@ const envSchema = z.object({
   SMTP_PASSWORD: z.string().min(1, "SMTP_PASSWORD is required"),
   // From header, e.g. "MyFerment <login@myferment.com>"
   SMTP_FROM: z.string().trim().min(1, "SMTP_FROM is required"),
+  // Where public quote-request notifications go. Optional — falls back to the
+  // SMTP_FROM address so a missing value never drops a lead.
+  INQUIRY_NOTIFY_EMAIL: z.string().trim().email().optional(),
 });
 
 export type Env = z.infer<typeof envSchema>;

@@ -10,8 +10,17 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
-      allow: ["/", "/blog", "/knowledge", "/login"],
-      disallow: ["/api/", "/batch/", "/batches", "/new", "/archive", "/settings", "/debug"],
+      allow: ["/", "/blog", "/knowledge", "/login", "/farm", "/florists", "/request"],
+      disallow: [
+        "/api/",
+        "/batch/",
+        "/batches",
+        "/new",
+        "/archive",
+        "/settings",
+        "/debug",
+        "/request/thank-you",
+      ],
     },
     sitemap: `${SITE_URL}/sitemap.xml`,
     host: SITE_URL,

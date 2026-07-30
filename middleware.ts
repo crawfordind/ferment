@@ -14,6 +14,11 @@ const PUBLIC_PATHS = [
   "/api/auth",
   "/blog",
   "/knowledge",
+  // Run-a-Muck Farms public service site (marketing + quote requests).
+  "/farm",
+  "/florists",
+  "/request",
+  "/api/request",
   "/sitemap.xml",
   "/robots.txt",
 ];
