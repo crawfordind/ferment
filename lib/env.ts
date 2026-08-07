@@ -22,7 +22,7 @@ const envSchema = z.object({
   // (OpenRouter), same shape as transcription; the model must support tool use.
   ASSISTANT_API_KEY: z.string().min(1).optional(),
   ASSISTANT_PROVIDER: z.string().min(1).default("openrouter"),
-  ASSISTANT_MODEL: z.string().min(1).default("anthropic/claude-sonnet-4.5"),
+  ASSISTANT_MODEL: z.string().min(1).default("openai/gpt-4o-mini"),
   APP_SECRET: z.string().min(16, "APP_SECRET must be at least 16 characters"),
   // Canonical origin used to build magic-link URLs, e.g. https://myferment.com.
   // `.trim()` guards against a stray space/newline pasted into the env value.
