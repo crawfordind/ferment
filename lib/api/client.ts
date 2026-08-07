@@ -8,6 +8,7 @@ import type {
   PhotoPresignResponse,
   PhotoUpsertInput,
 } from "@/lib/api/schemas";
+import type { AssistantReply, ChatMessage } from "@/lib/assistant/types";
 
 export class ApiClientError extends Error {
   constructor(
@@ -101,6 +102,18 @@ export async function upsertObservationApi(
   });
   const data = await parseResponse<{ observation: ObservationDto }>(response);
   return data.observation;
+}
+
+export async function askAssistantApi(input: {
+  messages: ChatMessage[];
+  batchId?: string;
+}) {
+  const response = await fetch("/api/assistant", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  return parseResponse<AssistantReply>(response);
 }
 
 export async function transcribeAudioApi(blob: Blob, format?: string) {

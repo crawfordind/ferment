@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { MoreHorizontal } from "lucide-react";
 
+import { BuddyPanel } from "@/components/assistant/buddy-panel";
 import { BatchPulseCard } from "@/components/batch/batch-pulse";
 import { CreationRow } from "@/components/batch/creation-row";
 import { DilutionCalculator } from "@/components/batch/dilution-calculator";
@@ -389,6 +390,9 @@ export default function BatchDetailPage() {
           </Button>
         </section>
       ) : null}
+
+      {/* Kombucha Buddy — batch-aware agentic assistant */}
+      <BuddyPanel batchId={batchId} />
 
       {/* Timeline */}
       <section className="flex flex-col gap-3 pb-28">
