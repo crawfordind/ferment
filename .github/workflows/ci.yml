@@ -18,6 +18,14 @@ env:
   TRANSCRIPTION_PROVIDER: openai
   APP_PASSCODE: ci-placeholder-passcode
   APP_SECRET: ci-placeholder-secret-32chars-min
+  # Required by lib/env.ts and validated at `next build` (via next.config.ts).
+  # Placeholders only — CI never sends mail or issues real login links.
+  APP_BASE_URL: https://ci-placeholder.example.com
+  AUTH_ALLOWLIST: ci@example.com
+  SMTP_HOST: smtp.ci-placeholder.example.com
+  SMTP_USER: ci@example.com
+  SMTP_PASSWORD: ci-placeholder-smtp-password
+  SMTP_FROM: CI <ci@example.com>
 
 jobs:
   build:
